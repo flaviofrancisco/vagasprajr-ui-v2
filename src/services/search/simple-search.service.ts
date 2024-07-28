@@ -90,10 +90,7 @@ const simpleSearchSlice = createSlice({
     name: "simpleSearch",
     initialState: {
         status: 'idle',
-        isMaxPage: false,
-        maxPage: 0,
-        searchExecuted: false,
-        isLoadMoreData: false,
+        searchExecuted: false,        
         searchFilter: {
             searchString: '',
             page: 1,
@@ -121,33 +118,21 @@ const simpleSearchSlice = createSlice({
 
         },
         onLoadMore: (state: any, action: PayloadAction<boolean>) => {
-            if (state.maxPage === 0 || state.searchFilter.page >= state.maxPage) {
-                state.isLoadMoreData = false; 
-                state.isMaxPage = true;     
-                state.searchFilter.page += 1;             
-            } else {
-                state.searchFilter.page += 1;
-                state.isLoadMoreData = action.payload;                
-            }
+            state.searchFilter.page += 1;
+            state.isLoadMoreData = action.payload;                
         },
         onAppendJobList: (state: any, action: any) => {        
-            state.jobList = [...action.payload, ...state.jobList];            
-            state.isLoadMoreData = false;  
-            if (state.searchResult.Total === state.jobList.length) {
-                state.isMaxPage = true;                
-            }                    
+            state.jobList = [...action.payload, ...state.jobList];                              
         }
     },
     extraReducers: (builder: any) => {
         builder.addCase(doSimpleSearch.fulfilled, (state: any, action: any) => {
             state.searchResult = action.payload;
+            state.searchExecuted = true;
             if (typeof(state.jobLis) === 'undefined' || state.jobList === null) {
                 state.jobList = action.payload.Data;
             }
-            state.status = 'succeeded';
-            state.searchExecuted = true;
-            state.isMaxPage = action.payload.Total === state.jobList.length;            
-            state.maxPage = Math.ceil(action.payload.Total / state.searchFilter.pageSize);
+            state.status = 'succeeded';            
         });    
         builder.addCase(doSimpleSearch.rejected, (state: any, action: any) => {
             state.searchResult = {} as PagedResult<JobItem>;

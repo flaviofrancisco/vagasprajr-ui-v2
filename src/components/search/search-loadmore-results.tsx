@@ -13,16 +13,18 @@ export default function SearchLoadMoreResults() {
     const dispatch = useAppDispatch();             
     const { ref, inView } = useInView();
 
-    const { searchResult, searchFilter, jobList, isLoadMoreData } = useSelector((state: any) => state.simpleSearch);
-    const { onAppendJobList, onLoadMore } = simpleSearchSlice.actions;
+    const { searchResult, searchFilter, jobList } = useSelector((state: any) => state.simpleSearch);
+    const { onAppendJobList } = simpleSearchSlice.actions;
     
     const delay = (ms: number) =>
         new Promise((resolve) => setTimeout(resolve, ms));    
     
-    const loadMoreJobs = async () => {    
-        await delay(2000);
-        if (!isLoadMoreData) return;                                    
-        await dispatch(doSimpleSearch({ filter: {...searchFilter} }));
+    const loadMoreJobs = async () => {
+        await delay(1000);
+        if (jobList.length === searchResult.Total) {
+            return;
+        }                                                       
+        await dispatch(doSimpleSearch({ filter: {...searchFilter, page: searchFilter.page + 1} }));
         dispatch(onAppendJobList(searchResult.Data));        
         
     };
@@ -30,22 +32,24 @@ export default function SearchLoadMoreResults() {
     useEffect(() => {          
          if (inView)
          {
-            dispatch(onLoadMore(true));            
+            loadMoreJobs();
          }                  
     }, [inView]);    
 
-    useEffect(() => {
-        loadMoreJobs();
-    }, [isLoadMoreData]);
-
     return (
-        <>        
+        <>    
+        <div>
+            Items carreagdos: {jobList.length}
+        </div>              
         <SearchResultsList jobs={jobList} />
         <div
             className="flex justify-center items-center p-4 col-span-1 sm:col-span-2 md:col-span-3"
             ref={ref}
-        >                   
-        <Spinner />   
+        >  
+        <div>
+            Items carreagdos: {jobList.length}
+        </div>
+            { (jobList.length < searchResult.Total ) && <Spinner /> }           
         </div>
         </>
     );
