@@ -1,12 +1,17 @@
-import Link from "next/link";
-import Header from "@/components/layout-components/header";
-import Head from "next/head";
-import Image from "next/image";
+"use client";
+import store from "@/services/store";
+import style from "./page.module.css";
+import { Provider } from 'react-redux';
+import SearchForm from "@/components/search/search-form";
 
-export default function Home() {
+export default function Home() {  
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24">
-      
-    </main>
+    <Provider store={store}>
+      <main className={style['container-job-index']}>
+        <div className="w-full">
+          <SearchForm />
+        </div>      
+      </main>
+    </Provider>
   );
 }

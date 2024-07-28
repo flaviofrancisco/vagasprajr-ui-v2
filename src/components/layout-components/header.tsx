@@ -4,11 +4,13 @@ import imgLogo from '@/assets/logo.png'
 import Image from 'next/image'
 
 const navigation = [
+  { name: 'Blog', href: '#', current: false },
+  { name: 'Guia de profissões', href: '#', current: false },
   { name: 'Criar vaga', href: '#', current: false },
   { name: 'Criar conta', href: '#', current: false },
 ]
 
-function classNames(...classes) {
+function classNames(...classes: string[]): string {
   return classes.filter(Boolean).join(' ')
 }
 
