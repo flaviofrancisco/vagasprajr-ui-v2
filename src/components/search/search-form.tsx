@@ -3,14 +3,13 @@ import React from 'react';
 import { useSelector } from "react-redux";
 import {useAppDispatch} from "@/services/store";
 import simpleSearchSlice, { doSimpleSearch } from '@/services/search/simple-search.service';
-import SearchResultsList from './serach-result-list';
 import SearchLoadMoreResults from './search-loadmore-results';
 
 const SearchForm: React.FC = () => {
 
     const dispatch = useAppDispatch();  
-    const { searchResult, status, searchFilter, searchExecuted, jobList, isMaxPage, isLoadMoreData } = useSelector((state: any) => state.simpleSearch);
-    const { onChangeSearchString} = simpleSearchSlice.actions;
+    const { searchResult, status, searchFilter, searchExecuted, jobList} = useSelector((state: any) => state.simpleSearch);
+    const { onResetState} = simpleSearchSlice.actions;
 
     const doSearch = (e) => {
         e.preventDefault();
@@ -30,7 +29,7 @@ const SearchForm: React.FC = () => {
                     type="search" 
                     id="default-search" 
                     value={searchFilter.searchString}
-                    onChange={(e) => dispatch(onChangeSearchString(e.target.value))}
+                    onChange={(e) => dispatch(onResetState(e.target.value))}
                     className="block w-full p-4 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Buscar vagas ..." required />
                 <button type="submit" className="text-white absolute end-2.5 bottom-2.5 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Buscar</button>
             </div>

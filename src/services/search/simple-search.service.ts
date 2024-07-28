@@ -90,6 +90,7 @@ const simpleSearchSlice = createSlice({
     name: "simpleSearch",
     initialState: {
         status: 'idle',
+        loadedItems: -1,
         searchExecuted: false,        
         searchFilter: {
             searchString: '',
@@ -105,33 +106,38 @@ const simpleSearchSlice = createSlice({
         jobList: [] as JobItem[]
     },
     reducers: {
-        onChangeSearchString: (state: any, action: any) => {
-            state.searchFilter.searchString = action.payload; 
-            state.jobList = [];   
-            state.searchExecuted = false; 
+        onResetState: (state: any, action: any) => {
+            state.status = 'idle';
+            state.loadedItems = -1;
+            state.searchExecuted = false;        
+            state.searchFilter = {
+                searchString: action.payload,
+                page: 1,
+                pageSize: DEFAULT_PAGE_SIZE
+            } as SimpleSearchFilter;
             state.searchResult = {
                 Data: [],
                 Page: 1,
                 PerPage: DEFAULT_PAGE_SIZE,
                 Total: 0
             } as PagedResult<JobItem>;
-
-        },
-        onLoadMore: (state: any, action: PayloadAction<boolean>) => {
-            state.searchFilter.page += 1;
-            state.isLoadMoreData = action.payload;                
-        },
-        onAppendJobList: (state: any, action: any) => {        
-            state.jobList = [...action.payload, ...state.jobList];                              
+            state.jobList = [] as JobItem[];
         }
     },
     extraReducers: (builder: any) => {
         builder.addCase(doSimpleSearch.fulfilled, (state: any, action: any) => {
+            if (state.loadedItems !== 1 && state.loadedItems === action.payload.Total) {
+                return;
+            }
             state.searchResult = action.payload;
             state.searchExecuted = true;
-            if (typeof(state.jobLis) === 'undefined' || state.jobList === null) {
-                state.jobList = action.payload.Data;
-            }
+            if (typeof(state.jobList) === 'undefined' || state.jobList === null || state.jobList.length === 0) {
+                state.jobList = action.payload.Data;                
+            } else {
+                state.jobList = [...state.jobList, ...state.searchResult.Data];                
+            }            
+            state.loadedItems = state.jobList.length;
+            state.searchFilter.page = action.payload.Page;            
             state.status = 'succeeded';            
         });    
         builder.addCase(doSimpleSearch.rejected, (state: any, action: any) => {
