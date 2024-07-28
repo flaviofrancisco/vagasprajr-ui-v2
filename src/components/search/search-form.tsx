@@ -9,12 +9,12 @@ import SearchLoadMoreResults from './search-loadmore-results';
 const SearchForm: React.FC = () => {
 
     const dispatch = useAppDispatch();  
-    const { searchResult, status, searchFilter, jobItemList } = useSelector((state: any) => state.simpleSearch);
-    const { onChangeSearchString } = simpleSearchSlice.actions;
+    const { searchResult, status, searchFilter, searchExecuted, jobList, isMaxPage, isLoadMoreData } = useSelector((state: any) => state.simpleSearch);
+    const { onChangeSearchString} = simpleSearchSlice.actions;
 
     const doSearch = (e) => {
         e.preventDefault();
-        dispatch(doSimpleSearch({ filter: {...searchFilter} }));
+        dispatch(doSimpleSearch({ filter: {...searchFilter} }));                
     };
 
     return (
@@ -35,14 +35,15 @@ const SearchForm: React.FC = () => {
                 <button type="submit" className="text-white absolute end-2.5 bottom-2.5 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Buscar</button>
             </div>
             { (status === 'loading') && <div className="text-center mt-2 text-sm text-gray-500 dark:text-gray-400">Buscando ...</div> }
-            { (status === 'failed') && <div className="text-center mt-2 text-sm text-red-500 dark:text-red-400">Erro ao buscar vagas</div> }
-            { (status === 'succeeded' && searchResult.Total === 0) && <div className="text-center mt-2 text-sm text-gray-500 dark:text-gray-400">Nenhuma vaga encontrada</div> }
-            { (status === 'succeeded' && searchResult.Total > 0) && <div className="text-center mt-2 text-sm text-gray-500 dark:text-gray-400">{searchResult.Total} vagas encontradas</div> }
+            { (searchExecuted && status === 'failed') && <div className="text-center mt-2 text-sm text-red-500 dark:text-red-400">Erro ao buscar vagas</div> }
+            { (searchExecuted &&  status === 'succeeded' && searchResult.Total === 0) && <div className="text-center mt-2 text-sm text-gray-500 dark:text-gray-400">Nenhuma vaga encontrada</div> }
+            { (searchExecuted &&  status === 'succeeded' && searchResult.Total > 0) && <div className="text-center mt-2 text-sm text-gray-500 dark:text-gray-400">{searchResult.Total} vagas encontradas</div> }
             {  
-                (jobItemList || searchResult.Total > 0) && 
+                (searchExecuted && (searchResult.Total > 0 || (jobList && jobList.lengh > 0))) && 
                 <>
-                    <SearchResultsList jobs={searchResult.Data} />
-                    {/* <SearchLoadMoreResults /> */}
+                    <SearchResultsList jobs={jobList} />
+                    <SearchLoadMoreResults />
+                    
                 </> 
             }
         </form>        

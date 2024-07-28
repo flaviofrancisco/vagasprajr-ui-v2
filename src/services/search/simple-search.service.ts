@@ -1,6 +1,6 @@
 import axios from "@/services/axios";
 import { DEFAULT_PAGE_SIZE } from "@/constants";
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 export interface SimpleSearchFilter {
     searchString: string;
@@ -62,13 +62,17 @@ export interface AffirmativeJobParameter {
 }
 
 export const doSimpleSearch = createAsyncThunk('simpleSearch/doSimpleSearch', async ({ filter }: { filter: SimpleSearchFilter }) => {
-    
+
     let pageResult: PagedResult<JobItem> =  {
         Data: [],
         Page: 1,
         PerPage: DEFAULT_PAGE_SIZE,
         Total: 0
     } as PagedResult<JobItem>;    
+
+    if (filter.searchString === '') {
+        return pageResult;
+    }
 
     try {
         const response = await axios.get<PagedResult<JobItem>>(`/simplesearch?search=${encodeURIComponent(filter.searchString)}&page=${filter.page}&pageSize=${filter.pageSize}`);
@@ -86,6 +90,10 @@ const simpleSearchSlice = createSlice({
     name: "simpleSearch",
     initialState: {
         status: 'idle',
+        isMaxPage: false,
+        maxPage: 0,
+        searchExecuted: false,
+        isLoadMoreData: false,
         searchFilter: {
             searchString: '',
             page: 1,
@@ -97,42 +105,57 @@ const simpleSearchSlice = createSlice({
             PerPage: DEFAULT_PAGE_SIZE,
             Total: 0
         } as PagedResult<JobItem>,
-        jobItemList: [] as JobItem[]   
+        jobList: [] as JobItem[]
     },
     reducers: {
         onChangeSearchString: (state: any, action: any) => {
-            state.searchFilter.searchString = action.payload;
-            state.jobItemList = [];
+            state.searchFilter.searchString = action.payload; 
+            state.jobList = [];   
+            state.searchExecuted = false; 
+            state.searchResult = {
+                Data: [],
+                Page: 1,
+                PerPage: DEFAULT_PAGE_SIZE,
+                Total: 0
+            } as PagedResult<JobItem>;
+
         },
-        onChangePage: (state: any, action: any) => {
-            state.searchFilter.page = action.payload;
+        onLoadMore: (state: any, action: PayloadAction<boolean>) => {
+            if (state.maxPage === 0 || state.searchFilter.page >= state.maxPage) {
+                state.isLoadMoreData = false; 
+                state.isMaxPage = true;     
+                state.searchFilter.page += 1;             
+            } else {
+                state.searchFilter.page += 1;
+                state.isLoadMoreData = action.payload;                
+            }
         },
-        onLoadMoreJobs: (state: any, action: any) => {
-            state.jobItemList = [...state.jobItemList, ...action.payload];
+        onAppendJobList: (state: any, action: any) => {        
+            state.jobList = [...action.payload, ...state.jobList];            
+            state.isLoadMoreData = false;  
+            if (state.searchResult.Total === state.jobList.length) {
+                state.isMaxPage = true;                
+            }                    
         }
     },
     extraReducers: (builder: any) => {
         builder.addCase(doSimpleSearch.fulfilled, (state: any, action: any) => {
             state.searchResult = action.payload;
+            if (typeof(state.jobLis) === 'undefined' || state.jobList === null) {
+                state.jobList = action.payload.Data;
+            }
             state.status = 'succeeded';
+            state.searchExecuted = true;
+            state.isMaxPage = action.payload.Total === state.jobList.length;            
+            state.maxPage = Math.ceil(action.payload.Total / state.searchFilter.pageSize);
         });    
         builder.addCase(doSimpleSearch.rejected, (state: any, action: any) => {
-            state.searchResult = {
-                Data: [],
-                Page: 1,
-                PerPage: DEFAULT_PAGE_SIZE,
-                Total: 0
-            } as PagedResult<JobItem>;
-            state.status = 'failed';
+            state.searchResult = {} as PagedResult<JobItem>;
+            state.status = 'failed';            
         });
         builder.addCase(doSimpleSearch.pending, (state: any, action: any) => {            
-            state.searchResult = {
-                Data: [],
-                Page: 1,
-                PerPage: DEFAULT_PAGE_SIZE,
-                Total: 0
-            } as PagedResult<JobItem>;
-            state.status = 'loading';
+            state.searchResult = {} as PagedResult<JobItem>;
+            state.status = 'loading';                        
         });    
     }
 });
