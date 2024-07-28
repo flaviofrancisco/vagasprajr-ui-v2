@@ -40,7 +40,7 @@ export default function Card({ job }: CardProps) {
                     <p className="text-sm font-medium text-gray-900 dark:text-white">{job.location}</p>
                 </div>
                 <div>
-                    <a href={job.job_short_url} className="text-sm font-medium text-blue-500 dark:text-blue-400 hover:underline">Ver mais</a>
+                    <a href={job.job_short_url} target="_blank" rel="noopener noreferrer" className="text-sm font-medium text-blue-500 dark:text-blue-400 hover:underline">Ver mais</a>
                 </div>
             </div>
         </div>

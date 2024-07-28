@@ -4,7 +4,7 @@ import { useSelector } from "react-redux";
 import { useEffect, useCallback } from "react";
 import { useInView } from "react-intersection-observer";
 import { useAppDispatch } from "@/services/store";
-import { doSimpleSearch, JobItem } from "@/services/search/simple-search.service";
+import { doSimpleSearch } from "@/services/search/simple-search.service";
 import SearchResultsList from "./serach-result-list";
 import { Spinner } from "../common/spinner";
 
