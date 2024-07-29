@@ -1,7 +1,7 @@
 
 import { configureStore } from "@reduxjs/toolkit";
 import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux'
-import simpleSearchSlice from "./search/simple-search.service";
+import simpleSearchSlice from "./search/search.service";
 
 const store = configureStore({
     reducer: {

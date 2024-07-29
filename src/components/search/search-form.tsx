@@ -2,7 +2,7 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
 import { useAppDispatch } from '@/services/store';
-import simpleSearchSlice, { doSimpleSearch } from '@/services/search/simple-search.service';
+import simpleSearchSlice, { doSimpleSearch } from '@/services/search/search.service';
 import SearchLoadMoreResults from './search-loadmore-results';
 import { JobSummaries } from './summary';
 
