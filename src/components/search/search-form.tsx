@@ -2,20 +2,19 @@
 import React, { useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { useAppDispatch } from '@/services/store';
-import simpleSearchSlice, { doSimpleSearch } from '@/services/search/search.service';
+import simpleSearchSlice, { doSimpleSearch, doGetSummary } from '@/services/search/search.service';
 import SearchLoadMoreResults from './search-loadmore-results';
 import { JobSummaries } from './summary';
 
 const SearchForm: React.FC = () => {
   const dispatch = useAppDispatch();
   const { searchResult, status, searchFilter, searchExecuted, jobList, summary } = useSelector((state: any) => state.simpleSearch);
-  const { onResetState, onLoadJobListSummary } = simpleSearchSlice.actions;
+  const { onResetState } = simpleSearchSlice.actions;
 
   const doSearch = (e) => {
     e.preventDefault();
-    dispatch(doSimpleSearch({ filter: { ...searchFilter } })).then(() => {
-      dispatch(onLoadJobListSummary());
-    });
+    dispatch(doSimpleSearch({ filter: { ...searchFilter } }));
+    dispatch(doGetSummary({ filter: { ...searchFilter, title: searchFilter.searchString } }));
   };
 
   return (

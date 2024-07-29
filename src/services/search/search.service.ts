@@ -2,10 +2,10 @@ import axios from '@/services/axios';
 import { DEFAULT_PAGE_SIZE } from '@/constants';
 import { ActionReducerMapBuilder, createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 
-export const PROVIDERS = 'sites';
-export const LOCATIONS = 'locais';
-export const SALARIES = 'beneficios';
-export const COMPANY_NAME = 'empresa';
+export const PROVIDERS = 'providers';
+export const LOCATIONS = 'locations';
+export const SALARIES = 'salaries';
+export const COMPANY_NAME = 'companies';
 
 export interface SimpleSearchFilter {
   searchString: string;
@@ -81,7 +81,7 @@ export interface AffirmativeJobParameter {
   is_person_with_disabilities: boolean;
 }
 
-export const doSimpleSearch = createAsyncThunk('simpleSearch/doSimpleSearch', async ({ filter }: { filter: SimpleSearchFilter }) => {
+export const doSimpleSearch = createAsyncThunk('search/doSimpleSearch', async ({ filter }: { filter: SimpleSearchFilter }) => {
   let pageResult: PagedResult<JobItem> = {
     Data: [],
     Page: 1,
@@ -105,7 +105,7 @@ export const doSimpleSearch = createAsyncThunk('simpleSearch/doSimpleSearch', as
   return pageResult;
 });
 
-export const doAdvancedSearch = createAsyncThunk('simpleSearch/doAdvancedSearch', async ({ filter }: { filter: AdvancedSearchFilter }) => {
+export const doAdvancedSearch = createAsyncThunk('search/doAdvancedSearch', async ({ filter }: { filter: AdvancedSearchFilter }) => {
   let pageResult: PagedResult<JobItem> = {
     Data: [],
     Page: 1,
@@ -124,6 +124,17 @@ export const doAdvancedSearch = createAsyncThunk('simpleSearch/doAdvancedSearch'
   return pageResult;
 });
 
+export const doGetSummary = createAsyncThunk('search/doGetSummary', async ({ filter }: { filter: AdvancedSearchFilter }) => {
+  let summary: { [key: string]: [] } = {};
+  try {
+    const response = await axios.post<{ [key: string]: [] }>('/getSummary', { ...filter });
+    summary = response.data;
+  } catch (error) {
+    console.error(error);
+  }
+  return summary;
+});
+
 export interface SearchState {
   status: 'idle' | 'loading' | 'succeeded' | 'failed';
   loadedItems: number;
@@ -131,7 +142,7 @@ export interface SearchState {
   searchFilter: SimpleSearchFilter;
   searchResult: PagedResult<JobItem>;
   jobList: JobItem[];
-  summary: { [key: string]: [{ [key: string]: number }] };
+  summary: { [key: string]: [] };
   advancedSearchFilter: AdvancedSearchFilter;
 }
 
@@ -151,7 +162,7 @@ const initialState: SearchState = {
     Total: 0,
   } as PagedResult<JobItem>,
   jobList: [] as JobItem[],
-  summary: {} as { [key: string]: [{ [key: string]: number }] },
+  summary: {},
   advancedSearchFilter: {
     title: '',
     company_name: '',
@@ -188,7 +199,21 @@ const simpleSearchSlice = createSlice({
         Total: 0,
       } as PagedResult<JobItem>;
       state.jobList = [] as JobItem[];
-      state.summary = {} as { [key: string]: [{ [key: string]: number }] };
+      state.summary = {};
+      state.advancedSearchFilter = {
+        title: '',
+        company_name: '',
+        location: '',
+        salary: '',
+        provider: '',
+        page: 1,
+        pageSize: DEFAULT_PAGE_SIZE,
+        isBookmarkedOnly: false,
+        companies: [],
+        locations: [],
+        salaries: [],
+        providers: [],
+      } as AdvancedSearchFilter;
     },
     onUpdateAdvancedSearchFilter: (state: SearchState, action: PayloadAction<AdvancedSearchFilter>) => {
       state.advancedSearchFilter = action.payload;
@@ -196,60 +221,18 @@ const simpleSearchSlice = createSlice({
     onRefreshJobList: (state: SearchState, action: PayloadAction<JobItem[]>) => {
       state.jobList = action.payload;
     },
-    onLoadJobListSummary: (state: SearchState) => {
-      state.summary = {} as { [key: string]: [{ [key: string]: number }] };
-      state.jobList.forEach((job: JobItem) => {
-        if (job.provider) {
-          if (typeof state.summary[PROVIDERS] === 'undefined' || state.summary[PROVIDERS] === null) {
-            state.summary[PROVIDERS] = [{ [job.provider]: 1 }];
-          } else {
-            let providerIndex = state.summary[PROVIDERS].findIndex((p) => p[job.provider]);
-            if (providerIndex === -1) {
-              state.summary[PROVIDERS].push({ [job.provider]: 1 });
-            } else {
-              state.summary[PROVIDERS][providerIndex][job.provider] += 1;
-            }
-          }
+    onChangeFilterCollection(state: SearchState, action: PayloadAction<{ title: string; checked: boolean; section: string; value: string }>) {
+      state.advancedSearchFilter.title = action.payload.title;
+      if (action.payload.section === PROVIDERS) {
+      } else if (action.payload.section === LOCATIONS) {
+      } else if (action.payload.section === SALARIES) {
+      } else if (action.payload.section === COMPANY_NAME) {
+        if (action.payload.checked) {
+          state.advancedSearchFilter.companies = [...state.advancedSearchFilter.companies, action.payload.value];
+        } else {
+          state.advancedSearchFilter.companies = state.advancedSearchFilter.companies.filter((item: string) => item !== action.payload.value);
         }
-        // Update location summary
-        if (job.location) {
-          if (!state.summary[LOCATIONS]) {
-            state.summary[LOCATIONS] = [{ [job.location]: 1 }];
-          } else {
-            let locationIndex = state.summary[LOCATIONS].findIndex((l) => l[job.location]);
-            if (locationIndex === -1) {
-              state.summary[LOCATIONS].push({ [job.location]: 1 });
-            } else {
-              state.summary[LOCATIONS][locationIndex][job.location] += 1;
-            }
-          }
-        }
-        if (job.company_name) {
-          if (!state.summary[COMPANY_NAME]) {
-            state.summary[COMPANY_NAME] = [{ [job.company_name]: 1 }];
-          } else {
-            let companyNameIndex = state.summary[COMPANY_NAME].findIndex((c) => c[job.company_name]);
-            if (companyNameIndex === -1) {
-              state.summary[COMPANY_NAME].push({ [job.company_name]: 1 });
-            } else {
-              state.summary[COMPANY_NAME][companyNameIndex][job.company_name] += 1;
-            }
-          }
-        }
-        // Update salary summary
-        if (job.salary) {
-          if (!state.summary[SALARIES]) {
-            state.summary[SALARIES] = [{ [job.salary]: 1 }];
-          } else {
-            let salaryIndex = state.summary[SALARIES].findIndex((s) => s[job.salary ?? '']);
-            if (salaryIndex === -1) {
-              state.summary[SALARIES].push({ [job.salary]: 1 });
-            } else {
-              state.summary[SALARIES][salaryIndex][job.salary] += 1;
-            }
-          }
-        }
-      });
+      }
     },
   },
   extraReducers: (builder: ActionReducerMapBuilder<SearchState>) => {
@@ -291,6 +274,15 @@ const simpleSearchSlice = createSlice({
     builder.addCase(doAdvancedSearch.pending, (state) => {
       state.searchResult = {} as PagedResult<JobItem>;
       state.status = 'loading';
+    });
+    builder.addCase(doGetSummary.fulfilled, (state, action: PayloadAction<{ [key: string]: [] }>) => {
+      state.summary = action.payload;
+    });
+    builder.addCase(doGetSummary.rejected, (state) => {
+      state.summary = {};
+    });
+    builder.addCase(doGetSummary.pending, (state) => {
+      state.summary = {};
     });
   },
 });

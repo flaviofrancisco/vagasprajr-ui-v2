@@ -34,6 +34,7 @@ export default function Card({ job }: CardProps) {
       </div>
       <div className="mt-4 flex items-center justify-between">
         <div>
+          <p className="text-sm text-gray-500 dark:text-gray-400">{job.provider}</p>
           <p className="text-sm font-medium text-gray-900 dark:text-white">{job.location}</p>
         </div>
         <div>
