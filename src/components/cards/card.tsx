@@ -33,7 +33,7 @@ export default function Card({ job }: CardProps) {
                 </div>
             </div>
             <div className="mt-4">
-                <p className="text-sm text-gray-500 dark:text-gray-400">{job.description}</p>
+                <p className="text-sm text-gray-500 dark:text-gray-400">{job.salary}</p>
             </div>
             <div className="mt-4 flex items-center justify-between">
                 <div>
