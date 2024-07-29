@@ -10,8 +10,7 @@ export interface JobSummariesProps {
 
 export function JobSummaries({ summaryList }: JobSummariesProps) {
   const dispatch = useAppDispatch();
-  const { onUpdateJobList } = simpleSearchSlice.actions;
-  const { jobList, advancedSearchFilter, searchFilter } = useSelector((state: any) => state.simpleSearch);
+  const { advancedSearchFilter, searchFilter } = useSelector((state: any) => state.simpleSearch);
 
   const onCheck = (checked: boolean, section: string, value: string) => {
     let filter = Object.isExtensible(advancedSearchFilter) ? { ...advancedSearchFilter } : { ...advancedSearchFilter };
