@@ -1,4 +1,4 @@
-export const DEFAULT_PAGE_SIZE = 20;
+export const DEFAULT_PAGE_SIZE = 10;
 
 export enum Roles {
     Admin = '650d5e137ece568cd2f11a0a',
