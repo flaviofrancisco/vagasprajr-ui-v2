@@ -3,7 +3,9 @@
     flex-direction: column;
     align-items: center;
     justify-content: space-between;
-    margin-top: 50px;
-    margin-bottom: 50px;
-    height: calc(100vh - 100px); /* Adjust this value as needed */
+    margin-top: 50px;    
+    width: 100%; /* Ensure the container takes the full width */
+    min-height: calc(100vh - 114px); /* Adjust height to fill the screen */
+    box-sizing: border-box; /* Include padding in the height calculation */
+    overflow-y: auto; 
 }
