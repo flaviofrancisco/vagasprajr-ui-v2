@@ -23,9 +23,11 @@ export default function SearchLoadMoreResults() {
       return;
     }
     await dispatch(doSimpleSearch({ filter: { ...searchFilter, page: searchFilter.page + 1 } }));
+  }, [dispatch, jobList, searchFilter, searchResult]);
 
+  useEffect(() => {
     dispatch(onLoadJobListSummary());
-  }, [dispatch, jobList.length, searchFilter, searchResult.Total, onLoadJobListSummary]);
+  }, [dispatch, jobList, onLoadJobListSummary]);
 
   useEffect(() => {
     if (inView) {
