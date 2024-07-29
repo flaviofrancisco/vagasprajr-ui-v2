@@ -13,7 +13,7 @@ export default function SearchLoadMoreResults() {
   const { ref, inView } = useInView();
 
   const { searchResult, searchFilter, jobList, loadedItems } = useSelector((state: any) => state.simpleSearch);
-  const { onLoadJobListSummary } = simpleSearchSlice.actions;
+  const { onLoadJobListSummary, onRefreshJobList } = simpleSearchSlice.actions;
 
   const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 
@@ -32,6 +32,10 @@ export default function SearchLoadMoreResults() {
       loadMoreJobs();
     }
   }, [inView, loadMoreJobs]);
+
+  useEffect(() => {
+    dispatch(onRefreshJobList(jobList));
+  }, [jobList, dispatch, onRefreshJobList]);
 
   return (
     <>

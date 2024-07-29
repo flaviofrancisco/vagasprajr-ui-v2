@@ -1,5 +1,6 @@
 'use client';
 
+import { v4 as uuidv4 } from 'uuid';
 import Card from '../cards/card';
 import { JobItem } from '@/services/search/search.service';
 
@@ -12,7 +13,7 @@ export default function SearchResultsList({ jobs }: SearchResultsListProps) {
     <>
       {jobs &&
         jobs.map((job: any) => {
-          return <Card key={job.id} job={job} />;
+          return <Card key={uuidv4()} job={job} />;
         })}
     </>
   );

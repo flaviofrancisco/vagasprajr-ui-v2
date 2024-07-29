@@ -193,6 +193,9 @@ const simpleSearchSlice = createSlice({
     onUpdateAdvancedSearchFilter: (state: SearchState, action: PayloadAction<AdvancedSearchFilter>) => {
       state.advancedSearchFilter = action.payload;
     },
+    onRefreshJobList: (state: SearchState, action: PayloadAction<JobItem[]>) => {
+      state.jobList = action.payload;
+    },
     onLoadJobListSummary: (state: SearchState) => {
       state.summary = {} as { [key: string]: [{ [key: string]: number }] };
       state.jobList.forEach((job: JobItem) => {

@@ -1,5 +1,5 @@
 'use client';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { useAppDispatch } from '@/services/store';
 import simpleSearchSlice, { doSimpleSearch } from '@/services/search/search.service';

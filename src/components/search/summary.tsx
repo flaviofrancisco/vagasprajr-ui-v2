@@ -1,8 +1,9 @@
 'use client';
 
 import { useAppDispatch } from '@/services/store';
-import simpleSearchSlice, { COMPANY_NAME, doAdvancedSearch, LOCATIONS, PROVIDERS, SALARIES } from '@/services/search/search.service';
+import { COMPANY_NAME, doAdvancedSearch, LOCATIONS, PROVIDERS, SALARIES } from '@/services/search/search.service';
 import { useSelector } from 'react-redux';
+import { useEffect } from 'react';
 
 export interface JobSummariesProps {
   summaryList: any;
