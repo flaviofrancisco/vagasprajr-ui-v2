@@ -18,7 +18,7 @@ export default function SearchLoadMoreResults() {
   const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 
   const loadMoreJobs = useCallback(async () => {
-    await delay(1000);
+    await delay(500);
     if (typeof searchResult?.Total === 'undefined') {
       return;
     }

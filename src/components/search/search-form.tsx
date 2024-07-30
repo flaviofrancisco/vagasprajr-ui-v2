@@ -1,4 +1,3 @@
-'use client';
 import React from 'react';
 import { useSelector } from 'react-redux';
 import { useAppDispatch } from '@/services/store';
@@ -50,10 +49,7 @@ const SearchForm: React.FC = () => {
         {searchExecuted && status === 'succeeded' && searchResult.Total === 0 && <div className="text-center mt-2 text-sm text-gray-500 dark:text-gray-400">Nenhuma vaga encontrada</div>}
         {searchExecuted && status === 'succeeded' && searchResult.Total > 0 && <div className="text-center mt-2 text-sm text-gray-500 dark:text-gray-400">{searchResult.Total} vagas encontradas</div>}
       </div>
-      <div className="w-full">
-        {JSON.stringify(searchFilter)}
-        <SearchBar options={job_filter_options} />
-      </div>
+      <div className="w-full">{searchResult.Total > 0 && <SearchBar options={job_filter_options} />}</div>
       <div className="flex flex-row">
         <div className="w-full">
           {jobList && jobList.length > 0 && (

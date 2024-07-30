@@ -13,7 +13,7 @@ export interface SelectCheckboxProps {
 export default function SelectCheckbox({ title, options, field }: SelectCheckboxProps) {
   const dispatch = useAppDispatch();
   const { searchFilter } = useSelector((state: any) => state.simpleSearch);
-  const { onChangeFilterOptions } = searchSlice.actions;
+  const { onChangeFilterOptions, onUpdateFilter } = searchSlice.actions;
 
   const [selectedOptions, setSelectedOptions] = useState<string[]>([]);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
@@ -37,6 +37,7 @@ export default function SelectCheckbox({ title, options, field }: SelectCheckbox
 
   const toggleDropdown = () => {
     setIsDropdownOpen((prevIsDropdownOpen) => !prevIsDropdownOpen);
+    setSelectedOptions(searchFilter.job_filter_options[field]);
   };
 
   const handleClickOutside = (event: MouseEvent) => {
@@ -47,7 +48,9 @@ export default function SelectCheckbox({ title, options, field }: SelectCheckbox
 
   const onApplyFilter = (e) => {
     e.preventDefault();
+    dispatch(onUpdateFilter(searchFilter));
     dispatch(doSearch({ filter: { ...searchFilter } }));
+    setIsDropdownOpen(false);
   };
 
   useEffect(() => {

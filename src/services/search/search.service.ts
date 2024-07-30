@@ -192,6 +192,10 @@ const searchSlice = createSlice({
         providers: [],
       } as JobFilterOptions;
     },
+    onUpdateFilter: (state: SearchState, action: PayloadAction<SearchFilter>) => {
+      state.searchFilter = action.payload;
+      state.jobList = [];
+    },
     onUpdateSearchFilter: (state: SearchState, action: PayloadAction<SearchFilter>) => {
       state.searchFilter = action.payload;
     },
@@ -227,7 +231,7 @@ const searchSlice = createSlice({
       state.status = 'loading';
     });
     builder.addCase(doGetJobOptions.fulfilled, (state, action: PayloadAction<JobFilterOptions>) => {
-      state.job_filter_options = action.payload;
+      state.job_filter_options = action.payload;      
     });
   },
 });

@@ -1,7 +1,7 @@
 import { JobFilterOptions } from '@/services/search/search.service';
 import SelectCheckbox from '../common/select-checkbox';
 import { v4 as uuidv4 } from 'uuid';
-import { useState, useCallback, memo } from 'react';
+import { memo } from 'react';
 
 export interface SearchBarProps {
   options: JobFilterOptions;
