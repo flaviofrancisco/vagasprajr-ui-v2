@@ -1,6 +1,7 @@
 import axios from '@/services/axios';
 import { DEFAULT_PAGE_SIZE } from '@/constants';
 import { ActionReducerMapBuilder, createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { stat } from 'fs';
 
 export const PROVIDERS = 'providers';
 export const LOCATIONS = 'locations';
@@ -16,6 +17,10 @@ export interface SearchFilter {
   page: number;
   pageSize: number;
   isBookmarkedOnly?: boolean;
+  job_filter_options: JobFilterOptions;
+}
+
+export interface JobFilterOptions {
   companies: string[];
   locations: string[];
   salaries: string[];
@@ -94,6 +99,16 @@ export const doSearch = createAsyncThunk('search/doSearch', async ({ filter }: {
   return pageResult;
 });
 
+export const doGetJobOptions = createAsyncThunk('search/doGetJobOptions', async ({ filter }: { filter: SearchFilter }) => {
+  try {
+    const response = await axios.post<JobFilterOptions>('/getJobOptions', { ...filter });
+    return response.data;
+  } catch (error) {
+    console.error(error);
+  }
+  return {} as JobFilterOptions;
+});
+
 export interface SearchState {
   status: 'idle' | 'loading' | 'succeeded' | 'failed';
   loadedItems: number;
@@ -101,6 +116,7 @@ export interface SearchState {
   searchResult: PagedResult<JobItem>;
   jobList: JobItem[];
   searchFilter: SearchFilter;
+  job_filter_options: JobFilterOptions;
 }
 
 const initialState: SearchState = {
@@ -123,11 +139,19 @@ const initialState: SearchState = {
     page: 1,
     pageSize: DEFAULT_PAGE_SIZE,
     isBookmarkedOnly: false,
+    job_filter_options: {
+      companies: [],
+      locations: [],
+      salaries: [],
+      providers: [],
+    } as JobFilterOptions,
+  } as SearchFilter,
+  job_filter_options: {
     companies: [],
     locations: [],
     salaries: [],
     providers: [],
-  } as SearchFilter,
+  } as JobFilterOptions,
 };
 
 const searchSlice = createSlice({
@@ -154,11 +178,19 @@ const searchSlice = createSlice({
         page: 1,
         pageSize: DEFAULT_PAGE_SIZE,
         isBookmarkedOnly: false,
+        job_filter_options: {
+          companies: [],
+          locations: [],
+          salaries: [],
+          providers: [],
+        } as JobFilterOptions,
+      } as SearchFilter;
+      state.job_filter_options = {
         companies: [],
         locations: [],
         salaries: [],
         providers: [],
-      } as SearchFilter;
+      } as JobFilterOptions;
     },
     onUpdateSearchFilter: (state: SearchState, action: PayloadAction<SearchFilter>) => {
       state.searchFilter = action.payload;
@@ -166,18 +198,8 @@ const searchSlice = createSlice({
     onRefreshJobList: (state: SearchState, action: PayloadAction<JobItem[]>) => {
       state.jobList = action.payload;
     },
-    onChangeFilterCollection(state: SearchState, action: PayloadAction<{ title: string; checked: boolean; section: string; value: string }>) {
-      state.searchFilter.title = action.payload.title;
-      if (action.payload.section === PROVIDERS) {
-      } else if (action.payload.section === LOCATIONS) {
-      } else if (action.payload.section === SALARIES) {
-      } else if (action.payload.section === COMPANY_NAME) {
-        if (action.payload.checked) {
-          state.searchFilter.companies = [...state.searchFilter.companies, action.payload.value];
-        } else {
-          state.searchFilter.companies = state.searchFilter.companies.filter((item: string) => item !== action.payload.value);
-        }
-      }
+    onChangeFilterOptions(state: SearchState, action: PayloadAction<SearchFilter>) {
+      state.searchFilter = action.payload;
     },
   },
   extraReducers: (builder: ActionReducerMapBuilder<SearchState>) => {
@@ -203,6 +225,9 @@ const searchSlice = createSlice({
     builder.addCase(doSearch.pending, (state) => {
       state.searchResult = {} as PagedResult<JobItem>;
       state.status = 'loading';
+    });
+    builder.addCase(doGetJobOptions.fulfilled, (state, action: PayloadAction<JobFilterOptions>) => {
+      state.job_filter_options = action.payload;
     });
   },
 });

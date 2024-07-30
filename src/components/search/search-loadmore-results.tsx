@@ -26,7 +26,7 @@ export default function SearchLoadMoreResults() {
       return;
     }
     await dispatch(doSearch({ filter: { ...searchFilter, page: searchFilter.page + 1 } }));
-  }, [dispatch, jobList, searchFilter, searchResult]);
+  }, [dispatch, jobList, searchResult]);
 
   useEffect(() => {
     if (inView) {

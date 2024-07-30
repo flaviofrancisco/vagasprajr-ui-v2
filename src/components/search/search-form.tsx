@@ -2,18 +2,19 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
 import { useAppDispatch } from '@/services/store';
-import searchSlice, { doSearch } from '@/services/search/search.service';
+import searchSlice, { doGetJobOptions, doSearch } from '@/services/search/search.service';
 import SearchLoadMoreResults from './search-loadmore-results';
 import SearchBar from './search-bar';
 
 const SearchForm: React.FC = () => {
   const dispatch = useAppDispatch();
-  const { searchResult, status, searchFilter, searchExecuted, jobList } = useSelector((state: any) => state.simpleSearch);
+  const { searchResult, status, searchFilter, searchExecuted, jobList, job_filter_options } = useSelector((state: any) => state.simpleSearch);
   const { onResetState } = searchSlice.actions;
 
   const onSubmit = (e) => {
     e.preventDefault();
     dispatch(doSearch({ filter: { ...searchFilter } }));
+    dispatch(doGetJobOptions({ filter: { ...searchFilter } }));
   };
 
   return (
@@ -50,7 +51,8 @@ const SearchForm: React.FC = () => {
         {searchExecuted && status === 'succeeded' && searchResult.Total > 0 && <div className="text-center mt-2 text-sm text-gray-500 dark:text-gray-400">{searchResult.Total} vagas encontradas</div>}
       </div>
       <div className="w-full">
-        <SearchBar />
+        {JSON.stringify(searchFilter)}
+        <SearchBar options={job_filter_options} />
       </div>
       <div className="flex flex-row">
         <div className="w-full">
