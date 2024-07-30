@@ -1,36 +1,49 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Welcome to the repository of the project "@vagasprajr"!
 
-## Getting Started
+This project was created to help people who are looking for an entry level job in the IT area. The main goal is to provide a list of job opportunities in the IT area in Brazil. The project is open-source and everyone can contribute to it.
 
-First, run the development server:
+## How to run this project locally?
+
+### .env file
+
+Create a `.env` file in the root of the project with the following content:
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+REACT_APP_API_URL=https://api.vagasprajr.com.br
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### 1. Clone the repository
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```bash
+git clone git@github.com:flaviofrancisco/vagas-pra-jr-web-v2.git
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+### 2. Install the dependencies
 
-## Learn More
+```bash
+npm install
+```
 
-To learn more about Next.js, take a look at the following resources:
+### 3. Run the project
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+```bash
+npm start
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+### 4. Access the project
 
-## Deploy on Vercel
+Open your browser and access the following URL: [http://localhost:3000](http://localhost:3000)
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+### For any question:
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+Please send an e-mail to: [contato@vagasprajr.com](mailto:contato@vagasprajr.com.br)
+
+---
+
+**NOTE**
+
+- For now the endpoint to search jobs has not restrictions, but in the future it will be necessary to create an account in the platform to access the data.
+- You cannot use this code for commercial purposes without the permission of the project owner.
+- The project owner is not responsible for the misuse of the code.
+
+---
