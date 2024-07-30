@@ -4,7 +4,7 @@ import { useSelector } from 'react-redux';
 import { useEffect, useCallback } from 'react';
 import { useInView } from 'react-intersection-observer';
 import { useAppDispatch } from '@/services/store';
-import simpleSearchSlice, { doSimpleSearch } from '@/services/search/search.service';
+import searchSlice, { doSimpleSearch } from '@/services/search/search.service';
 import SearchResultsList from './serach-result-list';
 import { Spinner } from '../common/spinner';
 
@@ -13,7 +13,7 @@ export default function SearchLoadMoreResults() {
   const { ref, inView } = useInView();
 
   const { searchResult, searchFilter, jobList, loadedItems } = useSelector((state: any) => state.simpleSearch);
-  const { onRefreshJobList } = simpleSearchSlice.actions;
+  const { onRefreshJobList } = searchSlice.actions;
 
   const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 

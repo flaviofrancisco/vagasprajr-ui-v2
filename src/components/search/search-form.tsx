@@ -1,24 +1,22 @@
 'use client';
-import React, { useEffect } from 'react';
+import React from 'react';
 import { useSelector } from 'react-redux';
 import { useAppDispatch } from '@/services/store';
-import simpleSearchSlice, { doSimpleSearch, doGetSummary } from '@/services/search/search.service';
+import searchSlice, { doSearch } from '@/services/search/search.service';
 import SearchLoadMoreResults from './search-loadmore-results';
-import { JobSummaries } from './summary';
 
 const SearchForm: React.FC = () => {
   const dispatch = useAppDispatch();
-  const { searchResult, status, searchFilter, searchExecuted, jobList, summary } = useSelector((state: any) => state.simpleSearch);
-  const { onResetState } = simpleSearchSlice.actions;
+  const { searchResult, status, searchFilter, searchExecuted, jobList } = useSelector((state: any) => state.simpleSearch);
+  const { onResetState } = searchSlice.actions;
 
-  const doSearch = (e) => {
+  const onSubmit = (e) => {
     e.preventDefault();
-    dispatch(doSimpleSearch({ filter: { ...searchFilter } }));
-    dispatch(doGetSummary({ filter: { ...searchFilter, title: searchFilter.searchString } }));
+    dispatch(doSearch({ filter: { ...searchFilter } }));
   };
 
   return (
-    <form className="w-4/5 mx-auto" onSubmit={doSearch}>
+    <form className="w-4/5 mx-auto" onSubmit={onSubmit}>
       <label htmlFor="default-search" className="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white">
         Search
       </label>
@@ -31,7 +29,7 @@ const SearchForm: React.FC = () => {
         <input
           type="search"
           id="default-search"
-          value={searchFilter.searchString}
+          value={searchFilter.title}
           onChange={(e) => dispatch(onResetState(e.target.value))}
           className="block w-full p-4 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
           placeholder="Buscar vagas ..."
@@ -50,13 +48,8 @@ const SearchForm: React.FC = () => {
         {searchExecuted && status === 'succeeded' && searchResult.Total === 0 && <div className="text-center mt-2 text-sm text-gray-500 dark:text-gray-400">Nenhuma vaga encontrada</div>}
         {searchExecuted && status === 'succeeded' && searchResult.Total > 0 && <div className="text-center mt-2 text-sm text-gray-500 dark:text-gray-400">{searchResult.Total} vagas encontradas</div>}
       </div>
-      <div className="flex flex-col md:flex-row w-full">
-        {jobList && jobList.length > 0 && (
-          <div className="flex-1">
-            <JobSummaries summaryList={summary} />
-          </div>
-        )}
-        <div className="flex-1">
+      <div className="flex flex-row">
+        <div className="w-full">
           {jobList && jobList.length > 0 && (
             <>
               <SearchLoadMoreResults />

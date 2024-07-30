@@ -1,7 +1,7 @@
 'use client';
 
 import { useAppDispatch } from '@/services/store';
-import simpleSearchSlice, { COMPANY_NAME, doAdvancedSearch } from '@/services/search/search.service';
+import searchSlice, { COMPANY_NAME, doSearch } from '@/services/search/search.service';
 import { useSelector } from 'react-redux';
 import { useEffect, useState } from 'react';
 
@@ -12,7 +12,7 @@ export interface JobSummariesProps {
 export function JobSummaries({ summaryList }: JobSummariesProps) {
   const dispatch = useAppDispatch();
   const { advancedSearchFilter, searchFilter } = useSelector((state: any) => state.simpleSearch);
-  const { onChangeFilterCollection } = simpleSearchSlice.actions;
+  const { onChangeFilterCollection } = searchSlice.actions;
 
   const [onCheckedChanged, setOnCheckedChanged] = useState(false);
 
@@ -20,7 +20,7 @@ export function JobSummaries({ summaryList }: JobSummariesProps) {
     if (!onCheckedChanged) {
       return;
     }
-    dispatch(doAdvancedSearch({ filter: { ...advancedSearchFilter } }));
+    dispatch(doSearch({ filter: { ...advancedSearchFilter } }));
     setOnCheckedChanged(false);
   }, [onCheckedChanged]);
 
