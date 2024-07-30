@@ -30,4 +30,5 @@ RUN npm run build
 # Open Port
 EXPOSE 3000
 
-CMD ["npx", "serve", "-s", "build"]
+# CMD ["npx", "serve", "-s", "build"]
+CMD ["npm", "start"]
