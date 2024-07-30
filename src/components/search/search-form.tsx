@@ -10,7 +10,7 @@ const SearchForm: React.FC = () => {
   const { searchResult, status, searchFilter, searchExecuted, jobList, job_filter_options } = useSelector((state: any) => state.simpleSearch);
   const { onResetState } = searchSlice.actions;
 
-  const onSubmit = (e) => {
+  const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     dispatch(doSearch({ filter: { ...searchFilter } }));
     dispatch(doGetJobOptions({ filter: { ...searchFilter } }));

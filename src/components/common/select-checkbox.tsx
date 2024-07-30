@@ -17,7 +17,7 @@ export default function SelectCheckbox({ title, options, field }: SelectCheckbox
 
   const [selectedOptions, setSelectedOptions] = useState<string[]>([]);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-  const dropdownRef = useRef(null);
+  const dropdownRef = useRef<HTMLDivElement>(null);
 
   const handleCheckboxChange = (option: string, field: string) => {
     setSelectedOptions((prevSelectedOptions) => {
@@ -46,7 +46,7 @@ export default function SelectCheckbox({ title, options, field }: SelectCheckbox
     }
   };
 
-  const onApplyFilter = (e) => {
+  const onApplyFilter = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     dispatch(onUpdateFilter(searchFilter));
     dispatch(doSearch({ filter: { ...searchFilter } }));
