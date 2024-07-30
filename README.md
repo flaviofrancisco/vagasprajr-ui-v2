@@ -1,4 +1,4 @@
-# Welcome to the repository of the project "@vagasprajr"!
+# Welcome to the repository of the project [@vagasprajr](https://x.com/vagasprajr)!
 
 This project was created to help people who are looking for an entry level job in the IT area. The main goal is to provide a list of job opportunities in the IT area in Brazil. The project is open-source and everyone can contribute to it.
 
@@ -27,7 +27,7 @@ npm install
 ### 3. Run the project
 
 ```bash
-npm start
+npm run dev
 ```
 
 ### 4. Access the project
