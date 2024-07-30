@@ -4,6 +4,7 @@ import { useSelector } from 'react-redux';
 import { useAppDispatch } from '@/services/store';
 import searchSlice, { doSearch } from '@/services/search/search.service';
 import SearchLoadMoreResults from './search-loadmore-results';
+import SearchBar from './search-bar';
 
 const SearchForm: React.FC = () => {
   const dispatch = useAppDispatch();
@@ -47,6 +48,9 @@ const SearchForm: React.FC = () => {
         {searchExecuted && status === 'failed' && <div className="text-center mt-2 text-sm text-red-500 dark:text-red-400">Erro ao buscar vagas</div>}
         {searchExecuted && status === 'succeeded' && searchResult.Total === 0 && <div className="text-center mt-2 text-sm text-gray-500 dark:text-gray-400">Nenhuma vaga encontrada</div>}
         {searchExecuted && status === 'succeeded' && searchResult.Total > 0 && <div className="text-center mt-2 text-sm text-gray-500 dark:text-gray-400">{searchResult.Total} vagas encontradas</div>}
+      </div>
+      <div className="w-full">
+        <SearchBar />
       </div>
       <div className="flex flex-row">
         <div className="w-full">

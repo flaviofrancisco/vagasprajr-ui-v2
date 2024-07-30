@@ -4,7 +4,7 @@ import { useSelector } from 'react-redux';
 import { useEffect, useCallback } from 'react';
 import { useInView } from 'react-intersection-observer';
 import { useAppDispatch } from '@/services/store';
-import searchSlice, { doSimpleSearch } from '@/services/search/search.service';
+import searchSlice, { doSearch } from '@/services/search/search.service';
 import SearchResultsList from './serach-result-list';
 import { Spinner } from '../common/spinner';
 
@@ -25,7 +25,7 @@ export default function SearchLoadMoreResults() {
     if (jobList.length === searchResult.Total) {
       return;
     }
-    await dispatch(doSimpleSearch({ filter: { ...searchFilter, page: searchFilter.page + 1 } }));
+    await dispatch(doSearch({ filter: { ...searchFilter, page: searchFilter.page + 1 } }));
   }, [dispatch, jobList, searchFilter, searchResult]);
 
   useEffect(() => {
