@@ -15,7 +15,7 @@ REACT_APP_API_URL=https://api.vagasprajr.com.br
 ### 1. Clone the repository
 
 ```bash
-git clone git@github.com:flaviofrancisco/vagas-pra-jr-web-v2.git
+git clone git@github.com:flaviofrancisco/vagasprajr-ui-v2.git
 ```
 
 ### 2. Install the dependencies
