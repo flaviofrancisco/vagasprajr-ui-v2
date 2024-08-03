@@ -1,7 +1,6 @@
-import axios from '@/services/axios';
 import { DEFAULT_PAGE_SIZE } from '@/constants';
 import { ActionReducerMapBuilder, createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { stat } from 'fs';
+import axios from '../axios';
 
 export const PROVIDERS = 'providers';
 export const LOCATIONS = 'locations';
@@ -88,7 +87,7 @@ export const doSearch = createAsyncThunk('search/doSearch', async ({ filter }: {
     Total: 0,
   } as PagedResult<JobItem>;
   try {
-    const response = await axios.post<PagedResult<JobItem>>('/search', { ...filter });
+    const response = await axios.post<PagedResult<JobItem>>(`/jobs`, { ...filter });
     pageResult = response.data;
     if (pageResult.Data === null) {
       pageResult.Data = [];
@@ -101,7 +100,7 @@ export const doSearch = createAsyncThunk('search/doSearch', async ({ filter }: {
 
 export const doGetJobOptions = createAsyncThunk('search/doGetJobOptions', async ({ filter }: { filter: SearchFilter }) => {
   try {
-    const response = await axios.post<JobFilterOptions>('/getJobOptions', { ...filter });
+    const response = await axios.post<JobFilterOptions>(`/jobs/aggregated-values`, { ...filter });
     return response.data;
   } catch (error) {
     console.error(error);
@@ -231,7 +230,7 @@ const searchSlice = createSlice({
       state.status = 'loading';
     });
     builder.addCase(doGetJobOptions.fulfilled, (state, action: PayloadAction<JobFilterOptions>) => {
-      state.job_filter_options = action.payload;      
+      state.job_filter_options = action.payload;
     });
   },
 });

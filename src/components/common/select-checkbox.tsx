@@ -48,8 +48,8 @@ export default function SelectCheckbox({ title, options, field }: SelectCheckbox
 
   const onApplyFilter = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
-    dispatch(onUpdateFilter(searchFilter));
-    dispatch(doSearch({ filter: { ...searchFilter } }));
+    dispatch(onUpdateFilter({ ...searchFilter, page: 1 }));
+    dispatch(doSearch({ filter: { ...searchFilter, page: 1 } }));
     setIsDropdownOpen(false);
   };
 
