@@ -100,7 +100,7 @@ export const doSearch = createAsyncThunk('search/doSearch', async ({ filter }: {
 
 export const doGetJobOptions = createAsyncThunk('/getJobOptions', async ({ filter }: { filter: SearchFilter }) => {
   try {
-    const response = await axios.post<JobFilterOptions>(`/search/doGetJobOptions`, { ...filter });
+    const response = await axios.post<JobFilterOptions>(`/getJobOptions`, { ...filter });
     return response.data;
   } catch (error) {
     console.error(error);
