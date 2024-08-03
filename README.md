@@ -75,7 +75,8 @@ Open your browser and access the following URL: [http://localhost:3000](http://l
 
 ### For any question:
 
-Please send an e-mail to: [contato@vagasprajr.com](mailto:contato@vagasprajr.com.br)
+Please send an e-mail to: [contato@vagasprajr.com](mailto:contato@vagasprajr.com.br) or
+contact us on [X](https://x.com/vagasprajr).
 
 ---
 
