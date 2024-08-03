@@ -63,8 +63,6 @@ NEXT_PUBLIC_API_HOST=https://localhost:3001
 npm install
 ```
 
-### 3. 
-
 ### 3. Run the project
 
 ```bash
