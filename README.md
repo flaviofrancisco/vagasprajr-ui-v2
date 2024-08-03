@@ -7,6 +7,7 @@ This project was created to help people who are looking for an entry level job i
 
 - [Docker Desktop](https://www.docker.com/products/docker-desktop/)
 - [Node.js](https://nodejs.org/en/download/package-manager)
+- Linux Ubuntu 20.04 LTS or Windows with WSL enabled.
 
 ## How to run this project using Docker?
 
