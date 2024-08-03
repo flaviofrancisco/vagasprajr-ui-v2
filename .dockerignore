@@ -10,5 +10,5 @@ README.md
 build
 node_modules
 *.mongodb.js
-*.env*
+.env
 deploy.sh
