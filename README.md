@@ -2,15 +2,38 @@
 
 This project was created to help people who are looking for an entry level job in the IT area. The main goal is to provide a list of job opportunities in the IT area in Brazil. The project is open-source and everyone can contribute to it.
 
-## How to run this project locally?
 
-### .env file
+## Requirements
 
-Create a `.env` file in the root of the project with the following content:
+- [Docker Desktop](https://www.docker.com/products/docker-desktop/)
+- [Node.js](https://nodejs.org/en/download/package-manager)
+
+## How to run this project using Docker?
+
+### 1. Clone the repository
 
 ```bash
-REACT_APP_API_URL=https://api.vagasprajr.com.br
+git clone https://github.com/flaviofrancisco/vagasprajr-docker-compose.git
 ```
+
+and follow the instruction in the README file of the repository.
+
+If everything is ok, you should have the following containers in your Docker Desktop:
+![Docker Desktop](image.png)
+
+Running the following containers:
+
+- vagasprajr-api;
+- vagasprajr-ui and
+- vagasprajr-db
+
+Click on the container `vagasprajr-ui` and access the URL: [http://localhost:3000](http://localhost:3000) to see the project running.
+
+To contribute, you need to Fork this repository and create a Pull Request.
+
+Don't forget to stop the vagasprajr-ui to run the project locally.
+
+## How to run this project locally?
 
 ### 1. Clone the repository
 
@@ -18,11 +41,29 @@ REACT_APP_API_URL=https://api.vagasprajr.com.br
 git clone git@github.com:flaviofrancisco/vagasprajr-ui-v2.git
 ```
 
+Than, access the project folder:
+
+```bash
+cd vagasprajr-ui-v2
+```
+
+### .env file
+
+Create a `.env` file in the root of the project with the following content:
+
+```bash
+NEXT_PUBLIC_API_HOST=https://localhost:3001
+```
+
+> You don't need to set up the environment variables: DOCKER_HUB_USERNAME; DOCKER_HUB_REPO; IMAGE_NAME and TAG. These variables are used to deploy the project in the Docker Hub.
+
 ### 2. Install the dependencies
 
 ```bash
 npm install
 ```
+
+### 3. 
 
 ### 3. Run the project
 
