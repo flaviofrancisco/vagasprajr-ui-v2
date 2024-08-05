@@ -8,6 +8,8 @@ else
   exit 1
 fi
 
+git pull origin main
+
 # Print the values of IMAGE_NAME and TAG
 echo "IMAGE_NAME: ${IMAGE_NAME}"
 echo "TAG: ${TAG}"
