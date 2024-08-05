@@ -87,7 +87,7 @@ export const doSearch = createAsyncThunk('search/doSearch', async ({ filter }: {
     Total: 0,
   } as PagedResult<JobItem>;
   try {
-    const response = await axios.post<PagedResult<JobItem>>(`/search`, { ...filter });
+    const response = await axios.post<PagedResult<JobItem>>(`/jobs/search`, { ...filter });
     pageResult = response.data;
     if (pageResult.Data === null) {
       pageResult.Data = [];
@@ -100,7 +100,7 @@ export const doSearch = createAsyncThunk('search/doSearch', async ({ filter }: {
 
 export const doGetJobOptions = createAsyncThunk('/getJobOptions', async ({ filter }: { filter: SearchFilter }) => {
   try {
-    const response = await axios.post<JobFilterOptions>(`/getJobOptions`, { ...filter });
+    const response = await axios.post<JobFilterOptions>(`/jobs/aggregated-values`, { ...filter });
     return response.data;
   } catch (error) {
     console.error(error);
