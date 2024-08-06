@@ -1,0 +1,46 @@
+.valid {
+  color: limegreen;
+  margin-left: 0.25rem;
+}
+
+.invalid {
+  color: red;
+  margin-left: 0.25rem;
+}
+
+.valid {
+  color: limegreen;
+  margin-left: 0.25rem;
+}
+
+.invalid {
+  color: red;
+  margin-left: 0.25rem;
+}
+
+.errmsg {
+  background-color: lightpink;
+  color: firebrick;
+  font-weight: bold;
+  padding: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+/* Create a css for a disable button using tailwind css class */
+.disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.enabled {
+  opacity: 1;
+  cursor: pointer;
+}
+
+.card {
+  border-radius: 10px;
+  box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.2);
+  transition: all 0.3s ease-in-out;
+  cursor: pointer;
+  margin-bottom: 20px;
+}
