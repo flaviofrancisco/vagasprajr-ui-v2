@@ -3,12 +3,14 @@ import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux';
 import searchSlice from './search/search.service';
 import authenticationSlice from './auth/authentication.service';
 import authRegistrationSlice from './auth/registration.service';
+import googleAuthSlice from './oauth/google/google.service';
 
 const store = configureStore({
   reducer: {
     simpleSearch: searchSlice.reducer,
     authentication: authenticationSlice.reducer,
     authRegistration: authRegistrationSlice.reducer,
+    oauthGoogle: googleAuthSlice.reducer,
   },
   devTools: !(process.env.NODE_ENV === 'production' || process.env.NODE_ENV === 'test'),
 });

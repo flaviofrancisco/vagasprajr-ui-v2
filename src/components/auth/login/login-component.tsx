@@ -19,8 +19,8 @@ const LoginComponent: React.FC = () => {
   const getGoogleOauthUrl = () => {
     const rootUrl = 'https://accounts.google.com/o/oauth2/v2/auth';
     const options = {
-      redirect_uri: process.env.REACT_APP_GOOGLE_OAUTH_REDIRECT_URI!, // client url cannot be http://localhost:3000/ or http://
-      client_id: process.env.REACT_APP_GOOGLE_CLIENT_ID!,
+      redirect_uri: process.env.NEXT_PUBLIC_GOOGLE_OAUTH_REDIRECT_URI!, // client url cannot be http://localhost:3000/ or http://
+      client_id: process.env.NEXT_PUBLIC_OOGLE_CLIENT_ID!,
       response_type: 'token',
       scope: ['email', 'profile'].join(' '), // add/remove scopes as needed
     };
