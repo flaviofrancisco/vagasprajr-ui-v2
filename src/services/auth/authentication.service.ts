@@ -1,19 +1,6 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from '../axios';
 
-export const emailConfirmation = createAsyncThunk('authentication/emailConfirmation', async (token: string) => {
-  try {
-    const response = await axios.get(`/auth/validate-token`, {
-      params: {
-        token,
-      },
-    });
-    return response.data;
-  } catch (error: any) {
-    return error.response.data;
-  }
-});
-
 export const doAuthentication = createAsyncThunk('authentication/doAuthentication', async (request: AuthRequest) => {
   try {
     const response = await axios.post('/auth/login', request, {
@@ -55,7 +42,6 @@ export interface AuthenticationState {
   isLogout: boolean;
   authSession: AuthResponse;
   refreshToken: string;
-  isEmailConfirmed: boolean;
 }
 
 const authenticationSlice = createSlice({
@@ -67,7 +53,6 @@ const authenticationSlice = createSlice({
     isLogout: false,
     authSession: {} as AuthResponse,
     refreshToken: '',
-    isEmailConfirmed: false,
   } as AuthenticationState,
   reducers: {
     onLogout: (state) => {
@@ -145,20 +130,6 @@ const authenticationSlice = createSlice({
     builder.addCase(logoutUser.rejected, (state, action) => {
       state.status = 'failed';
       state.error = (action?.error?.message as string) ?? 'Verifique seu e-mail e senha e tente novamente.';
-      state.isAuthenticated = false;
-      state.authSession = {} as AuthResponse;
-      state.isLogout = false;
-    });
-    builder.addCase(emailConfirmation.pending, (state, action) => {
-      state.status = 'loading';
-    });
-    builder.addCase(emailConfirmation.fulfilled, (state, action) => {
-      state.status = 'succeeded';
-      state.isEmailConfirmed = action.payload?.isValid ?? false;
-    });
-    builder.addCase(emailConfirmation.rejected, (state, action) => {
-      state.status = 'failed';
-      state.error = (action?.error?.message as string) ?? 'Token inválido.';
       state.isAuthenticated = false;
       state.authSession = {} as AuthResponse;
       state.isLogout = false;

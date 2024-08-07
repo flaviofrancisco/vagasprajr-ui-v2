@@ -4,7 +4,7 @@ import axios from '../axios';
 
 export const doRegistration = createAsyncThunk('authRegistration/doRegistration', async (userInfo: UserInfo) => {
   try {
-    const response = await axios.post('/auth/registration', userInfo, {
+    const response = await axios.post('/auth/signup', userInfo, {
       headers: {
         'Content-Type': 'application/json',
       },
@@ -12,6 +12,15 @@ export const doRegistration = createAsyncThunk('authRegistration/doRegistration'
     return response.data;
   } catch (error: AxiosError | any) {
     throw error?.response?.data?.error;
+  }
+});
+
+export const doConfirmEmail = createAsyncThunk('authRegistration/doConfirmEmail', async (token: string) => {
+  try {
+    const response = await axios.get(`/auth/signup/confirm-email/${token}`);
+    return response.data;
+  } catch (error: any) {
+    return error.response.data;
   }
 });
 
@@ -46,6 +55,29 @@ export interface AuthRegistrationSliceState {
   isPasswordMatch: boolean;
   isPasswordChanged: boolean;
 }
+
+export const signUpTokenConfirmationSlice = createSlice({
+  name: 'signUpTokenConfirmation',
+  initialState: {
+    status: 'idle',
+    error: '',
+    isEmailConfirmed: false,
+  },
+  reducers: {},
+  extraReducers: (builder) => {
+    builder.addCase(doConfirmEmail.pending, (state, action) => {
+      state.status = 'loading';
+    });
+    builder.addCase(doConfirmEmail.fulfilled, (state, action) => {
+      state.status = 'succeeded';
+      state.isEmailConfirmed = action.payload.isEmailConfirmed;
+    });
+    builder.addCase(doConfirmEmail.rejected, (state, action) => {
+      state.status = 'failed';
+      state.error = action.error.message ?? 'Não podemos confirmar o email no momento.';
+    });
+  },
+});
 
 const authRegistrationSlice = createSlice({
   name: 'authRegistration',
