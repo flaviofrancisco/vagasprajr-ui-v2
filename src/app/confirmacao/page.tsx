@@ -4,7 +4,7 @@ import PageMessage, { MessageType } from '@/components/common/page-message';
 import { doConfirmEmail } from '@/services/auth/registration.service';
 import { useAppDispatch } from '@/services/store';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { useEffect, useState } from 'react';
+import { Suspense, useEffect, useRef, useState } from 'react';
 import { useSelector } from 'react-redux';
 
 const Page = () => {
@@ -17,10 +17,8 @@ const Page = () => {
   const { isEmailConfirmed } = useSelector((state: any) => state.signUpTokenConfirmation);
 
   let token = searchParams.get('token');
-
-
+  
   useEffect(() => {         
-
     async function confirmEmail() {
       setIsLoading(true);
       if (token) {
@@ -48,4 +46,10 @@ const Page = () => {
   );
 };
 
-export default Page;
+const PageWithSuspense = () => (
+  <Suspense fallback={<Loading />}>
+    <Page />
+  </Suspense>
+);
+
+export default PageWithSuspense;
