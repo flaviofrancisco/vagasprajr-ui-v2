@@ -12,7 +12,7 @@ export default function SearchLoadMoreResults() {
   const dispatch = useAppDispatch();
   const { ref, inView } = useInView();
 
-  const { searchResult, searchFilter, jobList, loadedItems } = useSelector((state: any) => state.simpleSearch);
+  const { searchResult, searchFilter, jobList, loadedItems } = useSelector((state: any) => state.searchReducer);
   const { onRefreshJobList } = searchSlice.actions;
 
   const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));

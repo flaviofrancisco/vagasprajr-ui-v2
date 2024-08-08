@@ -7,7 +7,7 @@ import SearchBar from './search-bar';
 
 const SearchForm: React.FC = () => {
   const dispatch = useAppDispatch();
-  const { searchResult, status, searchFilter, searchExecuted, jobList, job_filter_options } = useSelector((state: any) => state.simpleSearch);
+  const { searchResult, status, searchFilter, searchExecuted, jobList, job_filter_options } = useSelector((state: any) => state.searchReducer);
   const { onResetState } = searchSlice.actions;
 
   const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {

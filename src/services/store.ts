@@ -7,7 +7,7 @@ import googleAuthSlice from './oauth/google/google.service';
 
 const store = configureStore({
   reducer: {
-    simpleSearch: searchSlice.reducer,
+    searchReducer: searchSlice.reducer,
     authentication: authenticationSlice.reducer,
     authRegistration: authRegistrationSlice.reducer,
     oauthGoogle: googleAuthSlice.reducer,

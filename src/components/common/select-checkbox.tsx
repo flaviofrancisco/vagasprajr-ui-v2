@@ -12,12 +12,14 @@ export interface SelectCheckboxProps {
 
 export default function SelectCheckbox({ title, options, field }: SelectCheckboxProps) {
   const dispatch = useAppDispatch();
-  const { searchFilter } = useSelector((state: any) => state.simpleSearch);
+  const { searchFilter } = useSelector((state: any) => state.searchReducer);
   const { onChangeFilterOptions, onUpdateFilter } = searchSlice.actions;
 
   const [selectedOptions, setSelectedOptions] = useState<string[]>([]);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
+
+  const [filteredOptions, setFilteredOptions] = useState<string[]>(options);
 
   const handleCheckboxChange = (option: string, field: string) => {
     setSelectedOptions((prevSelectedOptions) => {
@@ -61,6 +63,11 @@ export default function SelectCheckbox({ title, options, field }: SelectCheckbox
     };
   }, []);
 
+  const onInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { value } = e.target;
+    setFilteredOptions(options.filter((option) => option.toLowerCase().includes(value.toLowerCase())));
+  };
+
   return (
     <div className="w-full flex items-center justify-center">
       <div className="w-full relative inline-block text-left">
@@ -90,6 +97,15 @@ export default function SelectCheckbox({ title, options, field }: SelectCheckbox
                 Filtrar
               </button>
             </div>
+            <div className="w-full">
+              <input
+                type="text"
+                name={field}
+                placeholder="pesquisar"
+                onChange={onInputChange}
+                className="w-4/5 m-4 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2.5"
+              />
+            </div>
             {/* <div>
               <input
                 type="text"
@@ -99,7 +115,7 @@ export default function SelectCheckbox({ title, options, field }: SelectCheckbox
               />
             </div> */}
             <div className="py-1" role="none">
-              {options.map((option) => (
+              {filteredOptions.map((option) => (
                 <label key={uuidv4()} className="flex items-center px-4 py-2 text-sm text-gray-700">
                   <input
                     type="checkbox"
