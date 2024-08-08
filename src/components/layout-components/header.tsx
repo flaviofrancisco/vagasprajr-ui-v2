@@ -58,7 +58,14 @@ export default function MainHeader() {
               <a href="/" className="flex items-center">
                 <Image src={imgLogo} alt="Logo" width={40} height={40} />
               </a>
-              <a href="/" className="flex items-center">
+              <a
+                href="/"
+                className="flex items-center"
+                onClick={(e) => {
+                  e.preventDefault();
+                  router.push('/');
+                }}
+              >
                 <span className="self-center text-white m-4 text-2xl font-semibold whitespace-nowrap dark:text-white">@vagasprajr</span>
               </a>
             </div>
@@ -68,6 +75,10 @@ export default function MainHeader() {
                   <a
                     key={item.name}
                     href={item.href}
+                    onClick={(e) => {
+                      e.preventDefault();
+                      router.push(item.href);
+                    }}
                     aria-current={item.current ? 'page' : undefined}
                     className={classNames(item.current ? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white', 'rounded-md px-3 py-2 text-sm font-medium')}
                   >
@@ -129,6 +140,10 @@ export default function MainHeader() {
               key={item.name}
               as="a"
               href={item.href}
+              onClick={(e) => {
+                e.preventDefault();
+                router.push(item.href);
+              }}
               aria-current={item.current ? 'page' : undefined}
               className={classNames(item.current ? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white', 'block rounded-md px-3 py-2 text-base font-medium')}
             >

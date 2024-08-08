@@ -1,26 +1,23 @@
-import authenticationSlice, { AuthenticationState, AuthResponse } from "@/services/auth/authentication.service";
-import { useAppDispatch } from "@/services/store";
-import axios from "axios";
-import { useSelector } from "react-redux";
+import authenticationSlice, { AuthResponse } from '@/services/auth/authentication.service';
+import { axiosPrivate } from '@/services/axios';
+import { useAppDispatch } from '@/services/store';
 
 const useRefreshToken = () => {
-  useSelector((state: any) => state.authentication as AuthenticationState);
-  const { onSetToken } = authenticationSlice.actions;
-
+  const { onAuthSetToken, onLogout } = authenticationSlice.actions;
   const dispatch = useAppDispatch();
 
   const refreshToken = async () => {
     try {
-      const response = await axios.get('/auth/refresh-token', {
+      const response = await axiosPrivate.get('/auth/refresh-token', {
         withCredentials: true,
       });
 
-      dispatch(onSetToken(response?.data));
+      dispatch(onAuthSetToken(response?.data));
 
       return response?.data?.access_token;
     } catch (error: any) {
       if (error.response.status === 401) {
-        dispatch(onSetToken({} as AuthResponse));
+        dispatch(onLogout());
         return;
       }
       throw error;

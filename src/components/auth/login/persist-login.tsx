@@ -10,9 +10,8 @@ interface WrapperComponentProps {
 }
 
 const PersistLogin: React.FC<WrapperComponentProps> = ({ children }) => {
-  const [isLoading, setIsLoading] = useState(true);
   const refresh = useRefreshToken();
-  const { authSession, refreshToken } = useSelector((state: any) => state.authentication as AuthenticationState);
+  const { authSession } = useSelector((state: any) => state.authentication as AuthenticationState);
 
   useEffect(() => {
     const verifyRefreshToken = async () => {
@@ -21,19 +20,15 @@ const PersistLogin: React.FC<WrapperComponentProps> = ({ children }) => {
       } catch (error) {
         console.error(error);
       } finally {
-        setIsLoading(false);
       }
     };
 
     if (!authSession?.access_token) {
       verifyRefreshToken();
-    } else {
-      setIsLoading(false);
     }
-  }, [authSession?.access_token, refresh]);
+  }, []);
 
-  //return (<>{children}</>);
-  return <>{isLoading ? <Loading /> : children}</>;
+  return <>{children}</>;
 };
 
 export default PersistLogin;

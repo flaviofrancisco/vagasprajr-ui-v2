@@ -12,7 +12,7 @@ const GoogleCallback: React.FC = () => {
   const dispatch = useAppDispatch();
 
   const { status } = useSelector((state: any) => state.authRegistration as GoogleAuthState);
-  const { onSetToken } = authenticationSlice.actions;
+  const { onAuthSetToken: onSetToken } = authenticationSlice.actions;
 
   useEffect(() => {
     const googleAuth = async () => {

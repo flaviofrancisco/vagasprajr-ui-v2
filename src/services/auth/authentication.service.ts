@@ -41,7 +41,6 @@ export interface AuthenticationState {
   isAuthenticated: boolean;
   isLogout: boolean;
   authSession: AuthResponse;
-  refreshToken: string;
 }
 
 const authenticationSlice = createSlice({
@@ -52,7 +51,6 @@ const authenticationSlice = createSlice({
     isAuthenticated: false,
     isLogout: false,
     authSession: {} as AuthResponse,
-    refreshToken: '',
   } as AuthenticationState,
   reducers: {
     onLogout: (state) => {
@@ -60,7 +58,7 @@ const authenticationSlice = createSlice({
       state.isAuthenticated = false;
       state.authSession = {} as AuthResponse;
     },
-    onSetToken: (state, action) => {
+    onAuthSetToken: (state, action) => {
       state.isLogout = false;
       state.isAuthenticated = true;
       state.authSession = action.payload as AuthResponse;
@@ -99,7 +97,7 @@ const authenticationSlice = createSlice({
     });
     builder.addCase(fetchRefreshToken.fulfilled, (state, action) => {
       state.status = 'succeeded';
-      state.refreshToken = action.payload.access_token;
+      state.authSession = action.payload as AuthResponse;
       state.isAuthenticated = state.authSession.success;
     });
     builder.addCase(fetchRefreshToken.rejected, (state, action) => {
