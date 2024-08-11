@@ -57,7 +57,7 @@ export default function PasswordChangePage() {
               <FontAwesomeIcon icon={faTimes} className={!isValidPassword || !resetPasswordForm.password || resetPasswordForm.password === '' ? 'invalid' : 'hidden'} />
             </label>
             <input
-              className="shadow appearance-none border rounded w-full mb-5 py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring-4 focus:ring-[#1da1f2]/50 focus:ring-opacity-50 focus:ring-offset-2 focus:ring-offset-gray-100"
+              className="shadow appearance-none border rounded w-full py-2 px-3 mb-4 text-gray-700 leading-tight focus:outline-none focus:ring-4 focus:ring-[#1da1f2]/50 focus:ring-opacity-50 focus:ring-offset-2 focus:ring-offset-gray-100"
               id="password"
               type="password"
               placeholder="senha"
@@ -87,7 +87,7 @@ export default function PasswordChangePage() {
               <FontAwesomeIcon icon={faTimes} className={!isPasswordMatched || !resetPasswordForm.confirmPassword || resetPasswordForm.confirmPassword === '' ? 'invalid' : 'hidden'} />
             </label>
             <input
-              className="shadow appearance-none border rounded w-full mb-5 py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring-4 focus:ring-[#1da1f2]/50 focus:ring-opacity-50 focus:ring-offset-2 focus:ring-offset-gray-100"
+              className="shadow appearance-none border rounded w-full py-2 px-3 mb-4 text-gray-700 leading-tight focus:outline-none focus:ring-4 focus:ring-[#1da1f2]/50 focus:ring-opacity-50 focus:ring-offset-2 focus:ring-offset-gray-100"
               id="confirmPassword"
               type="password"
               placeholder="confirmar senha"

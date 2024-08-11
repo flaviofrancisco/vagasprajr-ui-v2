@@ -18,10 +18,10 @@ export default function ForgottenPasswordPage() {
   const { error } = useSelector((state: any) => state.passwordResetReducer);
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();    
+    event.preventDefault();
     setIsRequestSent(false);
     await dispatch(requestPasswordReset({ email: emailRef.current?.value ?? '' })).then(() => {
-      setIsRequestSent(true);      
+      setIsRequestSent(true);
     });
   };
 
@@ -60,7 +60,7 @@ export default function ForgottenPasswordPage() {
             id="email"
             name="email"
             required
-            className="border border-gray-300 rounded-lg p-2"
+            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring-4 focus:ring-[#1da1f2]/50 focus:ring-opacity-50 focus:ring-offset-2 focus:ring-offset-gray-100"
           />
           <FieldError error="Email inválido" isVisible={!isValidEmail && isEmailLostFocus} />
           {!isRequestSent ? (
