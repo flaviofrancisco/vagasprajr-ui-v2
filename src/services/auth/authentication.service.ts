@@ -31,7 +31,7 @@ export const logoutUser = createAsyncThunk('auth/logout', async () => {
 });
 
 export const requestPasswordReset = createAsyncThunk('auth/requestPasswordReset', async ({ email }: { email: string }) => {
-  const response = await axios.post('/auth/recovery', { email });
+  const response = await axios.post('/auth/forgotten-password', { email });
   return response.data;
 });
 

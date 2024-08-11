@@ -6,7 +6,7 @@ import useRefreshToken from "./refresh-token";
 
 const useAxiosPrivate = () => {
   const refresh = useRefreshToken();
-  const { authSession } = useSelector((state: any) => state.authentication as AuthenticationState);
+  const { authSession } = useSelector((state: any) => state.authenticationReducer as AuthenticationState);
 
   useEffect(() => {
     const requestIntercept = axiosPrivate.interceptors.request.use(

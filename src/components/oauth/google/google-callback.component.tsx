@@ -11,7 +11,7 @@ const GoogleCallback: React.FC = () => {
   const router = useRouter();
   const dispatch = useAppDispatch();
 
-  const { status } = useSelector((state: any) => state.authRegistration as GoogleAuthState);
+  const { status } = useSelector((state: any) => state.authenticationReducer as GoogleAuthState);
   const { onAuthSetToken: onSetToken } = authenticationSlice.actions;
 
   useEffect(() => {

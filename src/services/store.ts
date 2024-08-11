@@ -4,14 +4,16 @@ import searchSlice from './search/search.service';
 import authenticationSlice from './auth/authentication.service';
 import authRegistrationSlice, { signUpTokenConfirmationSlice } from './auth/registration.service';
 import googleAuthSlice from './oauth/google/google.service';
+import passwordResetSlice from './auth/password.service';
 
 const store = configureStore({
   reducer: {
     searchReducer: searchSlice.reducer,
-    authentication: authenticationSlice.reducer,
-    authRegistration: authRegistrationSlice.reducer,
-    oauthGoogle: googleAuthSlice.reducer,
-    signUpTokenConfirmation: signUpTokenConfirmationSlice.reducer,
+    authenticationReducer: authenticationSlice.reducer,
+    authRegistrationReducer: authRegistrationSlice.reducer,
+    oauthGoogleReducer: googleAuthSlice.reducer,
+    signUpTokenConfirmationReducer: signUpTokenConfirmationSlice.reducer,
+    passwordResetReducer: passwordResetSlice.reducer,
   },
   devTools: !(process.env.NODE_ENV === 'production' || process.env.NODE_ENV === 'test'),
 });

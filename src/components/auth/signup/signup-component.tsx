@@ -21,7 +21,9 @@ export default function SignupComponent() {
   const errRef = useRef<HTMLParagraphElement | null>(null);
 
   const { onSetError, onChangeFieldInput, onEmailBlur, onEmailFocus, onValidEmail, onValidPassword, onPasswordMatch, onReset } = authRegistrationSlice.actions;
-  const { userInfo, error, isEmailLostFocus, isValidEmail, isValidPassword, isPasswordMatch, registrationStatus } = useSelector((state: any) => state.authRegistration as AuthRegistrationSliceState);
+  const { userInfo, error, isEmailLostFocus, isValidEmail, isValidPassword, isPasswordMatch, registrationStatus } = useSelector(
+    (state: any) => state.authRegistrationReducer as AuthRegistrationSliceState
+  );
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();

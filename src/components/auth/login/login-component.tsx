@@ -14,7 +14,7 @@ const LoginComponent: React.FC = () => {
   const userRef = useRef<HTMLInputElement | null>(null);
   const errRef = useRef<HTMLParagraphElement | null>(null);
 
-  const { authSession, error, status } = useSelector((state: any) => state.authentication as AuthenticationState);
+  const { authSession, error, status } = useSelector((state: any) => state.authenticationReducer as AuthenticationState);
 
   const getGoogleOauthUrl = () => {
     const rootUrl = 'https://accounts.google.com/o/oauth2/v2/auth';
@@ -127,7 +127,7 @@ const LoginComponent: React.FC = () => {
           </form>
         </div>
         <div className="flex justify-center items-center p-4">
-          <Link href="#" className="text-[#1da1f2] hover:underline pr-2 ">
+          <Link href="/esqueci-senha" className="text-[#1da1f2] hover:underline pr-2 ">
             Esqueceu a senha?
           </Link>{' '}
           |

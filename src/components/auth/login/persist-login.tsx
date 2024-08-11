@@ -11,7 +11,7 @@ interface WrapperComponentProps {
 
 const PersistLogin: React.FC<WrapperComponentProps> = ({ children }) => {
   const refresh = useRefreshToken();
-  const { authSession } = useSelector((state: any) => state.authentication as AuthenticationState);
+  const { authSession } = useSelector((state: any) => state.authenticationReducer as AuthenticationState);
 
   useEffect(() => {
     const verifyRefreshToken = async () => {

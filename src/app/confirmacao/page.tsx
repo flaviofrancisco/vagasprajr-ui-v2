@@ -14,7 +14,7 @@ const Page = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [isConfirmationComplete, setIsConfirmationComplete] = useState(false);
 
-  const { isEmailConfirmed } = useSelector((state: any) => state.signUpTokenConfirmation);
+  const { isEmailConfirmed } = useSelector((state: any) => state.signUpTokenConfirmationReducer);
 
   let token = searchParams.get('token');
   

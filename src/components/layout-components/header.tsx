@@ -23,7 +23,7 @@ export default function MainHeader() {
   const router = useRouter();
 
   const dispatch = useAppDispatch();
-  const { authSession, isAuthenticated, isLogout } = useSelector((state: any) => state.authentication as AuthenticationState);
+  const { authSession, isAuthenticated, isLogout } = useSelector((state: any) => state.authenticationReducer as AuthenticationState);
 
   const [isLogged, setIsLogged] = useState(false);
 
