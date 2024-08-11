@@ -14,9 +14,7 @@ const EMAIL_REGEX = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
 
 export default function PasswordChangePage() {
   const dispatch = useAppDispatch();
-
-  const params = new URLSearchParams(window.location.search);
-  const token = params.get('token') ?? '';
+  const [token, setToken] = useState<string>('');
   const { error, isValidPassword, resetPasswordForm, isTokenValid, isPasswordMatched, isPasswordReset } = useSelector((state: any) => state.passwordResetReducer);
   const { onChangeField, onValidPassword, onPasswordMatch } = passwordResetSlice.actions;
 
@@ -28,6 +26,13 @@ export default function PasswordChangePage() {
       dispatch(resetPassword({ token: token as string, password: resetPasswordForm.password }));
     }
   };
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const params = new URLSearchParams(window.location.search);
+      setToken(params.get('token') ?? '');
+    }
+  }, []);
 
   useEffect(() => {
     dispatch(onValidPassword(PWD_REGEX.test(resetPasswordForm.password)));
