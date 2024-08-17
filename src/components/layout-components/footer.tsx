@@ -2,7 +2,6 @@ import Image from 'next/image';
 import logoImage from '@/assets/logo.png';
 import styles from './footer.module.css';
 import { FaTwitter, FaDiscord, FaTelegram, FaGoogle, FaFacebook, FaTwitterSquare, FaCloud, FaMailBulk, FaEnvelope } from 'react-icons/fa';
-import ButterflyIcon from './butterfly-icon';
 
 export default function MainFooter() {
   return (
