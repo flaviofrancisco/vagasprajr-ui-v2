@@ -5,7 +5,7 @@
   justify-content: space-between;
   margin-top: 50px;
   width: 100%; /* Ensure the container takes the full width */
-  min-height: calc(100vh - 371px); /* Adjust height to fill the screen */
+  min-height: calc(100vh - 411px); /* Adjust height to fill the screen */
   box-sizing: border-box; /* Include padding in the height calculation */
   overflow-y: auto;
 }
