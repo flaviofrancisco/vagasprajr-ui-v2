@@ -7,6 +7,7 @@ import { GoogleAnalytics } from '@next/third-parties/google';
 import { Provider } from 'react-redux';
 import store from '@/services/store';
 import PersistLogin from '@/components/auth/login/persist-login';
+import MainFooter from '@/components/layout-components/footer';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -22,6 +23,7 @@ export default function RootLayout({
           <PersistLogin>
             <MainHeader />
             {children}
+            <MainFooter />
           </PersistLogin>
         </Provider>
       </body>
