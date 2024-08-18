@@ -1,6 +1,8 @@
 'use client';
 
 import { JobItem } from '@/services/search/search.service';
+import { FaEye } from 'react-icons/fa';
+import styles from './card.module.css';
 
 interface CardProps {
   job: JobItem;
@@ -37,10 +39,15 @@ export default function Card({ job }: CardProps) {
           <p className="text-sm text-gray-500 dark:text-gray-400">{job.provider}</p>
           <p className="text-sm font-medium text-gray-900 dark:text-white">{job.location}</p>
         </div>
-        <div>
-          <a href={job.job_short_url} target="_blank" rel="noopener noreferrer" className="text-sm font-medium text-blue-500 dark:text-blue-400 hover:underline">
-            Ver mais
-          </a>
+        <div className="flex flex-end">
+          <div className={styles['view-more-container']}>
+            <div className={styles['view-more-item']}>
+              <FaEye className="mr-1" /> {job?.qty_clicks ?? 0}
+            </div>
+            <a href={job.job_short_url} target="_blank" rel="noopener noreferrer" className="text-sm font-medium text-blue-500 dark:text-blue-400 hover:underline">
+              Ver mais
+            </a>
+          </div>
         </div>
       </div>
     </div>

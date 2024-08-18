@@ -1,0 +1,14 @@
+.view-more-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: end;
+  margin-top: 1rem;
+}
+
+.view-more-item {
+  display: flex;
+  flex-direction: row;
+  margin-left: 1rem;
+  justify-content: end;
+  align-items: center;
+}
