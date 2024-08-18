@@ -7,7 +7,6 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Link from 'next/link';
 import { useEffect, useRef, useState } from 'react';
 import { useSelector } from 'react-redux';
-import { useParams } from 'react-router-dom';
 
 const PWD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[\W]).{10,}$/;
 const EMAIL_REGEX = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;

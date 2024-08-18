@@ -5,6 +5,7 @@ import authenticationSlice from './auth/authentication.service';
 import authRegistrationSlice, { signUpTokenConfirmationSlice } from './auth/registration.service';
 import googleAuthSlice from './oauth/google/google.service';
 import passwordResetSlice from './auth/password.service';
+import usersSlice from './users/users.service';
 
 const store = configureStore({
   reducer: {
@@ -14,6 +15,7 @@ const store = configureStore({
     oauthGoogleReducer: googleAuthSlice.reducer,
     signUpTokenConfirmationReducer: signUpTokenConfirmationSlice.reducer,
     passwordResetReducer: passwordResetSlice.reducer,
+    usersReducer: usersSlice.reducer,
   },
   devTools: !(process.env.NODE_ENV === 'production' || process.env.NODE_ENV === 'test'),
 });
