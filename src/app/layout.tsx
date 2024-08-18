@@ -13,8 +13,10 @@ const inter = Inter({ subsets: ['latin'] });
 
 export default function RootLayout({
   children,
+  modals,
 }: Readonly<{
   children: React.ReactNode;
+  modals: React.ReactNode;
 }>) {
   return (
     <html lang="en">
@@ -22,6 +24,7 @@ export default function RootLayout({
         <Provider store={store}>
           <PersistLogin>
             <MainHeader />
+            {modals}
             {children}
             <MainFooter />
           </PersistLogin>
