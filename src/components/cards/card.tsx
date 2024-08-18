@@ -9,6 +9,13 @@ interface CardProps {
 }
 
 export default function Card({ job }: CardProps) {
+  const hideQtyLinks = (short_url: string) => {
+    if (short_url.includes('linkedin')) {
+      return true;
+    }
+    return false;
+  };
+
   const formatDate = (date: string) => {
     try {
       const d = new Date(date);
@@ -42,7 +49,11 @@ export default function Card({ job }: CardProps) {
         <div className="flex flex-end">
           <div className={styles['view-more-container']}>
             <div className={styles['view-more-item']}>
-              <FaEye className="mr-1" /> {job?.qty_clicks ?? 0}
+              {hideQtyLinks(job.job_short_url || '') ? null : (
+                <>
+                  <FaEye className="mr-1" /> {job?.qty_clicks ?? 0}
+                </>
+              )}
             </div>
             <a href={job.job_short_url} target="_blank" rel="noopener noreferrer" className="text-sm font-medium text-blue-500 dark:text-blue-400 hover:underline">
               Ver mais
