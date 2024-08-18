@@ -17,7 +17,7 @@ export interface UserLink {
 
 export const doGetUserProfile = createAsyncThunk('users/profile', async ({ axiosPrivate }: { axiosPrivate: AxiosInstance }) => {
   try {
-    const response = await axiosPrivate.get('http://localhost:3001/users/profile');
+    const response = await axiosPrivate.get('/users/profile');
     return response.data;
   } catch (error) {
     throw error;
