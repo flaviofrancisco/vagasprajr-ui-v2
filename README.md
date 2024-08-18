@@ -17,7 +17,7 @@ This project was created to help people who are looking for an entry level job i
 git clone https://github.com/flaviofrancisco/vagasprajr-docker-compose.git
 ```
 
-and follow the instruction in the README file of the repository.
+and follow the instruction in the [README](https://github.com/flaviofrancisco/vagasprajr-docker-compose) file of the repository.
 
 If everything is ok, you should have the following containers in your Docker Desktop:
 ![Docker Desktop](image.png)
