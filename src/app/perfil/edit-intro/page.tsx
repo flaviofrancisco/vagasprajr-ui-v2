@@ -4,9 +4,10 @@ import { Modal } from '@/components/modals/modal';
 
 export default function EditIntroModal() {
   const onClose = () => {};
+  const onSave = () => {};
   return (
-    <Modal onClose={onClose} title="Editar Introdução">
-      <EditIntro />
+    <Modal onClose={onClose} onSave={onSave} title="Editar Introdução">
+      <EditIntro onSubmit={() => {}} />
     </Modal>
   );
 }
