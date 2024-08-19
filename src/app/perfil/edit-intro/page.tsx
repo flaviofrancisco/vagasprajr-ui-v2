@@ -5,7 +5,7 @@ import { Modal } from '@/components/modals/modal';
 export default function EditIntroModal() {
   const onClose = () => {};
   return (
-    <Modal onClose={onClose}>
+    <Modal onClose={onClose} title="Editar Introdução">
       <EditIntro />
     </Modal>
   );
