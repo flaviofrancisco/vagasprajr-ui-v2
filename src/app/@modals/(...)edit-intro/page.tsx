@@ -23,7 +23,7 @@ export default function EditIntroModal() {
   };
 
   return (
-    <Modal onClose={onClose} onSave={onSave} title="Editar minha introdução">
+    <Modal onClose={onClose} onSave={onSave} title="Dados pessoais">
       <EditIntro onSubmit={onSave} />
     </Modal>
   );

@@ -1,0 +1,42 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-content: center;
+  width: 100%;
+  gap: 1rem;
+  @media (max-width: 600px) {
+    width: 80%;
+  }
+}
+
+.edit-links-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-content: center;
+  width: 100%;
+  gap: 0.4rem;
+  @media (max-width: 600px) {
+    width: 90%;
+  }
+}
+
+.edit-links-row {
+  display: flex;
+  width: 98%;
+  align-content: center;
+  justify-content: center;
+  flex-direction: row;
+  margin: 0.4rem;
+  @media (max-width: 600px) {
+    width: 100%;
+    flex-direction: column;
+  }
+}
+
+.edit-link-cell {
+  flex: 1; /* Each cell takes up equal space */
+  margin: 4px;
+  max-width: calc(50% - 2px); /* Adjust for the gap */
+}

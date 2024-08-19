@@ -3,7 +3,7 @@ import styles from './modal.module.scss';
 export function Modal({ children, ...props }: ModalProps) {
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
-      <div className={`${styles['modal-body']} bg-white w-9/10 rounded-lg shadow-lg`}>
+      <div className={`${styles['modal-body']} bg-white rounded-lg shadow-lg`}>
         <div className={`${styles['modal-header']}`}>
           <h2>{props.title}</h2>
         </div>
