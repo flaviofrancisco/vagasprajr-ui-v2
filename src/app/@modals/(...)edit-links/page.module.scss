@@ -6,7 +6,7 @@
   width: 100%;
   gap: 1rem;
   @media (max-width: 600px) {
-    width: 80%;
+    width: 90%;
   }
 }
 
@@ -18,7 +18,7 @@
   width: 100%;
   gap: 0.4rem;
   @media (max-width: 600px) {
-    width: 90%;
+    width: 100%;
   }
 }
 
@@ -39,4 +39,56 @@
   flex: 1; /* Each cell takes up equal space */
   margin: 4px;
   max-width: calc(50% - 2px); /* Adjust for the gap */
+  align-content:center;
+  justify-content: center;
+  @media (max-width: 600px) {
+    max-width: 95%;
+  }
+}
+
+$delete-red: red;
+
+.btn-base {
+  display: flex;
+  align-items: center;
+  background: none;
+  border: 1px solid lighten(gray, 24%);
+  height: 48px;
+  padding: 0 24px 0 16px;
+  letter-spacing: 0.25px;
+  border-radius: 24px;
+  cursor: pointer;
+
+  &:focus {
+    outline: none;
+  }
+
+  .fa-trash {
+    margin-right: 8px;
+  }
+}
+
+.btn-delete {
+  font-size: 16px;
+  color: red;
+
+  > .mdi-delete-empty {
+    display: none;
+  }
+
+  &:hover {
+    background-color: lighten(red, 48%);
+
+    > .mdi-delete-empty {
+      display: block;
+    }
+
+    > .mdi-delete {
+      display: none;
+    }
+  }
+
+  &:focus {
+    box-shadow: 0 0 0 4px lighten(red, 40%);
+  }
 }

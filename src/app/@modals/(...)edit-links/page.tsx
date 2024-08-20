@@ -3,13 +3,16 @@ import { SelectCombo } from '@/components/inputs/select-combo/select-combo';
 import styles from './page.module.scss';
 import { Modal } from '@/components/modals/modal';
 import { useAppDispatch } from '@/services/store';
-import usersSlice from '@/services/users/users.service';
+import usersSlice, { doUpdateUserProfile } from '@/services/users/users.service';
 import { useSelector } from 'react-redux';
 import { useRouter } from 'next/navigation';
+import { useEffect } from 'react';
+import useAxiosPrivate from '@/hooks/private-axios';
 
 export default function EditLinksPage() {
   const router = useRouter();
   const dispatch = useAppDispatch();
+  const axiosPrivate = useAxiosPrivate();
   const { onChangeFieldInput } = usersSlice.actions;
   const { profile } = useSelector((state: any) => state.usersReducer);
 
@@ -17,8 +20,20 @@ export default function EditLinksPage() {
     router.back();
   };
   const onSave = () => {
-    router.back();
+    dispatch(doUpdateUserProfile({ axiosPrivate, profile: profile })).then(() => {
+      router.back();
+    });
   };
+
+  const onDeleteLink = (index: number) => {
+    dispatch(onChangeFieldInput({ links: profile.links.filter((l: any, i: number) => index !== i) }));
+  };
+
+  const onAddLink = () => {
+    dispatch(onChangeFieldInput({ links: [...profile.links, { name: 'Facebook', url: '' }] }));
+  };
+
+  useEffect(() => {}, [profile.links]);
 
   const links_names = [
     { label: 'Facebook', value: 'facebook' },
@@ -36,6 +51,16 @@ export default function EditLinksPage() {
   return (
     <Modal onClose={onClose} onSave={onSave} title="Meus links">
       <div className={`${styles['edit-links-container']}`}>
+        <div className="p-4">
+          {profile.links.length < 5 && (
+            <button className={`${styles['btn-base']} ${styles['btn-add']}`} onClick={onAddLink}>
+              <span className={`${styles['mdi']} ${styles['mdi-plus']} ${styles['mdi-24px']}`}></span>
+              <span className={`${styles['mdi']} ${styles['mdi-plus-empty']} ${styles['mdi-24px']}`}></span>
+              Adicionar link
+            </button>
+          )}
+        </div>
+        {profile.links.length === 0 && <p className="text-center">Nenhum link adicionado</p>}
         {profile.links.map((link: any, index: number) => (
           <div className={`${styles['edit-links-row']}`} key={index}>
             <div className={`${styles['edit-link-cell']}`}>
@@ -50,6 +75,13 @@ export default function EditLinksPage() {
                   dispatch(onChangeFieldInput({ links: profile.links.map((l: any, i: number) => (index === i ? { ...l, url: e.target.value } : l)) }));
                 }}
               />
+            </div>
+            <div className={`${styles['edit-link-cell']} ${styles['center-button']}`}>
+              <button className={`${styles['btn-base']} ${styles['btn-delete']}`} onClick={() => onDeleteLink(index)}>
+                <span className={`${styles['mdi']} ${styles['mdi-delete']} ${styles['mdi-24px']}`}></span>
+                <span className={`${styles['mdi']} ${styles['mdi-delete-empty']} ${styles['mdi-24px']}`}></span>
+                Remover
+              </button>
             </div>
           </div>
         ))}

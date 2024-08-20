@@ -1,12 +1,7 @@
 .select-combo {
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-  position: relative;
+  width: 100%;  
   border: 1px solid #e0e0e0;
-  border-radius: 4px;
-  /* Put text in the middle */
-  align-items: center;
-  justify-content: center;
+  border-radius: 6px;
   height: 2.5rem;
+  padding: 0 0.5rem;
 }

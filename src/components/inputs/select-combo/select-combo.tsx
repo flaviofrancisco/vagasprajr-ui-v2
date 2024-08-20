@@ -9,7 +9,7 @@ export interface SelectComboProps {
 
 export function SelectCombo({ className, options, value, onChange }: SelectComboProps) {
   return (
-    <select className={`${style['select-combo']} ${className}`} value={value} onChange={(e) => onChange(e.target.value)}>
+    <select className={`${style['select-combo']} ${className || ''}`} value={value} onChange={(e) => onChange(e.target.value)}>
       {options.map((option, index) => (
         <option key={index} value={option.value}>
           {option.label}

@@ -9,6 +9,10 @@ import store from '@/services/store';
 import PersistLogin from '@/components/auth/login/persist-login';
 import MainFooter from '@/components/layout-components/footer';
 
+import { config } from '@fortawesome/fontawesome-svg-core';
+import '@fortawesome/fontawesome-svg-core/styles.css';
+config.autoAddCss = false;
+
 const inter = Inter({ subsets: ['latin'] });
 
 export default function RootLayout({
