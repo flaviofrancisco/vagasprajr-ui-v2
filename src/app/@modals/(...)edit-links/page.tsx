@@ -33,6 +33,10 @@ export default function EditLinksPage() {
     dispatch(onChangeFieldInput({ links: [...profile.links, { name: 'Facebook', url: '' }] }));
   };
 
+  const onChageName = (index: number, value: string) => {
+    dispatch(onChangeFieldInput({ links: profile.links.map((l: any, i: number) => (index === i ? { ...l, name: value } : l)) }));
+  };
+
   useEffect(() => {}, [profile.links]);
 
   const links_names = [
@@ -64,7 +68,13 @@ export default function EditLinksPage() {
         {profile.links.map((link: any, index: number) => (
           <div className={`${styles['edit-links-row']}`} key={index}>
             <div className={`${styles['edit-link-cell']}`}>
-              <SelectCombo options={links_names} value={link.name} onChange={(value: string) => {}} />
+              <SelectCombo
+                options={links_names}
+                value={link.name}
+                onChange={(value: string) => {
+                  onChageName(index, value);
+                }}
+              />
             </div>
             <div className={`${styles['edit-link-cell']}`}>
               <input

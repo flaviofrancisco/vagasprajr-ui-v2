@@ -43,7 +43,7 @@ const UserProfileForm: React.FC = () => {
           <ul>
             {profile.links.map((link: any, index: number) => (
               <li className={`${styles['url-wrapper']} mt-2 text-gray-400`} key={index}>
-                <Link href={link.url}>{link.url}</Link>
+                <Link href={link.url}>{link.name}</Link>
               </li>
             ))}
           </ul>
