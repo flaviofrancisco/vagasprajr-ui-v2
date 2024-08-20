@@ -31,6 +31,8 @@ const UserProfileForm: React.FC = () => {
               {profile.city} {profile.state}
             </p>
             <p>{profile.email}</p>
+            <h2 className={`${styles['form-cell']} text-l mt-4 font-bold`}>Sobre mim</h2>
+            <p>{profile.about_me}</p>
           </div>
           <div className={`${styles['form-cell']}`}>
             <Link href={'/edit-intro'} key={`edit-intro`} className="float-right">

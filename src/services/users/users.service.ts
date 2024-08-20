@@ -1,11 +1,11 @@
 import { ActionReducerMapBuilder, createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { AxiosInstance } from 'axios';
-import exp from 'constants';
 
 export interface UserProfile {
   first_name: string;
   last_name: string;
   email: string;
+  about_me?: string;
   links: UserLink[];
   profile_image_url: string;
   city?: string;
@@ -51,6 +51,7 @@ const usersSlice = createSlice({
       last_name: '',
       email: '',
       links: [],
+      about_me: '',
     },
   } as UsersState,
   reducers: {

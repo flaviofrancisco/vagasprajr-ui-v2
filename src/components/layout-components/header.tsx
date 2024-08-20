@@ -4,11 +4,13 @@ import imgLogo from '@/assets/logo.png';
 import Image from 'next/image';
 import { AuthenticationState, logoutUser } from '@/services/auth/authentication.service';
 import { useSelector } from 'react-redux';
-import { useEffect, useState } from 'react';
+import { use, useEffect, useState } from 'react';
 import { useAppDispatch } from '@/services/store';
 import { useRouter } from 'next/navigation';
 import UserIcon from '@/assets/user-icon.png';
 import Link from 'next/link';
+import { AdminRole, doAuthorization } from '@/services/auth/authorization.service';
+import { axiosPrivate } from '@/services/axios';
 
 const navigation = [
   { name: 'Entrar', href: '/auth/login', current: false },
@@ -24,8 +26,10 @@ export default function MainHeader() {
 
   const dispatch = useAppDispatch();
   const { authSession, isAuthenticated, isLogout } = useSelector((state: any) => state.authenticationReducer as AuthenticationState);
+  const { isAuthorized } = useSelector((state: any) => state.authorizationReducer);
 
   const [isLogged, setIsLogged] = useState(false);
+  const [isAdmin, setIsAdmin] = useState(false);
 
   const hadleLogout = () => {
     dispatch(logoutUser()).then(() => {
@@ -33,6 +37,14 @@ export default function MainHeader() {
       router.push('/');
     });
   };
+
+  useEffect(() => {
+    if (authSession) {
+      dispatch(doAuthorization({ access_token: authSession.access_token, request: { roles: [AdminRole] }, axiosPrivate: axiosPrivate })).then(() => {
+        setIsAdmin(isAuthorized);
+      });
+    }
+  }, [authSession, dispatch, isAuthorized]);
 
   useEffect(() => {
     if (isAuthenticated) {
@@ -111,21 +123,28 @@ export default function MainHeader() {
                     transition
                     className="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 transition focus:outline-none data-[closed]:scale-95 data-[closed]:transform data-[closed]:opacity-0 data-[enter]:duration-100 data-[leave]:duration-75 data-[enter]:ease-out data-[leave]:ease-in"
                   >
+                    {isAdmin && (
+                      <MenuItem>
+                        <Menu as="div" className="relative">
+                          <MenuButton className="block px-4 py-2 text-sm text-gray-700 data-[focus]:bg-gray-100">Admin</MenuButton>
+                          <MenuItems
+                            transition
+                            className="absolute right-full top-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 transition focus:outline-none data-[closed]:scale-95 data-[closed]:transform data-[closed]:opacity-0 data-[enter]:duration-100 data-[leave]:duration-75 data-[enter]:ease-out data-[leave]:ease-in"
+                          >
+                            <MenuItem>
+                              <Link href={'/admin/users'} className="block px-4 py-2 text-sm text-gray-700 data-[focus]:bg-gray-100">
+                                Usuários
+                              </Link>
+                            </MenuItem>
+                          </MenuItems>
+                        </Menu>
+                      </MenuItem>
+                    )}
                     <MenuItem>
                       <Link href={'/perfil'} className="block px-4 py-2 text-sm text-gray-700 data-[focus]:bg-gray-100">
                         Meu Perfil
                       </Link>
                     </MenuItem>
-                    {/* <MenuItem>
-                    <a href="#" className="block px-4 py-2 text-sm text-gray-700 data-[focus]:bg-gray-100">
-                      Your Profile
-                    </a>
-                  </MenuItem>
-                  <MenuItem>
-                    <a href="#" className="block px-4 py-2 text-sm text-gray-700 data-[focus]:bg-gray-100">
-                      Settings
-                    </a>
-                  </MenuItem> */}
                     <MenuItem>
                       <Link href={'/'} onClick={hadleLogout} className="block px-4 py-2 text-sm text-gray-700 data-[focus]:bg-gray-100">
                         Sair

@@ -1,7 +1,5 @@
 import Image from 'next/image';
 import logoImage from '@/assets/logo.png';
-import styles from './footer.module.css';
-import { FaTwitter, FaDiscord, FaTelegram, FaGoogle, FaFacebook, FaTwitterSquare, FaCloud, FaMailBulk, FaEnvelope } from 'react-icons/fa';
 
 export default function MainFooter() {
   return (
