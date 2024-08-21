@@ -15,8 +15,8 @@ export async function middleware(request: NextRequest) {
     return NextResponse.next();
   }
 
-  let cookie = request.cookies.get(process.env.TOKEN_NAME);
-  let token = decodedToken(cookie?.value);
+  let cookie = request.cookies.get(process.env.TOKEN_NAME || 'token');
+  let token = cookie?.value ? decodedToken(cookie?.value) : null;
 
   if (!token) {
     url.pathname = '/auth/login';
