@@ -15,7 +15,7 @@ export async function middleware(request: NextRequest) {
     return NextResponse.next();
   }
 
-  let cookie = request.cookies.get(process.env.TOKEN_NAME || 'token');
+  let cookie = request.cookies.get(process.env.TOKEN_NAME || 'vagasprajr_token');
   let token = cookie?.value ? decodedToken(cookie?.value) : null;
 
   if (!token) {
