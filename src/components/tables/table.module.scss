@@ -7,14 +7,13 @@ $box-shadow: 0 2px 3px rgba(0, 0, 0, 0.1);
 $row-padding: 10px 15px;
 
 .table {
-  width: 90%; /* Set the table width to 90% */
   border-collapse: collapse;
   border-spacing: 0;
   margin: 20px auto; /* Center the table horizontally */
   font-size: $font-size;
   text-align: left;
   box-shadow: $box-shadow;
-  overflow-x: auto;
+  width: 100%;
 }
 
 .th,
@@ -54,6 +53,7 @@ tbody tr .td {
   width: 100%; /* Ensure it takes the full width of the th */
 }
 .tr {
+  transition: all 0.3s ease-in-out;
   border-bottom: 1px solid $border-color;
 }
 
@@ -63,4 +63,9 @@ tbody tr .td {
 
 .tr:nth-child(even) {
   background-color: #ffffff; // White for even rows
+}
+
+.th-content,
+.td-content {
+  padding: 8px;
 }
