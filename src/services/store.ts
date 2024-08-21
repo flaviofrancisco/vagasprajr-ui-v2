@@ -7,6 +7,7 @@ import googleAuthSlice from './oauth/google/google.service';
 import passwordResetSlice from './auth/password.service';
 import usersSlice from './users/users.service';
 import authorizationSlice from './auth/authorization.service';
+import usersAdminSlice from './users/users.admin.service';
 
 const store = configureStore({
   reducer: {
@@ -18,6 +19,7 @@ const store = configureStore({
     passwordResetReducer: passwordResetSlice.reducer,
     usersReducer: usersSlice.reducer,
     authorizationReducer: authorizationSlice.reducer,
+    usersAdminSliceReducer: usersAdminSlice.reducer,
   },
   devTools: !(process.env.NODE_ENV === 'production' || process.env.NODE_ENV === 'test'),
 });

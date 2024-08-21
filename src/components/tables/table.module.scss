@@ -1,0 +1,66 @@
+$primary-color: #04051d;
+$secondary-color: #ffffff;
+$border-color: #dddddd;
+$font-size: 18px;
+$padding: 10px 10px;
+$box-shadow: 0 2px 3px rgba(0, 0, 0, 0.1);
+$row-padding: 10px 15px;
+
+.table {
+  width: 90%; /* Set the table width to 90% */
+  border-collapse: collapse;
+  border-spacing: 0;
+  margin: 20px auto; /* Center the table horizontally */
+  font-size: $font-size;
+  text-align: left;
+  box-shadow: $box-shadow;
+  overflow-x: auto;
+}
+
+.th,
+.td {
+  padding: $padding;
+}
+
+.th-content {
+  display: flex;
+  align-items: center;
+  justify-content: space-between; /* Space items horizontally */
+  width: 100%; /* Ensure it takes the full width of the th */
+}
+
+tbody tr .td {
+  padding: $row-padding; // Apply increased padding to body rows
+}
+
+.th {
+  background-color: $primary-color;
+  color: $secondary-color;
+  font-weight: bold;
+  text-align: left;
+  padding: $row-padding; /* Ensure padding matches the table cells */
+}
+
+.th span,
+.th button {
+  display: flex; /* Use flex for inner elements */
+  align-items: center; /* Center items vertically */
+}
+
+.th-content {
+  display: flex;
+  align-items: center;
+  justify-content: space-between; /* Space items horizontally */
+  width: 100%; /* Ensure it takes the full width of the th */
+}
+.tr {
+  border-bottom: 1px solid $border-color;
+}
+
+.tr:nth-child(odd) {
+  background-color: #dbdbdb; // Light gray for odd rows
+}
+
+.tr:nth-child(even) {
+  background-color: #ffffff; // White for even rows
+}
