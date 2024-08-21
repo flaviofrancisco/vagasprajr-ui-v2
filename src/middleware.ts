@@ -22,6 +22,7 @@ export async function middleware(request: NextRequest) {
     cookie,
     token,
     pathname,
+    token_name: process.env.TOKEN_NAME,
   });
 
   if (!token) {
