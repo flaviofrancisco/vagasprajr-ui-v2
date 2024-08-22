@@ -1,17 +1,27 @@
 'use client';
 import ContextMenu from '@/components/context-menus/context-menu';
-import Table, { Sort } from '@/components/tables/table';
+import ContextMenuFilter from '@/components/context-menus/context-menu-filter';
+import Table, { Column, Sort } from '@/components/tables/table';
 import useAxiosPrivate from '@/hooks/private-axios';
 import { useAppDispatch } from '@/services/store';
 import usersAdminSlice, { doGetUsers } from '@/services/users/users.admin.service';
 import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 
+type ContextMenuFilterState = {
+  clientX: number;
+  clientY: number;
+  visible: boolean;
+  column: Column | null;
+};
+
 const UserAdminPage: React.FC = () => {
   const dispatch = useAppDispatch();
   const axiosPrivate = useAxiosPrivate();
 
   const [contextMenuState, setContextMenuState] = useState({ clientX: 0, clientY: 0, visible: false, data: null });
+  const [contextMenuFilterState, setContextMenuFilterState] = useState<ContextMenuFilterState>({ clientX: 0, clientY: 0, visible: false, column: null });
+
   const { usersResult, filters } = useSelector((state: any) => state.usersAdminSliceReducer);
   const { onFilterChange } = usersAdminSlice.actions;
   const columns = [
@@ -44,6 +54,12 @@ const UserAdminPage: React.FC = () => {
     dispatch(doGetUsers({ axiosPrivate, filters: { ...filters } }));
   }, [axiosPrivate, dispatch, filters]);
 
+  const onContextMenuFilter = (e: React.MouseEvent, column: Column) => {
+    e.preventDefault();
+    const { clientX, clientY } = e;
+    setContextMenuFilterState({ clientX, clientY, visible: true, column: column });
+  };
+
   const onContextMenu = (e: React.MouseEvent, data: any) => {
     e.preventDefault();
     const { clientX, clientY } = e;
@@ -54,12 +70,44 @@ const UserAdminPage: React.FC = () => {
     setContextMenuState({ clientX: 0, clientY: 0, visible: false, data: null });
   };
 
+  const onCloseContextMenuFilter = () => {
+    setContextMenuFilterState({ clientX: 0, clientY: 0, visible: false, column: null });
+  };
+
+  const onFilter = (column: Column | null, value: any) => {
+    if (!column) return;
+
+    const { key } = column;
+
+    const filter = {
+      operator: 'and',
+      fields: [
+        {
+          type: 'string',
+          name: key,
+          value: value,
+        },
+      ],
+    };
+
+    setContextMenuFilterState({ clientX: 0, clientY: 0, visible: false, column: null });
+    dispatch(onFilterChange({ ...filters, filters: [filter] }));
+  };
+
   const onEdit = (data: any) => {};
-  
+
   const onDelete = (data: any) => {};
 
   return (
-    <main className="grid place-items-center w-full h-screen">
+    <main className="grid w-full h-screen">
+      <ContextMenuFilter
+        clientX={contextMenuFilterState.clientX}
+        clientY={contextMenuFilterState.clientY}
+        visible={contextMenuFilterState.visible}
+        column={contextMenuFilterState.column}
+        close={onCloseContextMenuFilter}
+        onFilter={onFilter}
+      />
       <ContextMenu
         onEdit={() => console.log('Edit')}
         onDelete={() => console.log('Delete')}
@@ -69,7 +117,7 @@ const UserAdminPage: React.FC = () => {
         visible={contextMenuState.visible}
         close={onCloseContextMenu}
       />
-      <Table filters={filters} onSort={onSortColumn} value={usersResult} columns={columns} onContextMenu={onContextMenu} />
+      <Table filters={filters} onSort={onSortColumn} value={usersResult} columns={columns} onContextMenu={onContextMenu} onContextMenuFilter={onContextMenuFilter} />
     </main>
   );
 };

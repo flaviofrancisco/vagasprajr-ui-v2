@@ -3,7 +3,7 @@ import styles from './table.module.scss';
 import React from 'react';
 import { FaSortUp, FaSortDown, FaSort } from 'react-icons/fa';
 
-const Table: React.FC<TableProps> = ({ value, columns, filters, onSort, onContextMenu }) => {
+const Table: React.FC<TableProps> = ({ value, columns, filters, onSort, onContextMenu, onContextMenuFilter }) => {
   const [sort, setSort] = React.useState<Sort>(Sort.IDLE);
   const formattedValue = (value: any, type: string) => {
     if (type === 'date') {
@@ -40,7 +40,15 @@ const Table: React.FC<TableProps> = ({ value, columns, filters, onSort, onContex
             <thead>
               <tr>
                 {columns.map((column: Column, index: number) => (
-                  <th className={`w-${column.columnSize} px-4 py-2 ${styles.th}`} key={column.key}>
+                  <th
+                    onContextMenu={(e) => {
+                      if (onContextMenuFilter) {
+                        onContextMenuFilter(e, column);
+                      }
+                    }}
+                    className={`w-${column.columnSize} px-4 py-2 ${styles.th}`}
+                    key={column.key}
+                  >
                     <div className={styles['th-content']}>
                       <span>{column.title}</span>
                       <button
@@ -101,6 +109,7 @@ export interface TableProps {
   onSort?: (key: string, direction: Sort) => void;
   filters?: any;
   onContextMenu?: (e: React.MouseEvent<HTMLDivElement, MouseEvent>, data: any) => void;
+  onContextMenuFilter?: (e: React.MouseEvent<HTMLDivElement, MouseEvent>, column: Column) => void;
 }
 
 export interface Column {

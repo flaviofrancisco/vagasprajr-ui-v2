@@ -8,23 +8,21 @@ const ContextMenu: React.FC<ContextMenuProps> = ({ clientX, clientY, visible, cl
   useOnClickOutside(contextMenuRef, close || (() => {}));
 
   return (
-    <>
-      <div
-        ref={contextMenuRef}
-        onClick={() => {
-          if (close) {
-            close();
-          }
-        }}
-        className={`${styles['context-menu']} absolute bg-white border border-gray-300 rounded-md shadow-md p-2 ${visible ? 'block' : 'hidden'} cursor-pointer`}
-        style={{ top: clientY, left: clientX }}
-      >
-        <div className="flex flex-col">
-          <ContextMenuButton onClick={() => onEdit(data)} icon={<FaEdit />} label="Editar" />
-          <ContextMenuButton onClick={() => onDelete(data)} icon={<FaTrash />} label="Excluir" />
-        </div>
+    <div
+      ref={contextMenuRef}
+      onClick={() => {
+        if (close) {
+          close();
+        }
+      }}
+      className={`${styles['context-menu']} absolute bg-white border border-gray-300 rounded-md shadow-md p-2 ${visible ? 'block' : 'hidden'} cursor-pointer`}
+      style={{ top: clientY, left: clientX }}
+    >
+      <div className="flex flex-col">
+        <ContextMenuButton onClick={() => onEdit(data)} icon={<FaEdit />} label="Editar" />
+        <ContextMenuButton onClick={() => onDelete(data)} icon={<FaTrash />} label="Excluir" />
       </div>
-    </>
+    </div>
   );
 };
 
