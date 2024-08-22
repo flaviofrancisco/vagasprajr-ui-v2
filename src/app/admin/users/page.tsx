@@ -1,14 +1,17 @@
 'use client';
+import ContextMenu from '@/components/context-menus/context-menu';
 import Table, { Sort } from '@/components/tables/table';
 import useAxiosPrivate from '@/hooks/private-axios';
 import { useAppDispatch } from '@/services/store';
 import usersAdminSlice, { doGetUsers } from '@/services/users/users.admin.service';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 
 const UserAdminPage: React.FC = () => {
   const dispatch = useAppDispatch();
   const axiosPrivate = useAxiosPrivate();
+
+  const [contextMenuState, setContextMenuState] = useState({ clientX: 0, clientY: 0, visible: false, data: null });
   const { usersResult, filters } = useSelector((state: any) => state.usersAdminSliceReducer);
   const { onFilterChange } = usersAdminSlice.actions;
   const columns = [
@@ -41,9 +44,32 @@ const UserAdminPage: React.FC = () => {
     dispatch(doGetUsers({ axiosPrivate, filters: { ...filters } }));
   }, [axiosPrivate, dispatch, filters]);
 
+  const onContextMenu = (e: React.MouseEvent, data: any) => {
+    e.preventDefault();
+    const { clientX, clientY } = e;
+    setContextMenuState({ clientX, clientY, visible: true, data: data });
+  };
+
+  const onCloseContextMenu = () => {
+    setContextMenuState({ clientX: 0, clientY: 0, visible: false, data: null });
+  };
+
+  const onEdit = (data: any) => {};
+  
+  const onDelete = (data: any) => {};
+
   return (
     <main className="grid place-items-center w-full h-screen">
-      <Table filters={filters} onSort={onSortColumn} value={usersResult} columns={columns} />
+      <ContextMenu
+        onEdit={() => console.log('Edit')}
+        onDelete={() => console.log('Delete')}
+        data={contextMenuState.data}
+        clientX={contextMenuState.clientX}
+        clientY={contextMenuState.clientY}
+        visible={contextMenuState.visible}
+        close={onCloseContextMenu}
+      />
+      <Table filters={filters} onSort={onSortColumn} value={usersResult} columns={columns} onContextMenu={onContextMenu} />
     </main>
   );
 };

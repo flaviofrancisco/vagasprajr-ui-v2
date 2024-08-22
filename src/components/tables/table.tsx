@@ -3,7 +3,7 @@ import styles from './table.module.scss';
 import React from 'react';
 import { FaSortUp, FaSortDown, FaSort } from 'react-icons/fa';
 
-const Table: React.FC<TableProps> = ({ value, columns, filters, onSort }) => {
+const Table: React.FC<TableProps> = ({ value, columns, filters, onSort, onContextMenu }) => {
   const [sort, setSort] = React.useState<Sort>(Sort.IDLE);
   const formattedValue = (value: any, type: string) => {
     if (type === 'date') {
@@ -39,7 +39,7 @@ const Table: React.FC<TableProps> = ({ value, columns, filters, onSort }) => {
           <table className={`table-fixed m-4 w-full ${styles.tables}`}>
             <thead>
               <tr>
-                {columns.map((column) => (
+                {columns.map((column: Column, index: number) => (
                   <th className={`w-${column.columnSize} px-4 py-2 ${styles.th}`} key={column.key}>
                     <div className={styles['th-content']}>
                       <span>{column.title}</span>
@@ -66,7 +66,15 @@ const Table: React.FC<TableProps> = ({ value, columns, filters, onSort }) => {
             </thead>
             <tbody>
               {value.Data.map((row: any, index: number) => (
-                <tr className={`${styles.tr}`} key={index}>
+                <tr
+                  className={`${styles.tr}`}
+                  key={index}
+                  onContextMenu={(e) => {
+                    if (onContextMenu) {
+                      onContextMenu(e, row);
+                    }
+                  }}
+                >
                   {columns.map((column) => (
                     <td className={`px-4 py-2 w-${column.columnSize} ${column.type === 'date' ? 'text-right' : ''}`} key={column.key}>
                       {cutText(formattedValue(row[column.key], column.type), column.maxLength)}
@@ -92,6 +100,7 @@ export interface TableProps {
   columns: Column[];
   onSort?: (key: string, direction: Sort) => void;
   filters?: any;
+  onContextMenu?: (e: React.MouseEvent<HTMLDivElement, MouseEvent>, data: any) => void;
 }
 
 export interface Column {
