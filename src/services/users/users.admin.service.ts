@@ -1,12 +1,22 @@
 import { ActionReducerMapBuilder, createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { AxiosInstance } from 'axios';
 import { PagedResult } from '../search/search.service';
-import { on } from 'events';
 
 export const doGetUsers = createAsyncThunk('users/get', async ({ axiosPrivate, filters }: { axiosPrivate: AxiosInstance; filters: GetUsersRequest }) => {
   try {
     const response = await axiosPrivate.post('/admin/users', filters);
-    return response.data;
+    const result = response.data as PagedResult<UserView>;
+
+    if (typeof result?.Data === 'undefined' || result?.Data === null) {
+      return {
+        Data: [],
+        Page: 0,
+        PerPage: 20,
+        Total: 0,
+      } as PagedResult<UserView>;
+    }
+
+    return result;
   } catch (error) {
     throw error;
   }

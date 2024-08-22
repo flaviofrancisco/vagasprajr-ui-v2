@@ -31,70 +31,64 @@ const Table: React.FC<TableProps> = ({ value, columns, filters, onSort, onContex
   };
 
   return (
-    <>
-      {!value?.Data || value.Data.length === 0 ? (
-        <>No data</>
-      ) : (
-        <div className="flex w-full justify-center">
-          <table className={`table-fixed m-4 w-full ${styles.tables}`}>
-            <thead>
-              <tr>
-                {columns.map((column: Column, index: number) => (
-                  <th
-                    onContextMenu={(e) => {
-                      if (onContextMenuFilter) {
-                        onContextMenuFilter(e, column);
+    <div className="flex flex-grow mx-auto w-full h-auto justify-center rounded-t-2xl">
+      <table className={`table-fixed mt-4 mr-4 ml-4 w-full rounded-t-2xl overflow-hidden`}>
+        <thead>
+          <tr>
+            {columns.map((column: Column, index: number) => (
+              <th
+                onContextMenu={(e) => {
+                  if (onContextMenuFilter) {
+                    onContextMenuFilter(e, column);
+                  }
+                }}
+                className={`w-${column.columnSize} px-4 py-2 ${styles.th}`}
+                key={column.key}
+              >
+                <div className={styles['th-content']}>
+                  <span>{column.title}</span>
+                  <button
+                    onClick={() => {
+                      if (onSort) {
+                        if (sort === Sort.IDLE || sort === Sort.DESC) {
+                          setSort(Sort.ASC);
+                          onSort(column.key, Sort.ASC);
+                        } else {
+                          setSort(Sort.DESC);
+                          onSort(column.key, Sort.DESC);
+                        }
                       }
                     }}
-                    className={`w-${column.columnSize} px-4 py-2 ${styles.th}`}
-                    key={column.key}
+                    className={styles.sortButton}
                   >
-                    <div className={styles['th-content']}>
-                      <span>{column.title}</span>
-                      <button
-                        onClick={() => {
-                          if (onSort) {
-                            if (sort === Sort.IDLE || sort === Sort.DESC) {
-                              setSort(Sort.ASC);
-                              onSort(column.key, Sort.ASC);
-                            } else {
-                              setSort(Sort.DESC);
-                              onSort(column.key, Sort.DESC);
-                            }
-                          }
-                        }}
-                        className={styles.sortButton}
-                      >
-                        {getSortIcon(column.key)}
-                      </button>
-                    </div>
-                  </th>
-                ))}
-              </tr>
-            </thead>
-            <tbody>
-              {value.Data.map((row: any, index: number) => (
-                <tr
-                  className={`${styles.tr}`}
-                  key={index}
-                  onContextMenu={(e) => {
-                    if (onContextMenu) {
-                      onContextMenu(e, row);
-                    }
-                  }}
-                >
-                  {columns.map((column) => (
-                    <td className={`px-4 py-2 w-${column.columnSize} ${column.type === 'date' ? 'text-right' : ''}`} key={column.key}>
-                      {cutText(formattedValue(row[column.key], column.type), column.maxLength)}
-                    </td>
-                  ))}
-                </tr>
+                    {getSortIcon(column.key)}
+                  </button>
+                </div>
+              </th>
+            ))}
+          </tr>
+        </thead>
+        <tbody>
+          {value.Data.map((row: any, index: number) => (
+            <tr
+              className={`${styles.tr} h-12 overflow-hidden`}
+              key={index}
+              onContextMenu={(e) => {
+                if (onContextMenu) {
+                  onContextMenu(e, row);
+                }
+              }}
+            >
+              {columns.map((column) => (
+                <td className={`px-4 py-2 w-${column.columnSize} ${column.type === 'date' ? 'text-right' : ''}`} key={column.key}>
+                  {cutText(formattedValue(row[column.key], column.type), column.maxLength)}
+                </td>
               ))}
-            </tbody>
-          </table>
-        </div>
-      )}
-    </>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
   );
 };
 

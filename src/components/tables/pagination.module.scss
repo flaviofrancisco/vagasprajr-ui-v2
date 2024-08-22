@@ -1,0 +1,17 @@
+$primary-color: #04051d;
+$secondary-color: #ffffff;
+$border-color: #dddddd;
+$font-size: 18px;
+$padding: 10px 10px;
+$box-shadow: 0 2px 3px rgba(0, 0, 0, 0.1);
+$row-padding: 10px 15px;
+
+.pagination {
+  border-collapse: collapse;
+  border-spacing: 0;
+  font-size: $font-size;
+  text-align: left;
+  box-shadow: $box-shadow;
+  width: 100%;
+  background-color: $primary-color;
+}

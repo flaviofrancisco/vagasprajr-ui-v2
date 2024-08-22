@@ -1,6 +1,7 @@
 'use client';
 import ContextMenu from '@/components/context-menus/context-menu';
 import ContextMenuFilter from '@/components/context-menus/context-menu-filter';
+import Pagination from '@/components/tables/pagination';
 import Table, { Column, Sort } from '@/components/tables/table';
 import useAxiosPrivate from '@/hooks/private-axios';
 import { useAppDispatch } from '@/services/store';
@@ -91,7 +92,7 @@ const UserAdminPage: React.FC = () => {
     };
 
     setContextMenuFilterState({ clientX: 0, clientY: 0, visible: false, column: null });
-    dispatch(onFilterChange({ ...filters, filters: [filter] }));
+    dispatch(onFilterChange({ ...filters, page: 0, filters: [filter] }));
   };
 
   const onEdit = (data: any) => {};
@@ -99,7 +100,7 @@ const UserAdminPage: React.FC = () => {
   const onDelete = (data: any) => {};
 
   return (
-    <main className="grid w-full h-screen">
+    <main className="grid w-full flex-grow">
       <ContextMenuFilter
         clientX={contextMenuFilterState.clientX}
         clientY={contextMenuFilterState.clientY}
@@ -118,6 +119,7 @@ const UserAdminPage: React.FC = () => {
         close={onCloseContextMenu}
       />
       <Table filters={filters} onSort={onSortColumn} value={usersResult} columns={columns} onContextMenu={onContextMenu} onContextMenuFilter={onContextMenuFilter} />
+      <Pagination currentPage={filters.page} pageSize={filters.page_size} totalItems={usersResult.Total} onPageChange={(page) => dispatch(onFilterChange({ ...filters, page }))} />
     </main>
   );
 };
