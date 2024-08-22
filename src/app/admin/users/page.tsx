@@ -6,6 +6,7 @@ import Table, { Column, Sort } from '@/components/tables/table';
 import useAxiosPrivate from '@/hooks/private-axios';
 import { useAppDispatch } from '@/services/store';
 import usersAdminSlice, { doGetUsers } from '@/services/users/users.admin.service';
+import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 
@@ -17,6 +18,7 @@ type ContextMenuFilterState = {
 };
 
 const UserAdminPage: React.FC = () => {
+  const router = useRouter();
   const dispatch = useAppDispatch();
   const axiosPrivate = useAxiosPrivate();
 
@@ -95,7 +97,9 @@ const UserAdminPage: React.FC = () => {
     dispatch(onFilterChange({ ...filters, page: 0, filters: [filter] }));
   };
 
-  const onEdit = (data: any) => {};
+  const onEdit = (data: any) => {
+    router.push(`/admin/users/${data._id}`);
+  };
 
   const onDelete = (data: any) => {};
 
@@ -110,7 +114,7 @@ const UserAdminPage: React.FC = () => {
         onFilter={onFilter}
       />
       <ContextMenu
-        onEdit={() => console.log('Edit')}
+        onEdit={() => onEdit(contextMenuState.data)}
         onDelete={() => console.log('Delete')}
         data={contextMenuState.data}
         clientX={contextMenuState.clientX}

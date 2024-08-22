@@ -8,15 +8,19 @@ import useAxiosPrivate from '@/hooks/private-axios';
 import Link from 'next/link';
 import PencilSvg from '@/components/svg/pencil.svg';
 
-const UserProfileForm: React.FC = () => {
+export interface UserProfileFormProps {
+  userId?: string;
+}
+
+const UserProfileForm: React.FC<UserProfileFormProps> = ({ userId }) => {
   const dispatch = useAppDispatch();
   const axiosPrivate = useAxiosPrivate();
 
   const { profile } = useSelector((state: any) => state.usersReducer);
 
   useEffect(() => {
-    dispatch(doGetUserProfile({ axiosPrivate }));
-  }, [axiosPrivate, dispatch]);
+    dispatch(doGetUserProfile({ axiosPrivate, userId }));
+  }, [axiosPrivate, dispatch, userId]);
 
   return (
     <div className={`flex items-start block w-4/5 sm:w-9/10 p-6 bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700`}>

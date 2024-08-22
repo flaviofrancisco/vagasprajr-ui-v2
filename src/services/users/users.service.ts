@@ -16,10 +16,15 @@ export interface UserLink {
   url: string;
 }
 
-export const doGetUserProfile = createAsyncThunk('users/profile', async ({ axiosPrivate }: { axiosPrivate: AxiosInstance }) => {
+export const doGetUserProfile = createAsyncThunk('users/profile', async ({ axiosPrivate, userId }: { axiosPrivate: AxiosInstance; userId?: string }) => {
   try {
-    const response = await axiosPrivate.get('/users/profile');
-    return response.data;
+    if (typeof userId === 'undefined' || userId === null || userId === '') {
+      const response = await axiosPrivate.get('/users/profile');
+      return response.data;
+    } else {
+      const response = await axiosPrivate.get(`/admin/users/${userId}`);
+      return response.data;
+    }
   } catch (error) {
     throw error;
   }
