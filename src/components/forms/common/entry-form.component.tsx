@@ -2,16 +2,14 @@ import React from 'react';
 import styles from './entry-form.component.module.scss';
 import { SelectCombo } from '@/components/inputs/select-combo/select-combo';
 import StatesBrazil from '@/components/common/datasources/states-br';
+import FieldDefinition from '../field-definition';
 interface EntryFormProps {
   entry: any;
   fields: Field[];
   onSubmit: (e: React.FormEvent) => void;
 }
 
-interface Field {
-  name: string;
-  label: string;
-  type: string;
+interface Field extends FieldDefinition {
   onchange: (value: any, field: string) => void;
 }
 

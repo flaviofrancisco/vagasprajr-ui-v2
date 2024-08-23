@@ -98,7 +98,7 @@ const UserAdminPage: React.FC = () => {
   };
 
   const onEdit = (data: any) => {
-    router.push(`/admin/users/${data._id}`);
+    router.push(`/admin/users/${data.id}`);
   };
 
   const onDelete = (data: any) => {};

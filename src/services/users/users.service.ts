@@ -11,6 +11,32 @@ export interface UserProfile {
   city?: string;
   state?: string;
   experiences?: UserExperience[];
+  educations?: UserEducation[];
+  certifications?: UserCertification[];
+  idioms_info?: UserIdiomInfo[];
+  tech_experiences?: UserTechExperience[];
+}
+
+export interface UserIdiomInfo {
+  name: string;
+  level: string;
+}
+
+export interface UserCertification {
+  id: number;
+  name: string;
+  credential_id: string;
+  credential_url: string;
+  issuing_company: string;
+  start_date: string;
+  end_date: string;
+}
+
+export interface UserTechExperience {
+  id: number;
+  experience_number: number;
+  experience_time: string;
+  technology: string;
 }
 
 export interface UserExperience {
@@ -20,6 +46,18 @@ export interface UserExperience {
   description: string;
   start_date: string;
   end_date: string;
+}
+
+export interface UserEducation {
+  id: number;
+  course: string;
+  degree: string;
+  description: string;
+  start_date: string;
+  end_date: string;
+  field_of_study: string;
+  grade: string;
+  institution: string;
 }
 
 export interface UserLink {

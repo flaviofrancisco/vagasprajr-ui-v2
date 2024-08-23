@@ -1,5 +1,5 @@
 import { JobFilterOptions } from '@/services/search/search.service';
-import SelectCheckbox from '../common/select-checkbox';
+import SelectCheckbox from '../inputs/select-checkbox/select-checkbox';
 import { v4 as uuidv4 } from 'uuid';
 import { memo } from 'react';
 

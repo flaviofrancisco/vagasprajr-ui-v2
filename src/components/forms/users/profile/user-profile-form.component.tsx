@@ -7,6 +7,11 @@ import useAxiosPrivate from '@/hooks/private-axios';
 import UserLinks from './sections/links/user-links';
 import UserPersonalInfo from './sections/personal-info/user-personal-info';
 import UserExperiences from './sections/experiences/user-experiences';
+import UserAbout from './sections/personal-info/user-about';
+import UserEducations from './sections/education/user-education';
+import UserCertifications from './sections/education/user-certification';
+import UserIdioms from './sections/education/user-idioms';
+import UserTechExperiences from './sections/experiences/user-tech-experiences';
 
 export interface UserProfileFormProps {
   userId?: string;
@@ -26,8 +31,13 @@ const UserProfileForm: React.FC<UserProfileFormProps> = ({ userId }) => {
     <div className={`grid flex-grow place-items-center h-screenflex items-start block w-4/5 sm:w-9/10 p-6 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700`}>
       <div className="w-full items-start">
         <UserPersonalInfo profile={profile} />
+        <UserAbout profile={profile} />
+        <UserTechExperiences tech_experiences={profile.tech_experiences} />
         <UserLinks links={profile.links} />
         <UserExperiences experiences={profile.experiences} />
+        <UserEducations educations={profile.educations} />
+        <UserCertifications certifications={profile.certifications} />
+        <UserIdioms idioms={profile.idioms_info} />
       </div>
     </div>
   );
