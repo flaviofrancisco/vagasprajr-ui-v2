@@ -10,14 +10,12 @@ export default function UserExperiences({ experiences }: UserExperiencesProps) {
       return '';
     }
 
-    const [start_month, start_year] = start_date.split('/');
-    const startDate = new Date(`${start_year}/${start_month}/01`);
+    const startDate = parseDate(start_date);
 
     let endDate = new Date();
 
     if (typeof end_date !== 'undefined' && end_date !== null && end_date !== '') {
-      const [end_month, end_year] = end_date.split('/');
-      endDate = new Date(`${end_year}/${end_month}/01`);
+      endDate = parseDate(end_date);
     }
 
     const months = (new Date(endDate).getFullYear() - new Date(startDate).getFullYear()) * 12 + new Date(endDate).getMonth() - new Date(startDate).getMonth();
@@ -42,11 +40,16 @@ export default function UserExperiences({ experiences }: UserExperiencesProps) {
     }
   };
 
+  const parseDate = (dateString: string): Date => {
+    const [month, year] = dateString.split('/');
+    return new Date(`${year}/${month}/01`);
+  };
+
   const getSortedExperiences = () => {
     const experiencesCopy = [...experiences];
     return experiencesCopy.sort((a, b) => {
-      const a_start_date = new Date(`01/${a.start_date}`);
-      const b_start_date = new Date(`01/${b.start_date}`);
+      const a_start_date = parseDate(a.start_date);
+      const b_start_date = parseDate(b.start_date);
       return b_start_date.getTime() - a_start_date.getTime();
     });
   };
