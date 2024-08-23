@@ -25,7 +25,7 @@ const EditIntro: React.FC<EditIntroProps> = ({ onSubmit }) => {
     { name: 'first_name', label: 'Nome', type: 'text', onchange: handleInputChanged },
     { name: 'last_name', label: 'Sobrenome', type: 'text', onchange: handleInputChanged },
     { name: 'city', label: 'Cidade', type: 'text', onchange: handleInputChanged },
-    { name: 'state', label: 'UF', type: 'text', onchange: handleInputChanged },
+    { name: 'state', label: 'UF', type: 'select', onchange: handleInputChanged },
     { name: 'about_me', label: 'Sobre mim', type: 'textarea', onchange: handleInputChanged },
   ];
 

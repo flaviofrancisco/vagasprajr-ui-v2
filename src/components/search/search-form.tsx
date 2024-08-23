@@ -47,7 +47,7 @@ const SearchForm: React.FC = () => {
         {status === 'loading' && <div className="text-center mt-2 text-sm text-gray-500 dark:text-gray-400">Buscando ...</div>}
         {searchExecuted && status === 'failed' && <div className="text-center mt-2 text-sm text-red-500 dark:text-red-400">Erro ao buscar vagas</div>}
         {searchExecuted && status === 'succeeded' && searchResult.Total === 0 && <div className="text-center mt-2 text-sm text-gray-500 dark:text-gray-400">Nenhuma vaga encontrada</div>}
-        {searchExecuted && status === 'succeeded' && searchResult.Total > 0 && <div className="text-center mt-2 text-sm text-gray-500 dark:text-gray-400">{searchResult.Total} vagas encontradas</div>}
+        {searchExecuted && status === 'succeeded' && searchResult.Total > 0 && <div className="text-center mt-2 text-sm dark:text-gray-400">{searchResult.Total} vagas encontradas</div>}
       </div>
       <div className="w-full">{searchResult.Total > 0 && <SearchBar options={job_filter_options} />}</div>
       <div className="flex flex-row">

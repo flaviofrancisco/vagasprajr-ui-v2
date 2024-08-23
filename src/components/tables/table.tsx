@@ -32,7 +32,7 @@ const Table: React.FC<TableProps> = ({ value, columns, filters, onSort, onContex
 
   return (
     <div className="flex flex-grow mx-auto w-full h-auto justify-center rounded-t-2xl">
-      <table className={`table-fixed mt-4 mr-4 ml-4 w-full rounded-t-2xl overflow-hidden`}>
+      <table className={`table-fixed mr-4 ml-4 w-full rounded-t-2xl overflow-hidden`}>
         <thead>
           <tr>
             {columns.map((column: Column, index: number) => (

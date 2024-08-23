@@ -1,0 +1,22 @@
+@import '../../user-profile-form.component.module.scss';
+
+.links-container {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.links-container li {
+  flex: 1 1 auto;
+  margin-right: 10px;
+}
+
+@media (max-width: 768px) {
+  .links-container {
+    flex-direction: column;
+  }
+
+  .links-container li {
+    margin-right: 0;
+    margin-bottom: 10px;
+  }
+}

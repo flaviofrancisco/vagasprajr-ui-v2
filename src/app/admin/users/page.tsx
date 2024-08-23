@@ -104,7 +104,7 @@ const UserAdminPage: React.FC = () => {
   const onDelete = (data: any) => {};
 
   return (
-    <main className="grid w-full flex-grow">
+    <main className="grid mt-10 mb-10 w-full flex-grow">
       <ContextMenuFilter
         clientX={contextMenuFilterState.clientX}
         clientY={contextMenuFilterState.clientY}

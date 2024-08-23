@@ -10,6 +10,16 @@ export interface UserProfile {
   profile_image_url: string;
   city?: string;
   state?: string;
+  experiences?: UserExperience[];
+}
+
+export interface UserExperience {
+  id: number;
+  company: string;
+  position: string;
+  description: string;
+  start_date: string;
+  end_date: string;
 }
 
 export interface UserLink {

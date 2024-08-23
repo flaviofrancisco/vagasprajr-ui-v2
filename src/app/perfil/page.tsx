@@ -4,7 +4,7 @@ import UserProfileForm from '@/components/forms/users/profile/user-profile-form.
 
 const ProfilePage: React.FC = () => {
   return (
-    <main className="grid place-items-center h-screen">
+    <main className="grid w-full mt-10 mb-10 place-items-center">
       <UserProfileForm />
     </main>
   );
