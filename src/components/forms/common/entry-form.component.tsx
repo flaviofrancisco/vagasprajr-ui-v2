@@ -2,7 +2,7 @@ import React from 'react';
 import styles from './entry-form.component.module.scss';
 import { SelectCombo } from '@/components/inputs/select-combo/select-combo';
 import StatesBrazil from '@/components/common/datasources/states-br';
-import FieldDefinition from '../field-definition';
+import { FieldDefinition } from '../field-definition';
 interface EntryFormProps {
   entry: any;
   fields: Field[];
