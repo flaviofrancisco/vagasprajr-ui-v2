@@ -9,10 +9,10 @@ interface SectionProps {
   title: string;
   fields: SimpleFieldDefinition[];
   entry: any;
-  editLink?: string;
+  data?: string;
 }
 
-const SectionComponent: React.FC<SectionProps> = ({ title, fields, entry, editLink }: SectionProps) => {
+const SectionComponent: React.FC<SectionProps> = ({ title, fields, entry, data }: SectionProps) => {
   return (
     <>
       <h2 className={`${styles['form-cell']} text-xl font-bold`}>{title}</h2>
@@ -22,9 +22,18 @@ const SectionComponent: React.FC<SectionProps> = ({ title, fields, entry, editLi
             <p key={uuidv4()}>{entry[field.name]}</p>
           ))}
         </div>
-        {editLink && (
+        {data && (
           <div className={`${styles['form-cell']}`}>
-            <Link href={editLink} key={`edit-intro`} className="float-right">
+            <Link
+              href={{
+                pathname: '/edit-item',
+                query: {
+                  data: data,
+                },
+              }}
+              key={`edit-item-${uuidv4()}`}
+              className="float-right"
+            >
               <PencilSvg className="h-6 w-6" />
             </Link>
           </div>

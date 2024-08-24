@@ -1,9 +1,9 @@
-import { FieldDefinitionCss } from '@/components/forms/field-definition';
+import { FieldDefinition } from '@/components/forms/field-definition';
 import styles from './section-collection.module.scss';
 
 interface SectionCollectionProps {
   title: string;
-  fields: FieldDefinitionCss[];
+  fields: FieldDefinition[];
   entries: any[];
   hasDates?: boolean;
 }
@@ -49,9 +49,9 @@ const SectionCollectionComponent: React.FC<SectionCollectionProps> = ({ title, f
     return new Date(`${year}/${month}/01`);
   };
 
-  const getSortedExperiences = () => {
-    const experiencesCopy = [...entries];
-    return experiencesCopy.sort((a, b) => {
+  const getSortedEntries = () => {
+    const entriesCopy = [...entries];
+    return entriesCopy.sort((a, b) => {
       const a_start_date = parseDate(a.start_date);
       const b_start_date = parseDate(b.start_date);
       return b_start_date.getTime() - a_start_date.getTime();

@@ -1,3 +1,4 @@
+'use client';
 import React from 'react';
 import styles from './entry-form.component.module.scss';
 import { SelectCombo } from '@/components/inputs/select-combo/select-combo';

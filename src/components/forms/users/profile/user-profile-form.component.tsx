@@ -5,13 +5,13 @@ import { useEffect } from 'react';
 import { doGetUserProfile } from '@/services/users/users.service';
 import useAxiosPrivate from '@/hooks/private-axios';
 import UserLinks from './sections/links/user-links';
-import UserPersonalInfo from './sections/personal-info/user-personal-info';
 import UserExperiences from './sections/experiences/user-experiences';
-import UserAbout from './sections/personal-info/user-about';
 import UserEducations from './sections/education/user-education';
 import UserCertifications from './sections/education/user-certification';
 import UserIdioms from './sections/education/user-idioms';
 import UserTechExperiences from './sections/experiences/user-tech-experiences';
+import UserProfileSection from './sections/user-profile-section';
+import { USER_ABOUT_ME_KEY, user_forms, USER_PERSONAL_INFO_KEY } from '../user-profile-forms';
 
 export interface UserProfileFormProps {
   userId?: string;
@@ -30,8 +30,8 @@ const UserProfileForm: React.FC<UserProfileFormProps> = ({ userId }) => {
   return (
     <div className={`grid flex-grow place-items-center h-screenflex items-start block w-4/5 sm:w-9/10 p-6 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700`}>
       <div className="w-full items-start">
-        <UserPersonalInfo profile={profile} />
-        <UserAbout profile={profile} />
+        <UserProfileSection profile={profile} form={user_forms[USER_PERSONAL_INFO_KEY]} />
+        <UserProfileSection profile={profile} form={user_forms[USER_ABOUT_ME_KEY]} />
         <UserTechExperiences tech_experiences={profile.tech_experiences} />
         <UserLinks links={profile.links} />
         <UserExperiences experiences={profile.experiences} />
