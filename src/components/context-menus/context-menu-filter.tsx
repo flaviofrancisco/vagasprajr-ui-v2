@@ -11,18 +11,18 @@ const ContextMenuFilter: React.FC<ContextMenuProps> = ({ column, clientX, client
 
   return (
     <div
-      className={`${styles['context-menu']} w-150 absolute bg-white border border-gray-300 rounded-md shadow-md p-2 ${visible ? 'block' : 'hidden'} cursor-pointer`}
+      className={`${styles['context-menu']} ${styles['context-menu-theme']} w-150 absolute bg-white border border-gray-300 rounded-md shadow-md p-2 ${visible ? 'block' : 'hidden'} cursor-pointer`}
       style={{ top: clientY, left: clientX }}
     >
       <div className="flex flex-col">
         <span className="text-sm font-bold">Filtrar</span>
         <span className="text-sm">{column?.title}</span>
-        <input className="border border-gray-300 rounded-md p-2" type="text" value={value} onChange={onChangeValue} />
+        <input className="border border-gray-300 rounded-md p-2 dark:bg-gray-700" type="text" value={value} onChange={onChangeValue} />
         <div className="flex justify-end">
           <button className="bg-blue-500 text-white rounded-md p-1 mt-4 mr-4 w-1/2" onClick={() => onFilter && onFilter(column, value)}>
             Filtrar
           </button>
-          <button className="bg-gray-300 rounded-md p-1 mt-4 w-1/2" onClick={close}>
+          <button className="bg-gray-300 rounded-md p-1 mt-4 w-1/2 dark:bg-gray-800" onClick={close}>
             Fechar
           </button>
         </div>

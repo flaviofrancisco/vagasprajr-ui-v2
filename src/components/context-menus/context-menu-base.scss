@@ -1,0 +1,15 @@
+.context-menu-theme {
+  --context-menu-bg: #fff;
+  --context-menu-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  --context-menu-border: 1px solid #e0e0e0;
+  --context-menu-item-hover: #f0f0f0;
+}
+
+@media (prefers-color-scheme: dark) {
+  .context-menu-theme {
+    --context-menu-bg: #333;
+    --context-menu-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    --context-menu-border: 1px solid #e0e0e0;
+    --context-menu-item-hover: #777575;
+  }
+}

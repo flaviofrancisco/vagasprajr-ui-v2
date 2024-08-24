@@ -1,3 +1,5 @@
+@import "./context-menu-base.scss";
+
 .context-menu {
   width: 250px;
 }
@@ -6,3 +8,9 @@
   padding: 4px 8px;
   cursor: pointer;
 }
+
+@media (prefers-color-scheme: dark) {
+  .context-menu {
+    background: var(--context-menu-bg);
+  }
+}	

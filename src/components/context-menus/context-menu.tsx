@@ -15,7 +15,7 @@ const ContextMenu: React.FC<ContextMenuProps> = ({ clientX, clientY, visible, cl
           close();
         }
       }}
-      className={`${styles['context-menu']} absolute bg-white border border-gray-300 rounded-md shadow-md p-2 ${visible ? 'block' : 'hidden'} cursor-pointer`}
+      className={`${styles['context-menu']} ${styles['context-menu-theme']} absolute bg-white border border-gray-300 rounded-md shadow-md p-2 ${visible ? 'block' : 'hidden'} cursor-pointer`}
       style={{ top: clientY, left: clientX }}
     >
       <div className="flex flex-col">

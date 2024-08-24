@@ -1,8 +1,21 @@
+@import './context-menu-base.scss';
+
 .context-menu {
   width: 150px;
+  background: var(--context-menu-bg);
 }
 
 .context-menu-item {
   padding: 4px 8px;
   cursor: pointer;
+}
+
+.context-menu-item:hover {
+  background: var(--context-menu-item-hover);
+}
+
+@media (prefers-color-scheme: dark) {
+  .context-menu {
+    background: var(--context-menu-bg);
+  }
 }
