@@ -1,0 +1,10 @@
+.real-size {
+  width: auto;
+  height: auto;
+}
+
+.full-height-image {
+  height: 100%;
+  width: auto;
+  object-fit: cover; /* or 'contain' depending on your needs */
+}

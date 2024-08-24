@@ -15,6 +15,7 @@ import { axiosPrivate } from '@/services/axios';
 const navigation = [
   { name: 'Entrar', href: '/auth/login', current: false },
   { name: 'Criar conta', href: '/auth/signup', current: false },
+  { name: 'Shopping', href: '/shopping', current: false },
 ];
 
 function classNames(...classes: string[]): string {
