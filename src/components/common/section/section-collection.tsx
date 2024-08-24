@@ -1,5 +1,6 @@
 import { FieldDefinition } from '@/components/forms/field-definition';
 import styles from './section-collection.module.scss';
+import Link from 'next/link';
 
 interface SectionCollectionProps {
   title: string;
@@ -49,6 +50,23 @@ const SectionCollectionComponent: React.FC<SectionCollectionProps> = ({ title, f
     return new Date(`${year}/${month}/01`);
   };
 
+  const getComponent = (field: FieldDefinition, entry: any) => {
+    switch (field.type) {
+      case 'url':
+        return (
+          <Link className="text-blue-500 dark:text-blue-400" href={entry[field.name]} passHref target="_blank" rel="noopener noreferrer">
+            {entry[field.name]}
+          </Link>
+        );
+      default:
+        return (
+          <div className={`${styles['form-cell']} break-words overflow-hidden text-ellipsis`}>
+            <p>{entry[field.name]}</p>
+          </div>
+        );
+    }
+  };
+
   const getSortedEntries = () => {
     const entriesCopy = [...entries];
     return entriesCopy.sort((a, b) => {
@@ -77,9 +95,7 @@ const SectionCollectionComponent: React.FC<SectionCollectionProps> = ({ title, f
                       </div>
                     </div>
                   ) : (
-                    <div className={`${styles['form-cell']} break-words overflow-hidden text-ellipsis`}>
-                      <p>{entry[field.name]}</p>
-                    </div>
+                    <div className={`${styles['form-cell']} break-words overflow-hidden text-ellipsis`}>{getComponent(field, entry)}</div>
                   )}
                 </p>
               ))}

@@ -4,9 +4,9 @@ import { FormDefinition } from '../../user-profile-forms';
 
 interface UserProfileSectionProps {
   profile: UserProfile;
-  form: FormDefinition;
+  form_definition: FormDefinition;
 }
 
-export default function UserProfileSection({ profile, form }: UserProfileSectionProps) {
-  return <SectionComponent title={form.title} fields={form.simple_definition} entry={profile} data={form.key} />;
+export default function UserProfileSection({ profile, form_definition }: UserProfileSectionProps) {
+  return <SectionComponent title={form_definition.title} fields={form_definition.simple_definition} entry={profile} data={form_definition.key} />;
 }

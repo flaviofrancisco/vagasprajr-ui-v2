@@ -17,7 +17,9 @@ export default function UserLinks({ links }: UserLinksProps) {
           <ul className={`${styles['links-container']}`}>
             {links.map((link: any, index: number) => (
               <li className={`${styles['url-wrapper']} mt-2 text-gray-500 dark:text-white`} key={index}>
-                <Link href={link.url}>{link.url}</Link>
+                <Link href={link.url} passHref target="_blank" rel="noopener noreferrer">
+                  {link.url}
+                </Link>
               </li>
             ))}
           </ul>

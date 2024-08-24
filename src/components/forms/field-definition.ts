@@ -1,10 +1,9 @@
-export interface FieldDefinition extends SimpleFieldDefinition {
-  label: string;
-  type: string;
-  className?: string;
-  is_url?: boolean;
+export interface FieldDefinition extends FieldDefinitionBase {
+  label?: string;
+  type?: string;
 }
 
-export interface SimpleFieldDefinition {
+export interface FieldDefinitionBase {
   name: string;
+  className?: string;
 }

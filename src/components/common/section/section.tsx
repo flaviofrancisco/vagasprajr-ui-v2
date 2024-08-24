@@ -1,13 +1,13 @@
 import React from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import styles from './section.module.scss';
-import { SimpleFieldDefinition } from '@/components/forms/field-definition';
+import { FieldDefinitionBase } from '@/components/forms/field-definition';
 import Link from 'next/link';
 import PencilSvg from '@/components/svg/pencil.svg';
 
 interface SectionProps {
   title: string;
-  fields: SimpleFieldDefinition[];
+  fields: FieldDefinitionBase[];
   entry: any;
   data?: string;
 }
