@@ -27,7 +27,7 @@ const ShoppingPage: React.FC = () => {
         <h1 className="text-2xl font-bold text-center mt-8">Shopping</h1>
         <h2 className="text-lg text-center mt-4">
           Aqui você encontra cupons de desconto e ofertas exclusivas. Comprando qualquer produto nos links abaixo você vai ajudar nosso projeto e assim poderemos continuar a postar vagas e melhorar
-          nosso site.
+          nosso site. Você pode nos ajudar também através do nosso pix: <strong>contato@vagasprajr.com.br</strong><br/>Muito obrigado! 🚀
         </h2>
         {/* create a div to insert cupons */}
         <div>
