@@ -3,7 +3,7 @@ export interface PencilSvgProps {
 }
 export default function PencilSvg({ className }: PencilSvgProps) {
   return (
-    <svg fill="#000000" height="200px" className={className} version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 306.637 306.637">
+    <svg fill="#000000" height="200px" className={`${className} fill-current dark:text-white`} version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 306.637 306.637">
       <g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
       <g id="SVGRepo_tracerCarrier" strokeLinecap="round" strokeLinejoin="round"></g>
       <g id="SVGRepo_iconCarrier">

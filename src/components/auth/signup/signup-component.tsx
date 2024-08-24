@@ -74,7 +74,7 @@ export default function SignupComponent() {
         </div>
       ) : (
         <div className="grid place-items-center h-screen">
-          <div className="w-[4/5] h-[4/5] bg-white p-4 rounded-lg shadow-lg">
+          <div className="w-[4/5] h-[4/5] bg-white p-4 rounded-lg shadow-lg dark:bg-gray-800">
             <p ref={errRef} aria-live="assertive" className="text-red-500 font-bold text-center">
               {error && (
                 <>
@@ -84,7 +84,7 @@ export default function SignupComponent() {
             </p>
             <div className="flex justify-center items-center">
               <form onSubmit={handleSubmit} className="w-full max-w-sm">
-                <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="email">
+                <label className="block text-gray-700 text-sm font-bold mb-2 dark:text-white" htmlFor="email">
                   e-mail
                   <FontAwesomeIcon size="xs" icon={faCheck} className={isValidEmail ? styles.valid : 'hidden'} />
                   <FontAwesomeIcon size="xs" icon={faTimes} className={!isValidEmail || !userInfo.email || userInfo.email === '' ? styles.invalid : 'hidden'} />
@@ -104,7 +104,7 @@ export default function SignupComponent() {
                     placeholder="e-mail"
                   />
                 </label>
-                <label className="block text-gray-700 text-sm font-bold mb-2 mt-4" htmlFor="password">
+                <label className="block text-gray-700 text-sm font-bold mb-2 mt-4 dark:text-white" htmlFor="password">
                   senha
                   <input
                     className="shadow appearance-none border rounded w-full py-2 px-3 mb-4 text-gray-700 leading-tight focus:outline-none focus:ring-4 focus:ring-[#1da1f2]/50 focus:ring-opacity-50 focus:ring-offset-2 focus:ring-offset-gray-100"
@@ -136,7 +136,7 @@ export default function SignupComponent() {
                   }
                   isVisible={!isValidPassword && typeof userInfo.password !== 'undefined' && userInfo.password !== null && userInfo.password.trim() !== ''}
                 />
-                <label className="block text-gray-700 text-sm font-bold mb-2 mt-4" htmlFor="password">
+                <label className="block text-gray-700 text-sm font-bold mb-2 mt-4 dark:text-white" htmlFor="password">
                   confirmar senha
                   <input
                     className="shadow appearance-none border rounded w-full py-2 px-3 mb-4 text-gray-700 leading-tight focus:outline-none focus:ring-4 focus:ring-[#1da1f2]/50 focus:ring-opacity-50 focus:ring-offset-2 focus:ring-offset-gray-100"

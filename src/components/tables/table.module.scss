@@ -5,6 +5,8 @@ $font-size: 18px;
 $padding: 5px 0px;
 $box-shadow: 0 2px 3px rgba(0, 0, 0, 0.1);
 $row-padding: 10px 15px;
+$tr-background-color: #ffffff;
+$tr-light-background-color: #f9f9f9;
 
 .th,
 .td {
@@ -48,14 +50,30 @@ tbody tr .td {
 }
 
 .tr:nth-child(odd) {
-  background-color: #dbdbdb; // Light gray for odd rows
+  background-color: $tr-light-background-color;
 }
 
 .tr:nth-child(even) {
-  background-color: #ffffff; // White for even rows
+  background-color: $tr-background-color;
 }
 
 .th-content,
 .td-content {
   padding: 8px;
+}
+
+@media (prefers-color-scheme: dark) {
+  $primary-color: #ffffff;
+  $secondary-color: #04051d;
+  $border-color: #333333;
+  $tr-background-color: #333333;
+  $tr-light-background-color: #2b2b2b;
+
+  .tr:nth-child(odd) {
+    background-color: $tr-light-background-color;
+  }
+
+  .tr:nth-child(even) {
+    background-color: $tr-background-color;
+  }
 }

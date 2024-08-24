@@ -2,6 +2,13 @@
 @tailwind components;
 @tailwind utilities;
 
+:root {
+  --foreground-rgb: 0, 0, 0;
+  --background-start-rgb: 214, 219, 220;
+  --background-end-rgb: 255, 255, 255;
+  --main-background-color: #eaedee;
+}
+
 html,
 body {
   height: 100%;
@@ -16,13 +23,7 @@ body {
 
 main {
   flex-grow: 1;
-  background-color: #eaedee;
-}
-
-:root {
-  --foreground-rgb: 0, 0, 0;
-  --background-start-rgb: 214, 219, 220;
-  --background-end-rgb: 255, 255, 255;
+  background-color: var(--main-background-color);
 }
 
 @media (prefers-color-scheme: dark) {
@@ -30,6 +31,10 @@ main {
     --foreground-rgb: 255, 255, 255;
     --background-start-rgb: 0, 0, 0;
     --background-end-rgb: 0, 0, 0;
+    --main-background-color: #121212;
+  }
+  main {
+    background-color: var(--main-background-color);
   }
 }
 

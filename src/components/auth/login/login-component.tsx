@@ -72,7 +72,7 @@ const LoginComponent: React.FC = () => {
 
   return (
     <div className="grid place-items-center h-screen">
-      <div className="w-[4/5] h-[4/5] bg-white p-4 rounded-lg shadow-lg">
+      <div className="w-[4/5] h-[4/5] bg-white p-4 rounded-lg shadow-lg dark:bg-gray-800">
         <div className="flex justify-center items-center">
           <button
             onClick={handleGoogleLogIn}
@@ -95,7 +95,7 @@ const LoginComponent: React.FC = () => {
         </p>
         <div className="flex justify-center items-center p-4">
           <form onSubmit={handleSubmit} className="w-full max-w-sm">
-            <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="email">
+            <label className="block text-gray-700 text-sm font-bold mb-2 dark:text-white" htmlFor="email">
               Email
             </label>
             <input
@@ -109,7 +109,7 @@ const LoginComponent: React.FC = () => {
               required
               placeholder="e-mail"
             />
-            <label className="block text-gray-700 text-sm font-bold mb-2 mt-4" htmlFor="password">
+            <label className="block text-gray-700 text-sm font-bold mb-2 mt-4 dark:text-white" htmlFor="password">
               Senha
             </label>
             <input

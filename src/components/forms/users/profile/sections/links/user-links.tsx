@@ -16,7 +16,7 @@ export default function UserLinks({ links }: UserLinksProps) {
         <div className={`${styles['form-row']}`}>
           <ul className={`${styles['links-container']}`}>
             {links.map((link: any, index: number) => (
-              <li className={`${styles['url-wrapper']} mt-2 text-gray-500`} key={index}>
+              <li className={`${styles['url-wrapper']} mt-2 text-gray-500 dark:text-white`} key={index}>
                 <Link href={link.url}>{link.url}</Link>
               </li>
             ))}

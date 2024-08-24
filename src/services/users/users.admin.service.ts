@@ -2,6 +2,8 @@ import { ActionReducerMapBuilder, createAsyncThunk, createSlice, PayloadAction }
 import { AxiosInstance } from 'axios';
 import { PagedResult } from '../search/search.service';
 
+const DEFAULT_PAGE_SIZE = 12;
+
 export const doGetUsers = createAsyncThunk('users/get', async ({ axiosPrivate, filters }: { axiosPrivate: AxiosInstance; filters: GetUsersRequest }) => {
   try {
     const response = await axiosPrivate.post('/admin/users', filters);
@@ -11,7 +13,7 @@ export const doGetUsers = createAsyncThunk('users/get', async ({ axiosPrivate, f
       return {
         Data: [],
         Page: 0,
-        PerPage: 20,
+        PerPage: DEFAULT_PAGE_SIZE,
         Total: 0,
       } as PagedResult<UserView>;
     }
@@ -71,14 +73,14 @@ const usersAdminSlice = createSlice({
     usersResult: {
       Data: [],
       Page: 0,
-      PerPage: 20,
+      PerPage: DEFAULT_PAGE_SIZE,
       Total: 0,
     },
     filters: {
       sort: 'created_at',
       is_ascending: false,
       page: 0,
-      page_size: 20,
+      page_size: DEFAULT_PAGE_SIZE,
     },
   } as UsersAdminState,
   reducers: {
