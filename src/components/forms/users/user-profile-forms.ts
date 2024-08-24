@@ -25,7 +25,7 @@ export const user_forms = {
       { name: 'last_name', label: 'Sobrenome', type: 'text', required: true },
       { name: 'email', label: 'Email', type: 'email', required: true },
       { name: 'city', label: 'Cidade', type: 'text', required: true },
-      { name: 'state', label: 'Estado', type: 'text', required: true },
+      { name: 'state', label: 'Estado', type: 'select-br-states', required: true },
     ],
   },
   [USER_ABOUT_ME_KEY]: {

@@ -17,7 +17,7 @@ interface Field extends FieldDefinition {
 const EntryForm: React.FC<EntryFormProps> = ({ entry, fields, onSubmit }) => {
   const renderField = (field: Field) => {
     switch (field.type) {
-      case 'select':
+      case 'select-br-states':
         return (
           <SelectCombo
             options={StatesBrazil}
