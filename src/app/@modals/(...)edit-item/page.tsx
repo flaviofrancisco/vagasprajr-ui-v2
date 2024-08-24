@@ -35,7 +35,7 @@ const EditProfilePage: React.FC = () => {
       case USER_ABOUT_ME_KEY:
         return <EditProfile onSubmit={onSave} fieldDefintion={user_forms[params.data].form_definition} />;
       default:
-        return <div>{`Formulário invalido para parametro: ${params.data} `}</div>;
+        return <div>{`Formulário inválido para parametro: ${params?.data ?? 'Não informado'} ou em desenvolvimento. Por favor tente mais tarde.`}</div>;
     }
   };
 
