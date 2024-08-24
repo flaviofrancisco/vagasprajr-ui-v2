@@ -1,6 +1,8 @@
+import { v4 as uuidv4 } from 'uuid';
 import { FieldDefinition } from '@/components/forms/field-definition';
 import styles from './section-collection.module.scss';
 import Link from 'next/link';
+import PencilSvg from '@/components/svg/pencil.svg';
 
 interface SectionCollectionProps {
   title: string;
@@ -78,27 +80,44 @@ const SectionCollectionComponent: React.FC<SectionCollectionProps> = ({ title, f
 
   return (
     <>
-      <h2 className={`${styles['form-cell']} mt-10 text-xl font-bold`}>{title}</h2>
+      <div className="flex flex-row items-start">
+        <button className="bg-blue-500 hover:bg-blue-700 mb-5 text-white font-bold w-6 h-6 rounded-full flex items-center justify-center" onClick={() => console.log('Add')}>
+          +
+        </button>
+        <h2 className={`$ ml-2 text-xl font-bold`}>{title}</h2>
+      </div>
       {entries &&
         entries.map((entry) => (
           <div className={`${styles['form-row']}`} key={entry.id}>
-            <div className={`${styles['form-cell']} mb-6 break-words overflow-hidden text-ellipsis`}>
-              {fields.map((field, index) => (
-                <p key={index} className={field.className}>
-                  {hasDates && index === 0 ? (
-                    <div className={`${styles['section-collection-container']}`}>
-                      <div className={`${styles['form-cell']} break-words overflow-hidden text-ellipsis`}>
-                        <p className="font-bold">{entry[field.name]}</p>
+            <div className="flex flex-row items-start">
+              <Link
+                href={{
+                  pathname: '/edit-item',
+                  query: {
+                    data: '',
+                  },
+                }}
+                key={`edit-item-${uuidv4()}`}
+                className="bg-green-500 mr-2 hover:bg-green-700 text-white font-bold w-6 h-6 rounded-full flex items-center justify-center"
+              >
+                <PencilSvg className="h-2 w-2" />
+              </Link>
+              <div className={`${styles['form-cell']} w-[95%] mb-6 break-words overflow-hidden text-ellipsis`}>
+                {fields.map((field, index) => (
+                  <p key={index} className={field.className}>
+                    {hasDates && index === 0 ? (
+                      <div className={`${styles['section-collection-container']}`}>
+                        <div className={`${styles['form-cell']} break-words overflow-hidden text-ellipsis`}>
+                          <p className="font-bold">{entry[field.name]}</p>
+                          <p className="text-gray-400 dark:text-gray-300">{formatDate(entry.start_date, entry.end_date)}</p>
+                        </div>
                       </div>
-                      <div className={`${styles['form-cell']} break-words mt-2 overflow-hidden text-ellipsis`}>
-                        <p className="text-gray-400 dark:text-gray-300">{formatDate(entry.start_date, entry.end_date)}</p>
-                      </div>
-                    </div>
-                  ) : (
-                    <div className={`${styles['form-cell']} break-words overflow-hidden text-ellipsis`}>{getComponent(field, entry)}</div>
-                  )}
-                </p>
-              ))}
+                    ) : (
+                      <div className={`${styles['form-cell']} break-words overflow-hidden text-ellipsis`}>{getComponent(field, entry)}</div>
+                    )}
+                  </p>
+                ))}
+              </div>
             </div>
           </div>
         ))}

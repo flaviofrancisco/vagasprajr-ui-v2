@@ -4,6 +4,13 @@
   justify-content: space-between;
 }
 
+.form-cell {
+  margin-right: 10px;
+  flex-wrap: wrap;
+  word-wrap: break-word; /* Ensures long words break and wrap to the next line */
+  white-space: normal; /* Allows text to wrap to the next line */
+}
+
 @media (max-width: 600px) {
   .section-collection-container {
     flex-direction: column;
