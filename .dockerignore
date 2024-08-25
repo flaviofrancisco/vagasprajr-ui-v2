@@ -12,3 +12,4 @@ node_modules
 *.mongodb.js
 .env
 deploy.sh
+.vscode/*

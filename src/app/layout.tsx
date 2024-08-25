@@ -11,6 +11,7 @@ import MainFooter from '@/components/layout-components/footer';
 
 import { config } from '@fortawesome/fontawesome-svg-core';
 import '@fortawesome/fontawesome-svg-core/styles.css';
+import AuthProvider from '@/components/auth/login/AuthProvider';
 config.autoAddCss = false;
 
 const inter = Inter({ subsets: ['latin'] });
@@ -25,14 +26,16 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${inter.className} flex flex-col min-h-full`}>
-        <Provider store={store}>
-          <PersistLogin>
-            <MainHeader />
-            {modals}
-            <main className="flex-grow">{children}</main>
-            <MainFooter />
-          </PersistLogin>
-        </Provider>
+        <AuthProvider>
+          <Provider store={store}>
+            <PersistLogin>
+              <MainHeader />
+              {modals}
+              <main className="flex-grow">{children}</main>
+              <MainFooter />
+            </PersistLogin>
+          </Provider>
+        </AuthProvider>
       </body>
       <GoogleAnalytics gaId="G-5B72V38Z8J" />
     </html>

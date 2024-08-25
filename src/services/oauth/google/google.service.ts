@@ -10,6 +10,7 @@ export const loginUsingGoogle = createAsyncThunk('googleAuth/loginUsingGoogle', 
       headers: {
         'Content-Type': 'application/json',
       },
+      withCredentials: true,
     }
   );
   return response?.data;

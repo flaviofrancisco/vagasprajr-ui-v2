@@ -3,10 +3,14 @@
 import { AuthenticationState, doAuthentication } from '@/services/auth/authentication.service';
 import { useAppDispatch } from '@/services/store';
 import Link from 'next/link';
-import { useEffect, useRef, useState } from 'react';
+import { use, useEffect, useRef, useState } from 'react';
 import { useSelector } from 'react-redux';
+import { signIn, useSession } from 'next-auth/react';
+import { useRouter } from 'next/navigation';
 
 const LoginComponent: React.FC = () => {
+  const router = useRouter();
+  const session = useSession();
   const dispatch = useAppDispatch();
   const [user, setUser] = useState('');
   const [pwd, setPwd] = useState('');
@@ -16,21 +20,14 @@ const LoginComponent: React.FC = () => {
 
   const { authSession, error, status } = useSelector((state: any) => state.authenticationReducer as AuthenticationState);
 
-  const getGoogleOauthUrl = () => {
-    const rootUrl = 'https://accounts.google.com/o/oauth2/v2/auth';
-    const options = {
-      redirect_uri: process.env.NEXT_PUBLIC_GOOGLE_OAUTH_REDIRECT_URI!, // client url cannot be http://localhost:3000/ or http://
-      client_id: process.env.NEXT_PUBLIC_OOGLE_CLIENT_ID!,
-      response_type: 'token',
-      scope: ['email', 'profile'].join(' '), // add/remove scopes as needed
-    };
-    const qs = new URLSearchParams(options).toString();
-    return `${rootUrl}?${qs}`;
-  };
-
-  const handleGoogleLogIn = () => {
-    window.location.href = getGoogleOauthUrl();
-  };
+  useEffect(() => {
+    if (typeof session === 'undefined' || session === null) {
+      return;
+    }
+    if (session.status === 'authenticated') {
+      router.push('/auth/google/callback');
+    }
+  }, [router, session]);
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -75,7 +72,7 @@ const LoginComponent: React.FC = () => {
       <div className="w-[4/5] h-[4/5] bg-white p-4 rounded-lg shadow-lg dark:bg-gray-800">
         <div className="flex justify-center items-center">
           <button
-            onClick={handleGoogleLogIn}
+            onClick={() => signIn()}
             type="button"
             className="text-white bg-[#4285F4] hover:bg-[#4285F4]/90 focus:ring-4 focus:outline-none focus:ring-[#4285F4]/50 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:focus:ring-[#4285F4]/55 mr-2 mb-2"
           >

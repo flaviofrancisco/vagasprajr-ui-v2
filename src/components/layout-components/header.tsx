@@ -4,13 +4,14 @@ import imgLogo from '@/assets/logo.png';
 import Image from 'next/image';
 import { AuthenticationState, logoutUser } from '@/services/auth/authentication.service';
 import { useSelector } from 'react-redux';
-import { use, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useAppDispatch } from '@/services/store';
 import { useRouter } from 'next/navigation';
 import UserIcon from '@/assets/user-icon.png';
 import Link from 'next/link';
 import { AdminRole, doAuthorization } from '@/services/auth/authorization.service';
 import { axiosPrivate } from '@/services/axios';
+import { signOut } from 'next-auth/react';
 
 const navigation = [
   { name: 'Entrar', href: '/auth/login', current: false },
@@ -34,6 +35,7 @@ export default function MainHeader() {
 
   const hadleLogout = () => {
     dispatch(logoutUser()).then(() => {
+      signOut();
       setIsLogged(isLogout);
       router.push('/');
     });

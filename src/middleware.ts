@@ -18,13 +18,6 @@ export async function middleware(request: NextRequest) {
   let cookie = request.cookies.get(process.env.TOKEN_NAME || 'vagasprajr_token');
   let token = cookie?.value ? decodedToken(cookie?.value) : null;
 
-  console.log({
-    cookie,
-    token,
-    pathname,
-    token_name: process.env.TOKEN_NAME,
-  });
-
   if (!token) {
     url.pathname = '/auth/login';
     return NextResponse.redirect(url, {

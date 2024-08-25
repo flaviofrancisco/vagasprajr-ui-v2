@@ -1,8 +1,8 @@
-import { AuthenticationState } from "@/services/auth/authentication.service";
-import { axiosPrivate } from "@/services/axios";
-import { useEffect } from "react";
-import { useSelector } from "react-redux";
-import useRefreshToken from "./refresh-token";
+import { AuthenticationState } from '@/services/auth/authentication.service';
+import { axiosPrivate } from '@/services/axios';
+import { useEffect } from 'react';
+import { useSelector } from 'react-redux';
+import useRefreshToken from './refresh-token';
 
 const useAxiosPrivate = () => {
   const refresh = useRefreshToken();
@@ -27,7 +27,6 @@ const useAxiosPrivate = () => {
           previousRequest.sent = true;
           const newRefreshToken = await refresh();
           previousRequest.headers['Authorization'] = `Bearer ${newRefreshToken.accessToken}`;
-          console.log('axiosPrivate.interceptors.response', newRefreshToken);
           return axiosPrivate(previousRequest);
         }
         console.error({ error });
