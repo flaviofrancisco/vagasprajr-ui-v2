@@ -53,3 +53,20 @@
     }
   }
 }
+
+@media (prefers-color-scheme: dark) {
+  .modal-header {
+    background-color: #1a202c;
+    color: #cbd5e0;
+  }
+  .modal-footer {
+    background-color: #1a202c;
+  }
+  .button-close {
+    background-color: #2d3748;
+    color: #e2e8f0;
+    &:hover {
+      background-color: #4a5568;
+    }
+  }
+}

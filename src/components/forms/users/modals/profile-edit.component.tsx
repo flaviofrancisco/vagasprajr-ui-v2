@@ -6,12 +6,12 @@ import { useCallback, useEffect, useState } from 'react';
 import usersSlice from '@/services/users/users.service';
 import { FieldDefinition } from '../../field-definition';
 
-export interface EditIntroProps {
+export interface ProfileEditProps {
   onSubmit: () => void;
   fieldDefintion: FieldDefinition[];
 }
 
-const EditProfile: React.FC<EditIntroProps> = ({ onSubmit, fieldDefintion }) => {
+const ProfileEdit: React.FC<ProfileEditProps> = ({ onSubmit, fieldDefintion }) => {
   const dispatch = useAppDispatch();
   const { onChangeFieldInput } = usersSlice.actions;
   const { profile } = useSelector((state: any) => state.usersReducer);
@@ -36,4 +36,4 @@ const EditProfile: React.FC<EditIntroProps> = ({ onSubmit, fieldDefintion }) => 
   return <EntryForm fields={formDefinition} entry={{ ...profile }} onSubmit={onSubmit} />;
 };
 
-export default EditProfile;
+export default ProfileEdit;

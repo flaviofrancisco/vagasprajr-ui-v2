@@ -6,6 +6,7 @@ export const USER_CERTIFICATIONS_KEY = 'user_certifications';
 export const USER_EDUCATIONS_KEY = 'user_education';
 export const USER_IDIOM_INFO = 'idioms_info';
 export const USER_EXPERIENCES_KEY = 'experiences';
+export const USER_TECH_EXPERIENCES_KEY = 'tech_experiences';
 
 export interface FormDefinition {
   key: string;
@@ -63,5 +64,41 @@ export const user_forms = {
     simple_definition: [{ name: 'company', className: 'font-bold' }, { name: 'position', className: 'font-semibold mb-4' }, { name: 'description' }],
     form_definition: [],
     hasDates: true,
+  },
+  [USER_TECH_EXPERIENCES_KEY]: {
+    key: USER_TECH_EXPERIENCES_KEY,
+    title: 'Experiências em tecnologia',
+    simple_definition: [
+      { name: 'technology', className: 'font-bold' },
+      { name: 'experience_time', className: 'font-semibold mb-4' },
+      { name: 'experience_number', className: 'font-semibold mb-4' },
+    ],
+    form_definition: [
+      {
+        name: 'technology',
+        label: 'Tecnologia',
+        type: 'text',
+        required: true,
+      },
+      {
+        name: 'experience_time',
+        label: 'Tempo de experiência',
+        type: 'select',
+        required: true,
+        options: [
+          { value: 'years', label: 'Ano(s)' },
+          { value: 'months', label: 'Mês(es)' },
+          { value: 'days', label: 'Dia(s)' },
+          { value: 'hours', label: 'Hora(s)' },
+          { value: 'weeks', label: 'Semana(s)' },
+        ],
+      },
+      {
+        name: 'experience_number',
+        label: 'Número do tempo de experiência',
+        type: 'number',
+        required: true,
+      },
+    ],
   },
 };
