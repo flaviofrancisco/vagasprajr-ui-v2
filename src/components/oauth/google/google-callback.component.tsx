@@ -4,7 +4,7 @@ import Loading from '@/components/common/loading';
 import authenticationSlice from '@/services/auth/authentication.service';
 import { GoogleAuthState, loginUsingGoogle } from '@/services/oauth/google/google.service';
 import { useAppDispatch } from '@/services/store';
-import { useSession } from 'next-auth/react';
+import { signOut, useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
 import { useSelector } from 'react-redux';
@@ -26,10 +26,12 @@ const GoogleCallback: React.FC = () => {
             dispatch(onAuthSetToken(res.payload));
             router.push('/');
           } else {
+            signOut();
             router.push('/');
           }
         });
       } else {
+        signOut();
         router.push('/');
       }
     };
