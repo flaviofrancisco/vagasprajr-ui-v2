@@ -151,6 +151,11 @@ export default function MainHeader() {
                       </Link>
                     </MenuItem>
                     <MenuItem>
+                      <Link href={'/minha-conta'} className="block px-4 py-2 text-sm text-gray-700 data-[focus]:bg-gray-100">
+                        Minha conta
+                      </Link>
+                    </MenuItem>
+                    <MenuItem>
                       <Link href={'/'} onClick={hadleLogout} className="block px-4 py-2 text-sm text-gray-700 data-[focus]:bg-gray-100">
                         Sair
                       </Link>

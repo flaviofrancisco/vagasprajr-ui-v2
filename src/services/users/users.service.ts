@@ -88,16 +88,30 @@ export const doUpdateUserProfile = createAsyncThunk('users/update', async ({ axi
   }
 });
 
+export const tryUpdateUserName = createAsyncThunk('users/updateUserName', async ({ axiosPrivate, user_name }: { axiosPrivate: AxiosInstance; user_name: string }) => {
+  try {
+    const response = await axiosPrivate.post(`/users/username`, { user_name });
+    return response.data;
+  } catch (error: any) {
+    if (error.response?.data?.error) {
+      throw new Error(error.response?.data?.error);
+    }
+    throw error;
+  }
+});
+
 export interface UsersState {
   status: 'idle' | 'loading' | 'succeeded' | 'failed';
   error: string;
   profile: UserProfile;
+  success_message?: string;
 }
 
 const usersSlice = createSlice({
   name: 'users',
   initialState: {
     status: 'idle',
+    success_message: '',
     error: '',
     profile: {
       profile_image_url: '',
@@ -138,6 +152,18 @@ const usersSlice = createSlice({
     });
     builder.addCase(doUpdateUserProfile.rejected, (state: UsersState) => {
       state.status = 'failed';
+    });
+    builder.addCase(tryUpdateUserName.pending, (state: UsersState) => {
+      state.status = 'loading';
+    });
+    builder.addCase(tryUpdateUserName.fulfilled, (state: UsersState, action: PayloadAction<any>) => {
+      state.status = 'succeeded';
+      state.success_message = action.payload.message;
+      state.error = '';
+    });
+    builder.addCase(tryUpdateUserName.rejected, (state: UsersState, action: any) => {
+      state.status = 'failed';
+      state.error = action.error.message;
     });
   },
 });

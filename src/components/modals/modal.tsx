@@ -1,4 +1,3 @@
-import { FormEvent, MouseEventHandler } from 'react';
 import styles from './modal.module.scss';
 
 export function Modal({ children, ...props }: ModalProps) {
