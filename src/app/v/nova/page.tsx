@@ -34,7 +34,7 @@ const NewJobPage: React.FC = () => {
   return (
     <main>
       <Toaster richColors />
-      <form onSubmit={handleSubmit} className="flex flex-col gap-4 w-full max-w-md mx-auto p-4 bg-white shadow-md rounded-md m-10">
+      <form onSubmit={handleSubmit} className="flex flex-col gap-4 w-full max-w-md mx-auto p-4 bg-white shadow-md rounded-md m-10 dark:bg-gray-800 dark:text-white">
         <label className="flex flex-col gap-1 m-1" htmlFor="title">
           Título
           <input
@@ -42,7 +42,7 @@ const NewJobPage: React.FC = () => {
             id="title"
             value={createBody.title}
             onChange={(event) => dispatch(onChangeCreateJobValue({ title: event.target.value }))}
-            className="border border-gray-300 w-full rounded-md p-2"
+            className="border border-gray-300 w-full dark:bg-gray-600 rounded-md p-2"
             type="text"
           />
         </label>
@@ -53,7 +53,7 @@ const NewJobPage: React.FC = () => {
             id="company_name"
             value={createBody.company_name}
             onChange={(event) => dispatch(onChangeCreateJobValue({ company_name: event.target.value }))}
-            className="border border-gray-300 w-full rounded-md p-2"
+            className="border border-gray-300 w-full dark:bg-gray-600 rounded-md p-2"
             type="text"
           />
         </label>
@@ -64,7 +64,7 @@ const NewJobPage: React.FC = () => {
             id="location"
             value={createBody.location}
             onChange={(event) => dispatch(onChangeCreateJobValue({ location: event.target.value }))}
-            className="border border-gray-300 w-full rounded-md p-2"
+            className="border border-gray-300 w-full dark:bg-gray-600 rounded-md p-2"
             type="text"
           />
         </label>
@@ -75,7 +75,7 @@ const NewJobPage: React.FC = () => {
             id="salary"
             value={createBody.salary}
             onChange={(event) => dispatch(onChangeCreateJobValue({ salary: event.target.value }))}
-            className="border border-gray-300 w-full rounded-md p-2"
+            className="border border-gray-300 w-full dark:bg-gray-600 rounded-md p-2"
             type="text"
           />
         </label>
@@ -86,7 +86,7 @@ const NewJobPage: React.FC = () => {
             id="url"
             value={createBody.url}
             onChange={(event) => dispatch(onChangeCreateJobValue({ url: event.target.value }))}
-            className="border border-gray-300 w-full rounded-md p-2"
+            className="border border-gray-300 w-full dark:bg-gray-600 rounded-md p-2"
             type="text"
           />
         </label>
