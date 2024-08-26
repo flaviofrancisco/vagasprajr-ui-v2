@@ -14,8 +14,8 @@ import { axiosPrivate } from '@/services/axios';
 import { signOut } from 'next-auth/react';
 
 const navigation = [
-  { name: 'Entrar', href: '/auth/login', current: false },
-  { name: 'Criar conta', href: '/auth/signup', current: false },
+  { name: 'Entrar', href: '/auth/login', current: false, isLogged: false },
+  { name: 'Criar conta', href: '/auth/signup', current: false, isLogged: false },
   { name: 'Shopping', href: '/shopping', current: false },
 ];
 
@@ -86,20 +86,22 @@ export default function MainHeader() {
             </div>
             <div className="hidden items-center w-full sm:ml-6 sm:block">
               <div className="flex space-x-4 h-full items-center justify-center">
-                {navigation.map((item) => (
-                  <a
-                    key={item.name}
-                    href={item.href}
-                    onClick={(e) => {
-                      e.preventDefault();
-                      router.push(item.href);
-                    }}
-                    aria-current={item.current ? 'page' : undefined}
-                    className={classNames(item.current ? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white', 'rounded-md px-3 py-2 text-sm font-medium')}
-                  >
-                    {item.name}
-                  </a>
-                ))}
+                {navigation
+                  .filter((x) => typeof x.isLogged === 'undefined' || x.isLogged === isAuthenticated)
+                  .map((item) => (
+                    <a
+                      key={item.name}
+                      href={item.href}
+                      onClick={(e) => {
+                        e.preventDefault();
+                        router.push(item.href);
+                      }}
+                      aria-current={item.current ? 'page' : undefined}
+                      className={classNames(item.current ? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white', 'rounded-md px-3 py-2 text-sm font-medium')}
+                    >
+                      {item.name}
+                    </a>
+                  ))}
               </div>
             </div>
           </div>

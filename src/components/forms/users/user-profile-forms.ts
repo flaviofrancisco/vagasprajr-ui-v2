@@ -25,7 +25,7 @@ export const user_forms = {
     form_definition: [
       { name: 'first_name', label: 'Nome', type: 'text', required: true },
       { name: 'last_name', label: 'Sobrenome', type: 'text', required: true },
-      { name: 'email', label: 'Email', type: 'email', required: true },
+      { name: 'email', label: 'Email', type: 'email', required: true, disabled: true },
       { name: 'city', label: 'Cidade', type: 'text', required: true },
       { name: 'state', label: 'Estado', type: 'select-br-states', required: true },
     ],

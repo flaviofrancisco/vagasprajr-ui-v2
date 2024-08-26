@@ -4,18 +4,21 @@ import styles from './entry-form.component.module.scss';
 import { SelectCombo } from '@/components/inputs/select-combo/select-combo';
 import StatesBrazil from '@/components/common/datasources/states-br';
 import { FieldDefinition } from '../field-definition';
+import { on } from 'events';
 interface EntryFormProps {
   entry: any;
   fields: Field[];
   onSubmit: (e: FormEvent<HTMLFormElement>) => void;
+  onDelete?: () => void;
 }
 
 interface Field extends FieldDefinition {
   options?: { value: string; label: string }[];
   onchange: (value: any, field: string) => void;
+  disabled?: boolean;
 }
 
-const EntryForm: React.FC<EntryFormProps> = ({ entry, fields, onSubmit }) => {
+const EntryForm: React.FC<EntryFormProps> = ({ entry, fields, onSubmit, onDelete }) => {
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     onSubmit({ ...e });
@@ -25,6 +28,7 @@ const EntryForm: React.FC<EntryFormProps> = ({ entry, fields, onSubmit }) => {
       case 'select-br-states':
         return (
           <SelectCombo
+            disabled={field.disabled}
             options={StatesBrazil}
             value={entry[field.name]}
             onChange={(value: string) => {
@@ -35,6 +39,7 @@ const EntryForm: React.FC<EntryFormProps> = ({ entry, fields, onSubmit }) => {
       case 'select':
         return (
           <select
+            disabled={field.disabled}
             className={`w-full p-2 border border-gray-200 rounded-lg shadow hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700`}
             id={field.name}
             name={field.name}
@@ -51,6 +56,7 @@ const EntryForm: React.FC<EntryFormProps> = ({ entry, fields, onSubmit }) => {
       case 'textarea':
         return (
           <textarea
+            disabled={field.disabled}
             className={`w-full p-2 border border-gray-200 rounded-lg shadow hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700`}
             id={field.name}
             name={field.name}
@@ -61,6 +67,7 @@ const EntryForm: React.FC<EntryFormProps> = ({ entry, fields, onSubmit }) => {
       default:
         return (
           <input
+            disabled={field.disabled}
             className={`w-full p-2 border border-gray-200 rounded-lg shadow hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700`}
             type={field.type}
             id={field.name}
@@ -80,9 +87,23 @@ const EntryForm: React.FC<EntryFormProps> = ({ entry, fields, onSubmit }) => {
           {renderField(field)}
         </div>
       ))}
-      <button className="w-full p-2 border bg-blue-800 text-white border-gray-200 rounded-lg shadow hover:bg-blue-600 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700" type="submit">
-        Salvar
-      </button>
+      <div className="flex flex-col lg:flex-row lg:justify-between lg:gap-4">
+        {onDelete && (
+          <button
+            className=" lg:w-1/4 lg:ml-0 lg:mr-auto p-2 border bg-red-800 text-white border-gray-200 rounded-lg shadow hover:bg-red-600 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700"
+            onClick={onDelete}
+          >
+            Deletar
+          </button>
+        )}
+
+        <button
+          className="lg:w-1/4 lg:ml-auto lg:mr-0 p-2 border bg-blue-800 text-white border-gray-200 rounded-lg shadow hover:bg-blue-600 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700"
+          type="submit"
+        >
+          Salvar
+        </button>
+      </div>
     </form>
   );
 };

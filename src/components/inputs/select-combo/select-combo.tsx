@@ -4,12 +4,13 @@ export interface SelectComboProps {
   options: any[];
   value: string;
   className?: string;
+  disabled?: boolean;
   onChange: (value: string) => void;
 }
 
-export function SelectCombo({ className, options, value, onChange }: SelectComboProps) {
+export function SelectCombo({ className, options, value, onChange, disabled }: SelectComboProps) {
   return (
-    <select className={`${style['select-combo']} ${className || ''}`} value={value} onChange={(e) => onChange(e.target.value)}>
+    <select disabled={disabled} className={`${style['select-combo']} ${className || ''}`} value={value} onChange={(e) => onChange(e.target.value)}>
       {options.map((option, index) => (
         <option key={index} value={option.value}>
           {option.label}

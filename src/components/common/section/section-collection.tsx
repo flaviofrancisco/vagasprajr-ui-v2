@@ -104,7 +104,8 @@ const SectionCollectionComponent: React.FC<SectionCollectionProps> = ({ title, f
                 href={{
                   pathname: '/edit-item',
                   query: {
-                    data: `${entityKey}-${entry.id}`,
+                    data: `${entityKey}`,
+                    id: entry.id,
                   },
                 }}
                 key={`edit-item-${uuidv4()}`}
