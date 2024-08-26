@@ -9,6 +9,7 @@ import usersSlice from './users/users.service';
 import authorizationSlice from './auth/authorization.service';
 import usersAdminSlice from './users/users.admin.service';
 import amazonAssociateSlice from './amazon/amazon-associate.service';
+import jobsSlice from './jobs/jobs.service';
 
 const store = configureStore({
   reducer: {
@@ -22,6 +23,7 @@ const store = configureStore({
     authorizationReducer: authorizationSlice.reducer,
     usersAdminSliceReducer: usersAdminSlice.reducer,
     amazonAssociateSliceReducer: amazonAssociateSlice.reducer,
+    jobsSliceReducer: jobsSlice.reducer,
   },
   devTools: !(process.env.NODE_ENV === 'production' || process.env.NODE_ENV === 'test'),
 });

@@ -16,6 +16,7 @@ import { signOut } from 'next-auth/react';
 const navigation = [
   { name: 'Entrar', href: '/auth/login', current: false, isLogged: false },
   { name: 'Criar conta', href: '/auth/signup', current: false, isLogged: false },
+  { name: 'Criar vaga', href: '/v/nova', current: false, isLogged: true },
   { name: 'Shopping', href: '/shopping', current: false },
 ];
 
