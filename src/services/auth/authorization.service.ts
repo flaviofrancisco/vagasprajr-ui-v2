@@ -47,9 +47,9 @@ const authorizationSlice = createSlice({
       state.status = 'succeeded';
       state.isAuthorized = action.payload.isAuthorized;
     });
-    builder.addCase(doAuthorization.rejected, (state, action: PayloadAction<any>) => {
+    builder.addCase(doAuthorization.rejected, (state, action: any) => {
       state.status = 'failed';
-      state.error = action.payload.message;
+      state.error = action.error.message;
     });
   },
 });

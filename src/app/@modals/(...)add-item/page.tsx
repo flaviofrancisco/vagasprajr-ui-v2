@@ -5,7 +5,7 @@ import useAxiosPrivate from '@/hooks/private-axios';
 import { useAppDispatch } from '@/services/store';
 import { useSelector } from 'react-redux';
 import { doUpdateUserProfile } from '@/services/users/users.service';
-import { user_forms, USER_TECH_EXPERIENCES_KEY } from '@/components/forms/users/user-profile-forms';
+import { USER_CERTIFICATIONS_KEY, USER_EDUCATIONS_KEY, USER_EXPERIENCES_KEY, user_forms, USER_IDIOM_INFO, USER_TECH_EXPERIENCES_KEY } from '@/components/forms/users/user-profile-forms';
 import ProfileAddItem from '@/components/forms/users/modals/profile-add-item.component';
 import { FormEvent } from 'react';
 
@@ -27,6 +27,7 @@ const EditProfilePage: React.FC = () => {
   };
   const onSave = (e: FormEvent<HTMLFormElement>) => {
     if (!params?.data) {
+      router.back();
       return;
     }
 
@@ -36,7 +37,9 @@ const EditProfilePage: React.FC = () => {
     const items = profile[params.data] || [];
     const nextId = items.length > 0 ? Math.max(...items.map((item: any) => item.id)) + 1 : 1;
 
-    dispatch(doUpdateUserProfile({ axiosPrivate, profile: { ...profile, [params.data]: [...items, { ...data, id: nextId }] } })).then(() => {
+    const profile_upadated = { ...profile, [params.data]: [...items, { ...data, id: nextId }] };
+
+    dispatch(doUpdateUserProfile({ axiosPrivate, profile: profile_upadated })).then(() => {
       router.back();
     });
   };
@@ -64,6 +67,10 @@ const EditProfilePage: React.FC = () => {
   const renderForm = () => {
     switch (params.data) {
       case USER_TECH_EXPERIENCES_KEY:
+      case USER_EXPERIENCES_KEY:
+      case USER_EDUCATIONS_KEY:
+      case USER_CERTIFICATIONS_KEY:
+      case USER_IDIOM_INFO:
         return <ProfileAddItem onSubmit={onSave} fieldDefintion={user_forms[params.data].form_definition} />;
       default:
         return <div>{`Formulário inválido para parametro: ${params?.data ?? 'Não informado'} ou em desenvolvimento. Por favor tente mais tarde.`}</div>;
@@ -71,7 +78,7 @@ const EditProfilePage: React.FC = () => {
   };
 
   return (
-    <Modal onClose={onClose} onSave={onSave} title="Novo">
+    <Modal onClose={onClose} title="Novo">
       <>{renderForm()}</>
     </Modal>
   );

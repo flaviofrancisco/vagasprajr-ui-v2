@@ -18,6 +18,7 @@ export interface UserProfile {
 }
 
 export interface UserIdiomInfo {
+  id: number;
   name: string;
   level: string;
 }

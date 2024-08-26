@@ -40,7 +40,7 @@ const EditProfilePage: React.FC = () => {
   };
 
   return (
-    <Modal onClose={onClose} onSave={onSave} title="Editar">
+    <Modal onClose={onClose} title="Editar">
       <>{renderForm()}</>
     </Modal>
   );

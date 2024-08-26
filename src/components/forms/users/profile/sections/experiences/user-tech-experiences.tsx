@@ -51,7 +51,7 @@ const UserTechExperiences: React.FC<UserTechExperiencesProps> = ({ tech_experien
     <div>
       {tech_experiences ? (
         <>
-          <div className="flex flex-row items-start">
+          <div className="flex flex-row mt-6 items-start">
             <Link
               href={{
                 pathname: '/add-item',

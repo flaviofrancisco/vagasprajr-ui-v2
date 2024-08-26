@@ -9,9 +9,10 @@ interface SectionCollectionProps {
   fields: FieldDefinition[];
   entries: any[];
   hasDates?: boolean;
+  entityKey?: string;
 }
 
-const SectionCollectionComponent: React.FC<SectionCollectionProps> = ({ title, fields, entries, hasDates }: SectionCollectionProps) => {
+const SectionCollectionComponent: React.FC<SectionCollectionProps> = ({ title, fields, entries, hasDates, entityKey }: SectionCollectionProps) => {
   const formatDate = (start_date: string, end_date: string) => {
     if (start_date === null || start_date === '' || typeof start_date === 'undefined') {
       return '';
@@ -80,10 +81,19 @@ const SectionCollectionComponent: React.FC<SectionCollectionProps> = ({ title, f
 
   return (
     <>
-      <div className="flex flex-row items-start">
-        <button className="bg-blue-500 hover:bg-blue-700 mb-5 text-white font-bold w-6 h-6 rounded-full flex items-center justify-center" onClick={() => console.log('Add')}>
+      <div className="flex flex-row mt-5 items-start">
+        <Link
+          href={{
+            pathname: '/add-item',
+            query: {
+              data: entityKey,
+            },
+          }}
+          className="bg-blue-500 hover:bg-blue-700 mb-5 text-white font-bold w-6 h-6 rounded-full flex items-center justify-center"
+          onClick={() => console.log('Add')}
+        >
           +
-        </button>
+        </Link>
         <h2 className={`$ ml-2 text-xl font-bold`}>{title}</h2>
       </div>
       {entries &&
@@ -94,7 +104,7 @@ const SectionCollectionComponent: React.FC<SectionCollectionProps> = ({ title, f
                 href={{
                   pathname: '/edit-item',
                   query: {
-                    data: '',
+                    data: `${entityKey}-${entry.id}`,
                   },
                 }}
                 key={`edit-item-${uuidv4()}`}

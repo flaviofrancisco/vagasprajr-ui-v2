@@ -1,4 +1,4 @@
-import { FormEvent } from 'react';
+import { FormEvent, MouseEventHandler } from 'react';
 import styles from './modal.module.scss';
 
 export function Modal({ children, ...props }: ModalProps) {
@@ -25,5 +25,4 @@ export interface ModalProps {
   closeButtonText?: string;
   saveButtonText?: string;
   onClose: () => void;
-  onSave: (e: FormEvent<HTMLFormElement>) => void;
 }

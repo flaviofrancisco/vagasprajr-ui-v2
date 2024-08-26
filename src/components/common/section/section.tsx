@@ -15,7 +15,7 @@ interface SectionProps {
 const SectionComponent: React.FC<SectionProps> = ({ title, fields, entry, data }: SectionProps) => {
   return (
     <>
-      <div className="flex flex-row items-start">
+      <div className="flex flex-row mt-6 items-start">
         {data && (
           <Link
             href={{

@@ -10,6 +10,7 @@ import { useEffect } from 'react';
 import useAxiosPrivate from '@/hooks/private-axios';
 
 export default function EditLinksPage() {
+  const MAX_LINKS = 10;
   const router = useRouter();
   const dispatch = useAppDispatch();
   const axiosPrivate = useAxiosPrivate();
@@ -53,10 +54,10 @@ export default function EditLinksPage() {
   ];
 
   return (
-    <Modal onClose={onClose} onSave={onSave} title="Meus links">
+    <Modal onClose={onClose} title="Meus links">
       <div className={`${styles['edit-links-container']}`}>
         <div className="p-4">
-          {profile.links.length < 5 && (
+          {profile.links.length < MAX_LINKS && (
             <button className={`${styles['btn-base']} ${styles['btn-add']}`} onClick={onAddLink}>
               <span className={`${styles['mdi']} ${styles['mdi-plus']} ${styles['mdi-24px']}`}></span>
               <span className={`${styles['mdi']} ${styles['mdi-plus-empty']} ${styles['mdi-24px']}`}></span>
@@ -95,6 +96,13 @@ export default function EditLinksPage() {
             </div>
           </div>
         ))}
+        <button
+          onClick={onSave}
+          className="w-full p-2 border bg-blue-800 text-white border-gray-200 rounded-lg shadow hover:bg-blue-600 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700"
+          type="button"
+        >
+          Salvar
+        </button>
       </div>
     </Modal>
   );
