@@ -7,6 +7,7 @@ export interface CreateJobBody {
   location: string;
   salary: string;
   url: string;
+  description: string;
 }
 
 export interface Job {
@@ -16,6 +17,7 @@ export interface Job {
   location: string;
   salary: string;
   url: string;
+  description: string;
 }
 
 export const createJob = createAsyncThunk('jobs/create', async ({ axiosPrivate, body }: { axiosPrivate: AxiosInstance; body: CreateJobBody }) => {
@@ -26,20 +28,20 @@ export const createJob = createAsyncThunk('jobs/create', async ({ axiosPrivate, 
 export interface JobsState {
   status: 'idle' | 'loading' | 'succeeded' | 'failed';
   error: string;
-  createBody: Job;
+  createBody: CreateJobBody;
 }
 
 const initialState: JobsState = {
   status: 'idle',
   error: '',
   createBody: {
-    id: '',
     title: '',
     company_name: '',
     location: '',
     salary: '',
     url: '',
-  },
+    description: '',
+  } as CreateJobBody,
 };
 
 const jobsSlice = createSlice({
