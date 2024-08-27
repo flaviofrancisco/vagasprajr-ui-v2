@@ -21,6 +21,8 @@ export interface JobView {
   salary: string;
   url: string;
   description: string;
+  is_approved: boolean;
+  is_closed: boolean;
 }
 
 export interface Job {
@@ -31,7 +33,13 @@ export interface Job {
   salary: string;
   url: string;
   description: string;
+  code: string;
 }
+
+export const updateJob = createAsyncThunk('jobs/update', async ({ axiosPrivate, body }: { axiosPrivate: AxiosInstance; body: Job }) => {
+  const response = await axiosPrivate.put(`/admin/jobs/${body.code}`, body);
+  return response.data;
+});
 
 export const createJob = createAsyncThunk('jobs/create', async ({ axiosPrivate, body }: { axiosPrivate: AxiosInstance; body: CreateJobBody }) => {
   const response = await axiosPrivate.post('/jobs', body);
@@ -107,6 +115,16 @@ const jobsSlice = createSlice({
       state.status = 'succeeded';
     });
     builder.addCase(getJob.rejected, (state, action) => {
+      state.status = 'failed';
+      state.error = action.error.message || '';
+    });
+    builder.addCase(updateJob.pending, (state) => {
+      state.status = 'loading';
+    });
+    builder.addCase(updateJob.fulfilled, (state) => {
+      state.status = 'succeeded';
+    });
+    builder.addCase(updateJob.rejected, (state, action) => {
       state.status = 'failed';
       state.error = action.error.message || '';
     });

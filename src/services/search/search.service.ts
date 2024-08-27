@@ -1,6 +1,7 @@
 import { DEFAULT_PAGE_SIZE } from '@/constants';
 import { ActionReducerMapBuilder, createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import axios from '../axios';
+import { AxiosInstance } from 'axios';
 
 export const PROVIDERS = 'providers';
 export const LOCATIONS = 'locations';
@@ -17,6 +18,8 @@ export interface SearchFilter {
   pageSize: number;
   isBookmarkedOnly?: boolean;
   job_filter_options: JobFilterOptions;
+  sort: string;
+  is_ascending: false;
 }
 
 export interface JobFilterOptions {
@@ -78,6 +81,25 @@ export interface AffirmativeJobParameter {
   is_indigenous: boolean;
   is_person_with_disabilities: boolean;
 }
+
+export const doSearchAuth = createAsyncThunk('search/doSearchAuth', async ({ axiosPrivate, filter }: { axiosPrivate: AxiosInstance; filter: SearchFilter }) => {
+  let pageResult: PagedResult<JobItem> = {
+    Data: [],
+    Page: 1,
+    PerPage: DEFAULT_PAGE_SIZE,
+    Total: 0,
+  } as PagedResult<JobItem>;
+  try {
+    const response = await axiosPrivate.post<PagedResult<JobItem>>(`/admin/jobs`, { ...filter });
+    pageResult = response.data;
+    if (pageResult.Data === null) {
+      pageResult.Data = [];
+    }
+  } catch (error) {
+    console.error(error);
+  }
+  return pageResult;
+});
 
 export const doSearch = createAsyncThunk('search/doSearch', async ({ filter }: { filter: SearchFilter }) => {
   let pageResult: PagedResult<JobItem> = {
@@ -204,6 +226,9 @@ const searchSlice = createSlice({
     onChangeFilterOptions(state: SearchState, action: PayloadAction<SearchFilter>) {
       state.searchFilter = action.payload;
     },
+    onFilterChange: (state, action: PayloadAction<SearchFilter>) => {
+      state.searchFilter = action.payload;
+    },
   },
   extraReducers: (builder: ActionReducerMapBuilder<SearchState>) => {
     builder.addCase(doSearch.fulfilled, (state, action: PayloadAction<PagedResult<JobItem>>) => {
@@ -231,6 +256,28 @@ const searchSlice = createSlice({
     });
     builder.addCase(doGetJobOptions.fulfilled, (state, action: PayloadAction<JobFilterOptions>) => {
       state.job_filter_options = action.payload;
+    });
+    builder.addCase(doSearchAuth.fulfilled, (state, action: PayloadAction<PagedResult<JobItem>>) => {
+      // if (state.loadedItems !== 1 && state.loadedItems === action.payload.Total) {
+      //   return;
+      // }
+      // state.searchResult = action.payload;
+      // state.searchExecuted = true;
+      // if (typeof state.jobList === 'undefined' || state.jobList === null || state.jobList.length === 0) {
+      //   state.jobList = action.payload.Data;
+      // } else {
+      //   state.jobList = [...state.jobList, ...state.searchResult.Data];
+      // }
+      // state.loadedItems = state.jobList.length;
+      // state.searchFilter.page = action.payload.Page;
+      state.searchResult = action.payload;
+      state.status = 'succeeded';
+    });
+    builder.addCase(doSearchAuth.rejected, (state) => {
+      state.status = 'failed';
+    });
+    builder.addCase(doSearchAuth.pending, (state) => {
+      state.status = 'loading';
     });
   },
 });

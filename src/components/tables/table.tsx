@@ -3,7 +3,7 @@ import styles from './table.module.scss';
 import React from 'react';
 import { FaSortUp, FaSortDown, FaSort } from 'react-icons/fa';
 
-const Table: React.FC<TableProps> = ({ value, columns, filters, onSort, onContextMenu, onContextMenuFilter }) => {
+const Table: React.FC<TableProps> = ({ value, columns, filters, onSort, onContextMenu, onContextMenuFilter, onChekboxChange }) => {
   const [sort, setSort] = React.useState<Sort>(Sort.IDLE);
   const formattedValue = (value: any, type: string) => {
     if (type === 'date') {
@@ -28,6 +28,39 @@ const Table: React.FC<TableProps> = ({ value, columns, filters, onSort, onContex
       return text;
     }
     return text.length > maxLength ? text.substring(0, maxLength - 3) + '...' : text;
+  };
+
+  const getColumnComponent = (row: any, column: Column) => {
+    switch (column.type) {
+      case 'checkbox':
+        return (
+          <td className={`px-4 py-2 w-${column.columnSize}`} key={column.key}>
+            <input
+              type="checkbox"
+              checked={row[column.key]}
+              onChange={(e) => {
+                onChekboxChange && onChekboxChange(e, row, column);
+              }}
+            />
+          </td>
+        );
+      case 'url':
+        return (
+          <td className={`px-4 py-2 w-${column.columnSize}`} key={column.key}>
+            {row[column.key] && (
+              <a href={row[column.key]} target="_blank" rel="noreferrer">
+                {row[column.key] ? 'link' : ''}
+              </a>
+            )}
+          </td>
+        );
+      default:
+        return (
+          <td className={`px-4 py-2 w-${column.columnSize} ${column.type === 'date' ? 'text-right' : ''}`} key={column.key}>
+            {cutText(formattedValue(row[column.key], column.type), column.maxLength)}
+          </td>
+        );
+    }
   };
 
   return (
@@ -69,23 +102,29 @@ const Table: React.FC<TableProps> = ({ value, columns, filters, onSort, onContex
           </tr>
         </thead>
         <tbody>
-          {value.Data.map((row: any, index: number) => (
-            <tr
-              className={`${styles.tr} h-12 overflow-hidden`}
-              key={index}
-              onContextMenu={(e) => {
-                if (onContextMenu) {
-                  onContextMenu(e, row);
-                }
-              }}
-            >
-              {columns.map((column) => (
-                <td className={`px-4 py-2 w-${column.columnSize} ${column.type === 'date' ? 'text-right' : ''}`} key={column.key}>
-                  {cutText(formattedValue(row[column.key], column.type), column.maxLength)}
-                </td>
+          {value?.Data && value.Data.length > 0 ? (
+            <>
+              {value.Data.map((row: any, index: number) => (
+                <tr
+                  className={`${styles.tr} h-12 overflow-hidden`}
+                  key={index}
+                  onContextMenu={(e) => {
+                    if (onContextMenu) {
+                      onContextMenu(e, row);
+                    }
+                  }}
+                >
+                  {columns.map((column) => getColumnComponent(row, column))}
+                </tr>
               ))}
+            </>
+          ) : (
+            <tr>
+              <td colSpan={columns.length} className="text-center">
+                Nenhum dado encontrado
+              </td>
             </tr>
-          ))}
+          )}
         </tbody>
       </table>
     </div>
@@ -102,6 +141,7 @@ export interface TableProps {
   columns: Column[];
   onSort?: (key: string, direction: Sort) => void;
   filters?: any;
+  onChekboxChange?: (e: React.ChangeEvent<HTMLInputElement>, row: any, column: Column) => void;
   onContextMenu?: (e: React.MouseEvent<HTMLDivElement, MouseEvent>, data: any) => void;
   onContextMenuFilter?: (e: React.MouseEvent<HTMLDivElement, MouseEvent>, column: Column) => void;
 }

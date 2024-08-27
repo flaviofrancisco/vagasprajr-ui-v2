@@ -27,7 +27,7 @@ const Pagination: React.FC<PaginationProps> = ({ currentPage, pageSize, totalIte
           &lt;
         </button>
         <span className="text-lg font-semibold">
-          {currentPage + 1} de {totalPages}
+          {currentPage === 0 ? currentPage + 1 : currentPage} de {totalPages}
         </span>
         <button
           className="px-4 py-2 bg-blue-500 hover:bg-blue-700 text-white font-bold rounded transition duration-300"
