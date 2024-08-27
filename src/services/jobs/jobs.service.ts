@@ -1,6 +1,17 @@
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { AxiosInstance } from 'axios';
 import axios from '../axios';
+import { Filter } from '../common/filter-type';
+import { PagedResult } from '../search/search.service';
+import { DEFAULT_PAGE_SIZE } from '@/constants';
+
+export interface GetJobsRequest {
+  sort: string;
+  is_ascending: boolean;
+  page: number;
+  page_size: number;
+  filters?: Filter[];
+}
 
 export interface CreateJobBody {
   title: string;
@@ -36,6 +47,11 @@ export interface Job {
   code: string;
 }
 
+export const getJobs = createAsyncThunk('jobs/getAll', async ({ axiosPrivate, filters }: { axiosPrivate: AxiosInstance; filters: GetJobsRequest }) => {
+  const response = await axiosPrivate.post('/admin/jobs', filters);
+  return response.data;
+});
+
 export const updateJob = createAsyncThunk('jobs/update', async ({ axiosPrivate, body }: { axiosPrivate: AxiosInstance; body: Job }) => {
   const response = await axiosPrivate.put(`/admin/jobs/${body.code}`, body);
   return response.data;
@@ -56,6 +72,8 @@ export interface JobsState {
   error: string;
   createBody: CreateJobBody;
   jobView: JobView;
+  jobsResult: PagedResult<Job>;
+  filter: GetJobsRequest;
 }
 
 const initialState: JobsState = {
@@ -80,12 +98,27 @@ const initialState: JobsState = {
     url: '',
     description: '',
   } as JobView,
+  jobsResult: {
+    Data: [],
+    Page: 1,
+    PerPage: 12,
+    Total: 0,
+  } as PagedResult<Job>,
+  filter: {
+    sort: '',
+    is_ascending: true,
+    page: 1,
+    page_size: DEFAULT_PAGE_SIZE,
+  } as GetJobsRequest,
 };
 
 const jobsSlice = createSlice({
   name: 'jobs',
   initialState: initialState,
   reducers: {
+    onFilterChange: (state, action: PayloadAction<GetJobsRequest>) => {
+      state.filter = action.payload;
+    },
     onChangeCreateJobValue: (state, action) => {
       Object.keys(action.payload).forEach((key) => {
         state.createBody = {
@@ -125,6 +158,17 @@ const jobsSlice = createSlice({
       state.status = 'succeeded';
     });
     builder.addCase(updateJob.rejected, (state, action) => {
+      state.status = 'failed';
+      state.error = action.error.message || '';
+    });
+    builder.addCase(getJobs.pending, (state) => {
+      state.status = 'loading';
+    });
+    builder.addCase(getJobs.fulfilled, (state, action) => {
+      state.jobsResult = action.payload;
+      state.status = 'succeeded';
+    });
+    builder.addCase(getJobs.rejected, (state, action) => {
       state.status = 'failed';
       state.error = action.error.message || '';
     });

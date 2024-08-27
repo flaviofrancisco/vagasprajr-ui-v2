@@ -152,6 +152,15 @@ export interface Column {
   type: string;
   columnSize: string;
   maxLength?: number;
+  is_filter_enabled?: boolean;
+  is_sort_enabled?: boolean;
 }
+
+export type ContextMenuFilterState = {
+  clientX: number;
+  clientY: number;
+  visible: boolean;
+  column: Column | null;
+};
 
 export default Table;

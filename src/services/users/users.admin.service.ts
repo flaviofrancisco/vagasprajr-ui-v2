@@ -1,6 +1,7 @@
 import { ActionReducerMapBuilder, createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { AxiosInstance } from 'axios';
 import { PagedResult } from '../search/search.service';
+import { Filter } from '../common/filter-type';
 
 const DEFAULT_PAGE_SIZE = 12;
 
@@ -31,20 +32,6 @@ export interface GetUsersRequest {
   page_size: number;
   filters?: Filter[];
 }
-
-export interface Filter {
-  operator: 'and' | 'or';
-  fields: Field[];
-}
-
-export interface Field {
-  type: string;
-  name: string;
-  value?: string;
-  min_value?: string;
-  max_value?: string;
-}
-
 export interface UserView {
   id: string;
   email: string;
