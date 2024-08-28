@@ -142,10 +142,6 @@ const usersSlice = createSlice({
       state.error = '';
       state.success_message = '';
       Object.keys(action.payload).forEach((key) => {
-        console.log({
-          key,
-          value: action.payload[key],
-        });
         state.profile = {
           ...state.profile,
           [key]: action.payload[key],

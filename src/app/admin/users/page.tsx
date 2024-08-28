@@ -28,15 +28,15 @@ const UserAdminPage: React.FC = () => {
   const { usersResult, filters } = useSelector((state: any) => state.usersAdminSliceReducer);
   const { onFilterChange } = usersAdminSlice.actions;
   const columns = [
-    { key: 'email', title: 'Email', type: 'string', columnSize: '40', maxLength: 25 },
+    { key: 'email', title: 'Email', type: 'string', columnSize: '1/2', maxLength: 25 },
     { key: 'first_name', title: 'Nome', type: 'string', columnSize: '20' },
     { key: 'last_name', title: 'Sobrenome(s)', type: 'string', columnSize: '20' },
-    { key: 'user_name', title: 'Usuário', type: 'string', columnSize: '15' },
-    { key: 'city', title: 'Cidade', type: 'string', columnSize: '40' },
-    { key: 'state', title: 'UF', type: 'string', columnSize: '10' },
-    { key: 'created_at', title: 'Desde', type: 'date', columnSize: '32' },
-    { key: 'last_update', title: 'Atualização', type: 'date', columnSize: '32' },
-    { key: 'last_login', title: 'Conexão', type: 'date', columnSize: '32' },
+    { key: 'user_name', title: 'Usuário', type: 'string', columnSize: '10' },
+    { key: 'city', title: 'Cidade', type: 'string', columnSize: '10' },
+    { key: 'state', title: 'UF', type: 'string', columnSize: '5' },
+    { key: 'created_at', title: 'Desde', type: 'date', columnSize: '10' },
+    { key: 'last_update', title: 'Atualização', type: 'date', columnSize: '10' },
+    { key: 'last_login', title: 'Conexão', type: 'date', columnSize: '10' },
   ];
 
   const onSortColumn = (key: string, direction: Sort) => {

@@ -34,7 +34,7 @@ const Table: React.FC<TableProps> = ({ value, columns, filters, onSort, onContex
     switch (column.type) {
       case 'checkbox':
         return (
-          <td className={`px-4 py-2 w-${column.columnSize}`} key={column.key}>
+          <td className={`px-4 py-2 w-[${column.columnSize}]`} key={column.key}>
             <input
               type="checkbox"
               checked={row[column.key]}
@@ -46,7 +46,7 @@ const Table: React.FC<TableProps> = ({ value, columns, filters, onSort, onContex
         );
       case 'url':
         return (
-          <td className={`px-4 py-2 w-${column.columnSize}`} key={column.key}>
+          <td className={`px-4 py-2 w-[${column.columnSize}]`} key={column.key}>
             {row[column.key] && (
               <a href={row[column.key]} target="_blank" rel="noreferrer">
                 {row[column.key] ? 'link' : ''}
@@ -56,7 +56,7 @@ const Table: React.FC<TableProps> = ({ value, columns, filters, onSort, onContex
         );
       default:
         return (
-          <td className={`px-4 py-2 w-${column.columnSize} ${column.type === 'date' ? 'text-right' : ''}`} key={column.key}>
+          <td className={`px-4 py-2 w-[${column.columnSize}] ${column.type === 'date' ? 'text-right' : ''}`} key={column.key}>
             {cutText(formattedValue(row[column.key], column.type), column.maxLength)}
           </td>
         );
@@ -65,7 +65,7 @@ const Table: React.FC<TableProps> = ({ value, columns, filters, onSort, onContex
 
   return (
     <div className="flex flex-grow mx-auto w-full h-auto justify-center rounded-t-2xl">
-      <table className={`table-fixed mr-4 ml-4 w-full rounded-t-2xl overflow-hidden`}>
+      <table className={`table-auto mr-4 ml-4 w-full rounded-t-2xl overflow-hidden`}>
         <thead>
           <tr>
             {columns.map((column: Column, index: number) => (
@@ -75,7 +75,7 @@ const Table: React.FC<TableProps> = ({ value, columns, filters, onSort, onContex
                     onContextMenuFilter(e, column);
                   }
                 }}
-                className={`w-${column.columnSize} px-4 py-2 ${styles.th}`}
+                className={`w-[${column.columnSize}] px-4 py-2 ${styles.th}`}
                 key={column.key}
               >
                 <div className={styles['th-content']}>

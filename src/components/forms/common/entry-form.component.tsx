@@ -4,7 +4,7 @@ import styles from './entry-form.component.module.scss';
 import { SelectCombo } from '@/components/inputs/select-combo/select-combo';
 import StatesBrazil from '@/components/common/datasources/states-br';
 import { FieldDefinition } from '../field-definition';
-import { on } from 'events';
+
 interface EntryFormProps {
   entry: any;
   fields: Field[];
@@ -12,7 +12,7 @@ interface EntryFormProps {
   onDelete?: () => void;
 }
 
-interface Field extends FieldDefinition {
+export interface Field extends FieldDefinition {
   options?: { value: string; label: string }[];
   onchange: (value: any, field: string) => void;
   disabled?: boolean;
@@ -38,43 +38,67 @@ const EntryForm: React.FC<EntryFormProps> = ({ entry, fields, onSubmit, onDelete
         );
       case 'select':
         return (
-          <select
-            disabled={field.disabled}
-            className={`w-full p-2 border border-gray-200 rounded-lg shadow hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700`}
-            id={field.name}
-            name={field.name}
-            onChange={(e) => field.onchange(e.target.value, field.name)}
-            value={entry[field.name]}
-          >
-            {field.options?.map((option) => (
-              <option key={option.value} value={option.value}>
-                {option.label}
-              </option>
-            ))}
-          </select>
+          <label htmlFor={field.name}>
+            {field.label}
+            <select
+              disabled={field.disabled}
+              className={`w-full p-2 border border-gray-200 rounded-lg shadow hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700`}
+              id={field.name}
+              name={field.name}
+              onChange={(e) => field.onchange(e.target.value, field.name)}
+              value={entry[field.name]}
+            >
+              {field.options?.map((option) => (
+                <option key={option.value} value={option.value}>
+                  {option.label}
+                </option>
+              ))}
+            </select>
+          </label>
         );
       case 'textarea':
         return (
-          <textarea
-            disabled={field.disabled}
-            className={`w-full p-2 border border-gray-200 rounded-lg shadow hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700`}
-            id={field.name}
-            name={field.name}
-            onChange={(e) => field.onchange(e.target.value, field.name)}
-            value={entry[field.name]}
-          />
+          <label htmlFor={field.name}>
+            {field.label}
+            <textarea
+              disabled={field.disabled}
+              className={`w-full p-2 border border-gray-200 rounded-lg shadow hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700`}
+              id={field.name}
+              name={field.name}
+              onChange={(e) => field.onchange(e.target.value, field.name)}
+              value={entry[field.name]}
+            />
+          </label>
+        );
+      case 'checkbox':
+        return (
+          <label className={`${styles['custom-checkbox']}`}>
+            <input
+              disabled={field.disabled}
+              className="hidden-checkbox"
+              type={field.type}
+              id={field.name}
+              name={field.name}
+              onChange={(e) => field.onchange(e.target.checked, field.name)}
+              checked={entry[field.name]}
+            />
+            <span className={`${'custom-checkbox-box'}`}>{field.label} </span>
+          </label>
         );
       default:
         return (
-          <input
-            disabled={field.disabled}
-            className={`w-full p-2 border border-gray-200 rounded-lg shadow hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700`}
-            type={field.type}
-            id={field.name}
-            name={field.name}
-            onChange={(e) => field.onchange(e.target.value, field.name)}
-            value={entry[field.name]}
-          />
+          <label htmlFor={field.name}>
+            {field.label}
+            <input
+              disabled={field.disabled}
+              className={`w-full p-2 border border-gray-200 rounded-lg shadow hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700`}
+              type={field.type}
+              id={field.name}
+              name={field.name}
+              onChange={(e) => field.onchange(e.target.value, field.name)}
+              value={entry[field.name]}
+            />
+          </label>
         );
     }
   };
@@ -83,7 +107,6 @@ const EntryForm: React.FC<EntryFormProps> = ({ entry, fields, onSubmit, onDelete
     <form className={`${styles['form']}`} onSubmit={handleSubmit}>
       {fields.map((field) => (
         <div className={`w-full`} key={field.name}>
-          <label htmlFor={field.name}>{field.label}</label>
           {renderField(field)}
         </div>
       ))}
