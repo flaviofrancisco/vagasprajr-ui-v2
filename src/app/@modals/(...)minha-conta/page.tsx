@@ -8,6 +8,7 @@ import { use, useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import styles from './page.module.scss';
 import { set } from 'date-fns';
+import Link from 'next/link';
 
 const MyAccountPage = () => {
   const router = useRouter();
@@ -68,6 +69,11 @@ const MyAccountPage = () => {
                   value={profile.user_name}
                   className="border border-gray-300 rounded-md p-2 w-full"
                 />
+                {profile?.user_name && profile?.is_public && (
+                  <Link href={`https://vagasprajr.com.br/im/${profile?.user_name}/`} passHref target="_blank" rel="noopener noreferrer" className="text-gray-500">
+                    {`https://vagasprajr.com.br/im/${profile?.user_name}/`}
+                  </Link>
+                )}
                 {success_message && status === 'succeeded' && <span className="text-green-500">{success_message}</span>}
                 {error && <span className="text-red-500">{error}</span>}
               </label>
