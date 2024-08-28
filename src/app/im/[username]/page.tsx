@@ -17,7 +17,6 @@ import { doGetUserPublicProfile } from '@/services/users/users.service';
 import { useParams, useRouter } from 'next/navigation';
 import { useEffect } from 'react';
 import { useSelector } from 'react-redux';
-import ProfileLinkPreview from './profile-linkpreview';
 
 const ProfilePage: React.FC = () => {
   const params = useParams();
