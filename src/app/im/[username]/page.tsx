@@ -17,6 +17,7 @@ import { doGetUserPublicProfile } from '@/services/users/users.service';
 import { useParams, useRouter } from 'next/navigation';
 import { useEffect } from 'react';
 import { useSelector } from 'react-redux';
+import ProfileLinkPreview from './profile-linkpreview';
 
 const ProfilePage: React.FC = () => {
   const params = useParams();
@@ -41,6 +42,7 @@ const ProfilePage: React.FC = () => {
 
   return (
     <main className="place-items-center grid mt-10 mb-10 w-full items-center flex-grow">
+      <ProfileLinkPreview url={`https://vagasprajr.com.br/im/${username}`} />
       <div className={`grid flex-grow place-items-center h-screenflex items-start block w-4/5 sm:w-9/10 p-6 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700`}>
         <div className="w-full items-start">
           <UserProfileSection readonly={true} profile={profile} form_definition={user_forms[USER_PERSONAL_INFO_KEY]} />
