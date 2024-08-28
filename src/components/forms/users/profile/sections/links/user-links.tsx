@@ -6,20 +6,19 @@ import { UserLink } from '@/services/users/users.service';
 
 interface UserLinksProps {
   links: UserLink[];
+  readonly?: boolean;
 }
 
-export default function UserLinks({ links }: UserLinksProps) {
+export default function UserLinks({ links, readonly }: UserLinksProps) {
   return (
     <>
       <div className="flex flex-row items-start mt-4">
-        <Link
-          href={'/edit-links'}
-          key={`edit-links`}
-          className="bg-blue-500 hover:bg-blue-700 mb-5 text-white font-bold w-6 h-6 rounded-full flex items-center justify-center"          
-        >
-          +
-        </Link>
-        <h2 className={`${styles['form-cell']} ml-2 text-xl font-bold`}>Links</h2>
+        {!readonly && (
+          <Link href={'/edit-links'} key={`edit-links`} className="bg-blue-500 hover:bg-blue-700 mb-5 text-white font-bold w-6 h-6 rounded-full flex items-center justify-center">
+            +
+          </Link>
+        )}
+        <h2 className={`${styles['form-cell']} text-xl font-bold`}>Links</h2>
       </div>
       {links && links.length > 0 && (
         <div className={`${styles['form-row']}`}>

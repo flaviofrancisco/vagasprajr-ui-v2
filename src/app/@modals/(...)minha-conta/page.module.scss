@@ -1,0 +1,29 @@
+.toggle-checkbox {
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  left: 0;
+  bottom: 10;
+  z-index: 1;
+  background-color: #fff;
+  transition: transform 0.3s ease-in-out;
+  box-sizing: border-box;
+  /* Add this line */
+}
+
+.toggle-label {
+  position: relative;
+  width: 40px;
+  height: 20px;
+  background-color: #ccc;
+  cursor: pointer;
+  border-radius: 100px;
+}
+
+.toggle-checkbox:checked {
+  transform: translateX(20px);
+}
+
+.toggle-checkbox:checked + .toggle-label {
+  background-color: #1da1f2;
+}

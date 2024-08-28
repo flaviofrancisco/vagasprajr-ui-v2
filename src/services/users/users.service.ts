@@ -1,5 +1,6 @@
 import { ActionReducerMapBuilder, createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { AxiosInstance } from 'axios';
+import axios from '../axios';
 
 export interface UserProfile {
   first_name: string;
@@ -65,6 +66,15 @@ export interface UserLink {
   url: string;
 }
 
+export const doGetUserPublicProfile = createAsyncThunk('users/publicProfile', async ({ userName }: { userName: string }) => {
+  try {
+    const response = await axios.get(`/users/profile/${userName}`);
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+});
+
 export const doGetUserProfile = createAsyncThunk('users/profile', async ({ axiosPrivate, userId }: { axiosPrivate: AxiosInstance; userId?: string }) => {
   try {
     if (typeof userId === 'undefined' || userId === null || userId === '') {
@@ -107,24 +117,35 @@ export interface UsersState {
   success_message?: string;
 }
 
+const initialState: UsersState = {
+  status: 'idle',
+  error: '',
+  profile: {
+    profile_image_url: '',
+    first_name: '',
+    last_name: '',
+    email: '',
+    links: [],
+    about_me: '',
+  },
+};
+
 const usersSlice = createSlice({
   name: 'users',
-  initialState: {
-    status: 'idle',
-    success_message: '',
-    error: '',
-    profile: {
-      profile_image_url: '',
-      first_name: '',
-      last_name: '',
-      email: '',
-      links: [],
-      about_me: '',
-    },
-  } as UsersState,
+  initialState: initialState,
   reducers: {
+    onResetMessages: (state) => {
+      state.error = '';
+      state.success_message = '';
+    },
     onChangeFieldInput: (state, action) => {
+      state.error = '';
+      state.success_message = '';
       Object.keys(action.payload).forEach((key) => {
+        console.log({
+          key,
+          value: action.payload[key],
+        });
         state.profile = {
           ...state.profile,
           [key]: action.payload[key],
@@ -164,6 +185,16 @@ const usersSlice = createSlice({
     builder.addCase(tryUpdateUserName.rejected, (state: UsersState, action: any) => {
       state.status = 'failed';
       state.error = action.error.message;
+    });
+    builder.addCase(doGetUserPublicProfile.pending, (state: UsersState) => {
+      state.status = 'loading';
+    });
+    builder.addCase(doGetUserPublicProfile.fulfilled, (state: UsersState, action: PayloadAction<UserProfile>) => {
+      state.status = 'succeeded';
+      state.profile = action.payload;
+    });
+    builder.addCase(doGetUserPublicProfile.rejected, (state: UsersState) => {
+      state.status = 'failed';
     });
   },
 });

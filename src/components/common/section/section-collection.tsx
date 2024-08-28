@@ -10,9 +10,10 @@ interface SectionCollectionProps {
   entries: any[];
   hasDates?: boolean;
   entityKey?: string;
+  readonly?: boolean;
 }
 
-const SectionCollectionComponent: React.FC<SectionCollectionProps> = ({ title, fields, entries, hasDates, entityKey }: SectionCollectionProps) => {
+const SectionCollectionComponent: React.FC<SectionCollectionProps> = ({ title, fields, entries, hasDates, entityKey, readonly }: SectionCollectionProps) => {
   const formatDate = (start_date: string, end_date: string) => {
     if (start_date === null || start_date === '' || typeof start_date === 'undefined') {
       return '';
@@ -82,37 +83,40 @@ const SectionCollectionComponent: React.FC<SectionCollectionProps> = ({ title, f
   return (
     <>
       <div className="flex flex-row mt-5 items-start">
-        <Link
-          href={{
-            pathname: '/add-item',
-            query: {
-              data: entityKey,
-            },
-          }}
-          className="bg-blue-500 hover:bg-blue-700 mb-5 text-white font-bold w-6 h-6 rounded-full flex items-center justify-center"
-          onClick={() => console.log('Add')}
-        >
-          +
-        </Link>
-        <h2 className={`$ ml-2 text-xl font-bold`}>{title}</h2>
+        {!readonly && (
+          <Link
+            href={{
+              pathname: '/add-item',
+              query: {
+                data: entityKey,
+              },
+            }}
+            className="bg-blue-500 hover:bg-blue-700 mb-5 text-white font-bold w-6 h-6 rounded-full flex items-center justify-center"
+          >
+            +
+          </Link>
+        )}
+        <h2 className={`text-xl font-bold`}>{title}</h2>
       </div>
       {entries &&
         entries.map((entry) => (
           <div className={`${styles['form-row']}`} key={entry.id}>
             <div className="flex flex-row items-start">
-              <Link
-                href={{
-                  pathname: '/edit-item',
-                  query: {
-                    data: `${entityKey}`,
-                    id: entry.id,
-                  },
-                }}
-                key={`edit-item-${uuidv4()}`}
-                className="bg-green-500 mr-2 hover:bg-green-700 text-white font-bold w-6 h-6 rounded-full flex items-center justify-center"
-              >
-                <PencilSvg className="h-2 w-2" />
-              </Link>
+              {!readonly && (
+                <Link
+                  href={{
+                    pathname: '/edit-item',
+                    query: {
+                      data: `${entityKey}`,
+                      id: entry.id,
+                    },
+                  }}
+                  key={`edit-item-${uuidv4()}`}
+                  className="bg-green-500 mr-2 hover:bg-green-700 text-white font-bold w-6 h-6 rounded-full flex items-center justify-center"
+                >
+                  <PencilSvg className="h-2 w-2" />
+                </Link>
+              )}
               <div className={`${styles['form-cell']} w-[95%] mb-6 break-words overflow-hidden text-ellipsis`}>
                 {fields.map((field, index) => (
                   <p key={index} className={field.className}>

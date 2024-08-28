@@ -10,13 +10,14 @@ interface SectionProps {
   fields: FieldDefinitionBase[];
   entry: any;
   data?: string;
+  readonly?: boolean;
 }
 
-const SectionComponent: React.FC<SectionProps> = ({ title, fields, entry, data }: SectionProps) => {
+const SectionComponent: React.FC<SectionProps> = ({ title, fields, entry, data, readonly }: SectionProps) => {
   return (
     <>
       <div className="flex flex-row mt-6 items-start">
-        {data && (
+        {data && !readonly && (
           <Link
             href={{
               pathname: '/edit-item',
