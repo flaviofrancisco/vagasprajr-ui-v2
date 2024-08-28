@@ -4,10 +4,9 @@ import useAxiosPrivate from '@/hooks/private-axios';
 import { useAppDispatch } from '@/services/store';
 import usersSlice, { doGetUserProfile, doUpdateUserProfile, tryUpdateUserName } from '@/services/users/users.service';
 import { useRouter } from 'next/navigation';
-import { use, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import styles from './page.module.scss';
-import { set } from 'date-fns';
 import Link from 'next/link';
 
 const MyAccountPage = () => {
@@ -70,7 +69,7 @@ const MyAccountPage = () => {
                   className="border border-gray-300 rounded-md p-2 w-full"
                 />
                 {profile?.user_name && profile?.is_public && (
-                  <Link href={`https://vagasprajr.com.br/im/${profile?.user_name}/`} passHref target="_blank" rel="noopener noreferrer" className="text-gray-500">
+                  <Link href={`/im/${profile?.user_name}/`} passHref target="_blank" rel="noopener noreferrer" className="text-gray-500">
                     {`https://vagasprajr.com.br/im/${profile?.user_name}/`}
                   </Link>
                 )}
