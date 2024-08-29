@@ -1,6 +1,6 @@
 'use client';
 import { useParams } from 'next/navigation';
-import JobForm from '../form/page';
+import JobForm from '../form/job-form';
 
 const EditJobPage: React.FC = () => {
   const params = useParams();

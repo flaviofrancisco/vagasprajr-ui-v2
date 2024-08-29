@@ -10,7 +10,7 @@ import { useSelector } from 'react-redux';
 import { Toaster } from 'sonner';
 
 interface JobFormProps {
-  code?: string;
+  code: string;
 }
 
 const JobForm: React.FC<JobFormProps> = ({ code }) => {
@@ -18,8 +18,16 @@ const JobForm: React.FC<JobFormProps> = ({ code }) => {
   const dispatch = useAppDispatch();
   const axiosPrivate = useAxiosPrivate();
 
-  const { onChangeFieldInput } = jobsSlice.actions;
+  const { onChangeFieldInput, onResetJob } = jobsSlice.actions;
   const { job } = useSelector((state: any) => state.jobsSliceReducer);
+
+  useEffect(() => {
+    if (code !== '') {
+      dispatch(getJobAsAdmin({ axiosPrivate, code: code }));
+    } else {
+      dispatch(onResetJob());
+    }
+  }, [axiosPrivate, code, dispatch, onResetJob]);
 
   const formDefinition: Field[] = [
     {
@@ -104,7 +112,7 @@ const JobForm: React.FC<JobFormProps> = ({ code }) => {
   ];
 
   const onSubmit = () => {
-    if (code) {
+    if (code !== '') {
       dispatch(updateJob({ axiosPrivate, body: { ...job } })).then((result) => {
         if (result?.type === updateJob.fulfilled.type) {
           router.back();
@@ -118,13 +126,6 @@ const JobForm: React.FC<JobFormProps> = ({ code }) => {
       });
     }
   };
-
-  useEffect(() => {
-    if (code) {
-      dispatch(getJobAsAdmin({ axiosPrivate, code: code }));
-    } else {
-    }
-  }, [axiosPrivate, code, dispatch]);
 
   return (
     <>
