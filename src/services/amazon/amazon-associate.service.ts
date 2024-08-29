@@ -13,6 +13,16 @@ export interface GetPagedAdReferenceRequest {
   filters?: Filter[];
 }
 
+export const deleteAdReference = createAsyncThunk('amazon/deleteAdReference', async ({ axiosPrivate, id }: { axiosPrivate: AxiosInstance; id: string }) => {
+  await axiosPrivate.delete(`/admin/ad-references/${id}`);
+  return id;
+});
+
+export const createAdReference = createAsyncThunk('amazon/createAdReference', async ({ axiosPrivate, adReference }: { axiosPrivate: AxiosInstance; adReference: AdReference }) => {
+  const response = await axiosPrivate.post('/admin/ad-reference', adReference);
+  return response.data;
+});
+
 export const updateAdReference = createAsyncThunk('amazon/updateAdReference', async ({ axiosPrivate, id, adReference }: { axiosPrivate: AxiosInstance; id: string; adReference: AdReference }) => {
   const response = await axiosPrivate.put(`/admin/ad-references/${id}`, adReference);
   return response.data;
@@ -43,25 +53,28 @@ export interface AmazonAssociateState {
 }
 
 export interface AdReference {
+  id?: string;
   description?: string;
   is_active?: boolean;
-  created_at?: string;
+  created_at?: Date | null;
   image_url?: string;
   url?: string;
 }
+
+const adReferenceInitialState: AdReference = {
+  description: '',
+  is_active: false,
+  created_at: null,
+  image_url: '',
+  url: '',
+};
 
 const amazonAssociateSlice = createSlice({
   name: 'amazon',
   initialState: {
     status: 'idle',
     error: '',
-    adReference: {
-      description: '',
-      is_active: false,
-      created_at: '',
-      image_url: '',
-      url: '',
-    },
+    adReference: adReferenceInitialState,
     adReferences: [] as AdReference[],
     adReferenceResult: {
       Data: [],
@@ -77,6 +90,9 @@ const amazonAssociateSlice = createSlice({
     } as GetPagedAdReferenceRequest,
   } as AmazonAssociateState,
   reducers: {
+    onResetAdReference: (state) => {
+      state.adReference = adReferenceInitialState;
+    },
     onFilterChange: (state, action: PayloadAction<GetPagedAdReferenceRequest>) => {
       state.filter = action.payload;
     },
@@ -135,6 +151,28 @@ const amazonAssociateSlice = createSlice({
       state.adReference = action.payload;
     });
     builder.addCase(updateAdReference.rejected, (state, action) => {
+      state.status = 'failed';
+      state.error = action.error.message || '';
+    });
+    builder.addCase(createAdReference.pending, (state) => {
+      state.status = 'loading';
+    });
+    builder.addCase(createAdReference.fulfilled, (state, action) => {
+      state.status = 'succeeded';
+      state.adReference = action.payload;
+    });
+    builder.addCase(createAdReference.rejected, (state, action) => {
+      state.status = 'failed';
+      state.error = action.error.message || '';
+    });
+    builder.addCase(deleteAdReference.pending, (state) => {
+      state.status = 'loading';
+    });
+    builder.addCase(deleteAdReference.fulfilled, (state, action) => {
+      state.status = 'succeeded';
+      state.adReference = null;
+    });
+    builder.addCase(deleteAdReference.rejected, (state, action) => {
       state.status = 'failed';
       state.error = action.error.message || '';
     });

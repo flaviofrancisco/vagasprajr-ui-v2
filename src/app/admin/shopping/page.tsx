@@ -4,17 +4,20 @@ import ContextMenuFilter from '@/components/context-menus/context-menu-filter';
 import Pagination from '@/components/tables/pagination';
 import Table, { Column, ContextMenuFilterState, Sort } from '@/components/tables/table';
 import useAxiosPrivate from '@/hooks/private-axios';
-import amazonAssociateSlice, { getAdFilteredReferences } from '@/services/amazon/amazon-associate.service';
+import amazonAssociateSlice, { AdReference, deleteAdReference, getAdFilteredReferences, updateAdReference } from '@/services/amazon/amazon-associate.service';
 import { useAppDispatch } from '@/services/store';
 import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
-import { Toaster } from 'sonner';
+import { toast, Toaster } from 'sonner';
 import { useRouter } from 'next/navigation';
+import Confirm from '@/components/modals/dialog/confirm-dialog';
 
 const ShoppingAdminPage: React.FC = () => {
   const router = useRouter();
   const [contextMenuFilterState, setContextMenuFilterState] = useState<ContextMenuFilterState>({ clientX: 0, clientY: 0, visible: false, column: null });
   const [contextMenuState, setContextMenuState] = useState({ clientX: 0, clientY: 0, visible: false, data: null });
+  const [selectedData, setSelectedData] = useState<any>(null);
+  const [confirmOpen, setConfirmOpen] = useState(false);
   const dispatch = useAppDispatch();
   const axiosPrivate = useAxiosPrivate();
 
@@ -64,8 +67,28 @@ const ShoppingAdminPage: React.FC = () => {
     dispatch(getAdFilteredReferences({ axiosPrivate, filters: { ...filter, page } }));
   };
 
-  const onEdit = (data: any) => {
+  const onEdit = (data: AdReference) => {
     router.push(`/admin/shopping/${data.id}`);
+  };
+
+  const onChangeCheckbox = (e: any, row: any, column: Column) => {   
+    dispatch(updateAdReference({ axiosPrivate, id: row.id, adReference: { ...row, [column.key]: e.target.checked } })).then(() => {
+      dispatch(getAdFilteredReferences({ axiosPrivate, filters: { ...filter } }));
+      toast.success('Referência alterada com sucesso!');
+    });
+  };
+
+  const onDeleteReference = () => {
+    if (!selectedData?.id) return;
+    dispatch(deleteAdReference({ axiosPrivate, id: selectedData.id })).then(() => {
+      dispatch(getAdFilteredReferences({ axiosPrivate, filters: { ...filter } }));
+      toast.success('Referência excluída com sucesso!');
+    });
+  };
+
+  const onDelete = (data: any) => {
+    setSelectedData(data);
+    setConfirmOpen(true);
   };
 
   const onFilter = (column: Column | null, value: any) => {
@@ -94,6 +117,11 @@ const ShoppingAdminPage: React.FC = () => {
 
   return (
     <main className="grid mt-10 mb-10 w-full flex-grow">
+      <div>
+        <Confirm title="Deletar referência?" open={confirmOpen} onClose={() => setConfirmOpen(false)} onConfirm={onDeleteReference}>
+          Você tem certeza que deseja excluir esta referência?
+        </Confirm>
+      </div>
       <ContextMenuFilter
         clientX={contextMenuFilterState.clientX}
         clientY={contextMenuFilterState.clientY}
@@ -103,8 +131,9 @@ const ShoppingAdminPage: React.FC = () => {
         onFilter={onFilter}
       />
       <ContextMenu
-        onEdit={() => onEdit(contextMenuState.data)}
-        onDelete={() => console.log('Delete')}
+        onCreate={() => router.push('/admin/shopping/new')}
+        onEdit={onEdit}
+        onDelete={(data) => onDelete(data)}
         data={contextMenuState.data}
         clientX={contextMenuState.clientX}
         clientY={contextMenuState.clientY}
@@ -112,7 +141,15 @@ const ShoppingAdminPage: React.FC = () => {
         close={onCloseContextMenu}
       />
       <Toaster richColors />
-      <Table filters={filter} onSort={onSortColumn} value={adReferenceResult} columns={columns} onChekboxChange={() => {}} onContextMenu={onContextMenu} onContextMenuFilter={onContextMenuFilter} />
+      <Table
+        filters={filter}
+        onSort={onSortColumn}
+        value={adReferenceResult}
+        columns={columns}
+        onChekboxChange={onChangeCheckbox}
+        onContextMenu={onContextMenu}
+        onContextMenuFilter={onContextMenuFilter}
+      />
       <Pagination currentPage={adReferenceResult.Page} pageSize={adReferenceResult.PerPage} totalItems={adReferenceResult.Total} onPageChange={onPageChange} />
     </main>
   );

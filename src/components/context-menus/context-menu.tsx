@@ -1,9 +1,9 @@
 import React from 'react';
 import useOnClickOutside from './useOnClickOutside';
 import styles from './context-menu.module.scss';
-import { FaEdit, FaTrash } from 'react-icons/fa';
+import { FaEdit, FaFile, FaTrash } from 'react-icons/fa';
 
-const ContextMenu: React.FC<ContextMenuProps> = ({ clientX, clientY, visible, close, data, onEdit, onDelete }) => {
+const ContextMenu: React.FC<ContextMenuProps> = ({ clientX, clientY, visible, close, data, onEdit, onDelete, onCreate }) => {
   const contextMenuRef = React.useRef<HTMLDivElement>(null);
   useOnClickOutside(contextMenuRef, close || (() => {}));
 
@@ -19,6 +19,12 @@ const ContextMenu: React.FC<ContextMenuProps> = ({ clientX, clientY, visible, cl
       style={{ top: clientY, left: clientX }}
     >
       <div className="flex flex-col">
+        {onCreate && (
+          <button onClick={onCreate} className="p-1 w-full flex-column text-left flex items-center hover:bg-gray-200">
+            <FaFile />
+            <span className="ml-2">Novo</span>
+          </button>
+        )}
         <ContextMenuButton onClick={() => onEdit(data)} icon={<FaEdit />} label="Editar" />
         <ContextMenuButton onClick={() => onDelete(data)} icon={<FaTrash />} label="Excluir" />
       </div>
@@ -43,4 +49,5 @@ export interface ContextMenuProps {
   data?: any;
   onEdit: (data: any) => void;
   onDelete: (data: any) => void;
+  onCreate?: () => void;
 }

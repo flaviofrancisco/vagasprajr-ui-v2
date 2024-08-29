@@ -10,6 +10,7 @@ interface EntryFormProps {
   fields: Field[];
   onSubmit: (e: FormEvent<HTMLFormElement>) => void;
   onDelete?: () => void;
+  onReturn?: () => void;
 }
 
 export interface Field extends FieldDefinition {
@@ -18,7 +19,7 @@ export interface Field extends FieldDefinition {
   disabled?: boolean;
 }
 
-const EntryForm: React.FC<EntryFormProps> = ({ entry, fields, onSubmit, onDelete }) => {
+const EntryForm: React.FC<EntryFormProps> = ({ entry, fields, onSubmit, onDelete, onReturn }) => {
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     onSubmit({ ...e });
@@ -30,7 +31,7 @@ const EntryForm: React.FC<EntryFormProps> = ({ entry, fields, onSubmit, onDelete
           <SelectCombo
             disabled={field.disabled}
             options={StatesBrazil}
-            value={entry[field.name]}
+            value={entry[field.name] ?? ''}
             onChange={(value: string) => {
               field.onchange(value, field.name);
             }}
@@ -46,7 +47,7 @@ const EntryForm: React.FC<EntryFormProps> = ({ entry, fields, onSubmit, onDelete
               id={field.name}
               name={field.name}
               onChange={(e) => field.onchange(e.target.value, field.name)}
-              value={entry[field.name]}
+              value={entry[field.name] ?? ''}
             >
               {field.options?.map((option) => (
                 <option key={option.value} value={option.value}>
@@ -66,7 +67,7 @@ const EntryForm: React.FC<EntryFormProps> = ({ entry, fields, onSubmit, onDelete
               id={field.name}
               name={field.name}
               onChange={(e) => field.onchange(e.target.value, field.name)}
-              value={entry[field.name]}
+              value={entry[field.name] ?? ''}
             />
           </label>
         );
@@ -80,7 +81,7 @@ const EntryForm: React.FC<EntryFormProps> = ({ entry, fields, onSubmit, onDelete
               id={field.name}
               name={field.name}
               onChange={(e) => field.onchange(e.target.checked, field.name)}
-              checked={entry[field.name]}
+              checked={entry[field.name] ?? false}
             />
             <span className={`${'custom-checkbox-box'}`}>{field.label} </span>
           </label>
@@ -96,7 +97,7 @@ const EntryForm: React.FC<EntryFormProps> = ({ entry, fields, onSubmit, onDelete
               id={field.name}
               name={field.name}
               onChange={(e) => field.onchange(e.target.value, field.name)}
-              value={entry[field.name]}
+              value={entry[field.name] ?? ''}
             />
           </label>
         );
@@ -111,6 +112,14 @@ const EntryForm: React.FC<EntryFormProps> = ({ entry, fields, onSubmit, onDelete
         </div>
       ))}
       <div className="flex flex-col lg:flex-row lg:justify-between lg:gap-4">
+        {onReturn && (
+          <button
+            className=" lg:w-1/4 lg:ml-0 lg:mr-auto p-2 border bg-gray-800 text-white border-gray-200 rounded-lg shadow hover:bg-gray-600 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700"
+            onClick={onReturn}
+          >
+            Voltar
+          </button>
+        )}
         {onDelete && (
           <button
             className=" lg:w-1/4 lg:ml-0 lg:mr-auto p-2 border bg-red-800 text-white border-gray-200 rounded-lg shadow hover:bg-red-600 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700"
