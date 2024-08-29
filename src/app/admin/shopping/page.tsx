@@ -71,7 +71,7 @@ const ShoppingAdminPage: React.FC = () => {
     router.push(`/admin/shopping/${data.id}`);
   };
 
-  const onChangeCheckbox = (e: any, row: any, column: Column) => {   
+  const onChangeCheckbox = (e: any, row: any, column: Column) => {
     dispatch(updateAdReference({ axiosPrivate, id: row.id, adReference: { ...row, [column.key]: e.target.checked } })).then(() => {
       dispatch(getAdFilteredReferences({ axiosPrivate, filters: { ...filter } }));
       toast.success('Referência alterada com sucesso!');
@@ -117,11 +117,9 @@ const ShoppingAdminPage: React.FC = () => {
 
   return (
     <main className="grid mt-10 mb-10 w-full flex-grow">
-      <div>
-        <Confirm title="Deletar referência?" open={confirmOpen} onClose={() => setConfirmOpen(false)} onConfirm={onDeleteReference}>
-          Você tem certeza que deseja excluir esta referência?
-        </Confirm>
-      </div>
+      <Confirm title="Deletar referência?" open={confirmOpen} onClose={() => setConfirmOpen(false)} onConfirm={onDeleteReference}>
+        Você tem certeza que deseja excluir esta referência?
+      </Confirm>
       <ContextMenuFilter
         clientX={contextMenuFilterState.clientX}
         clientY={contextMenuFilterState.clientY}
@@ -150,7 +148,7 @@ const ShoppingAdminPage: React.FC = () => {
         onContextMenu={onContextMenu}
         onContextMenuFilter={onContextMenuFilter}
       />
-      <Pagination currentPage={adReferenceResult.Page} pageSize={adReferenceResult.PerPage} totalItems={adReferenceResult.Total} onPageChange={onPageChange} />
+      <Pagination title={'Referências Amazon Links:'} currentPage={adReferenceResult.Page} pageSize={adReferenceResult.PerPage} totalItems={adReferenceResult.Total} onPageChange={onPageChange} />
     </main>
   );
 };

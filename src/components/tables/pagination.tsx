@@ -6,9 +6,10 @@ type PaginationProps = {
   pageSize: number;
   totalItems: number;
   onPageChange: (page: number) => void;
+  title: string;
 };
 
-const Pagination: React.FC<PaginationProps> = ({ currentPage, pageSize, totalItems, onPageChange }) => {
+const Pagination: React.FC<PaginationProps> = ({ currentPage, pageSize, totalItems, onPageChange, title }) => {
   const totalPages = Math.ceil(totalItems / pageSize);
 
   const handlePageChange = (page: number) => {
@@ -37,7 +38,7 @@ const Pagination: React.FC<PaginationProps> = ({ currentPage, pageSize, totalIte
           &gt;
         </button>
       </div>
-      <div className="m-4 text-lg w-1/3 font-semibold text-right">{`Usuários ${totalItems}`}</div>
+      <div className="m-4 text-lg w-1/3 font-semibold text-right">{`${title} ${totalItems}`}</div>
     </div>
   );
 };

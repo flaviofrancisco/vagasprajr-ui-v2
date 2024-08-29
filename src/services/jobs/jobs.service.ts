@@ -47,6 +47,16 @@ export interface Job {
   code: string;
 }
 
+export const deleteJob = createAsyncThunk('jobs/delete', async ({ axiosPrivate, code }: { axiosPrivate: AxiosInstance; code: string }) => {
+  await axiosPrivate.delete(`/admin/jobs/${code}`);
+  return code;
+});
+
+export const getJobAsAdmin = createAsyncThunk('jobs/getAuth', async ({ axiosPrivate, code }: { axiosPrivate: AxiosInstance; code: string }) => {
+  const response = await axiosPrivate.get(`/admin/jobs/${code}`);
+  return response.data;
+});
+
 export const getJobs = createAsyncThunk('jobs/getAll', async ({ axiosPrivate, filters }: { axiosPrivate: AxiosInstance; filters: GetJobsRequest }) => {
   const response = await axiosPrivate.post('/admin/jobs', filters);
   return response.data;
@@ -74,7 +84,19 @@ export interface JobsState {
   jobView: JobView;
   jobsResult: PagedResult<Job>;
   filter: GetJobsRequest;
+  job: Job;
 }
+
+const jobInitialState: Job = {
+  id: '',
+  title: '',
+  company_name: '',
+  location: '',
+  salary: '',
+  url: '',
+  description: '',
+  code: '',
+};
 
 const initialState: JobsState = {
   status: 'idle',
@@ -110,12 +132,28 @@ const initialState: JobsState = {
     page: 1,
     page_size: DEFAULT_PAGE_SIZE,
   } as GetJobsRequest,
+  job: jobInitialState,
 };
 
 const jobsSlice = createSlice({
   name: 'jobs',
   initialState: initialState,
   reducers: {
+    onResetJob: (state) => {
+      state.job = jobInitialState;
+    },
+    onChangeFieldInput: (state, action: PayloadAction<Partial<Job>>) => {
+      state.error = '';
+      Object.keys(action.payload).forEach((key) => {
+        const value = action.payload[key as keyof Job];
+        if (value !== undefined) {
+          state.job = {
+            ...state.job,
+            [key]: value as any, // Ensure the type matches
+          };
+        }
+      });
+    },
     onFilterChange: (state, action: PayloadAction<GetJobsRequest>) => {
       state.filter = action.payload;
     },
@@ -169,6 +207,27 @@ const jobsSlice = createSlice({
       state.status = 'succeeded';
     });
     builder.addCase(getJobs.rejected, (state, action) => {
+      state.status = 'failed';
+      state.error = action.error.message || '';
+    });
+    builder.addCase(getJobAsAdmin.pending, (state) => {
+      state.status = 'loading';
+    });
+    builder.addCase(getJobAsAdmin.fulfilled, (state, action) => {
+      state.job = action.payload;
+      state.status = 'succeeded';
+    });
+    builder.addCase(getJobAsAdmin.rejected, (state, action) => {
+      state.status = 'failed';
+      state.error = action.error.message || '';
+    });
+    builder.addCase(deleteJob.pending, (state) => {
+      state.status = 'loading';
+    });
+    builder.addCase(deleteJob.fulfilled, (state, action) => {
+      state.status = 'succeeded';
+    });
+    builder.addCase(deleteJob.rejected, (state, action) => {
       state.status = 'failed';
       state.error = action.error.message || '';
     });

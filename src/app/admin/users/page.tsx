@@ -123,7 +123,7 @@ const UserAdminPage: React.FC = () => {
         close={onCloseContextMenu}
       />
       <Table filters={filters} onSort={onSortColumn} value={usersResult} columns={columns} onContextMenu={onContextMenu} onContextMenuFilter={onContextMenuFilter} />
-      <Pagination currentPage={filters.page} pageSize={filters.page_size} totalItems={usersResult.Total} onPageChange={(page) => dispatch(onFilterChange({ ...filters, page }))} />
+      <Pagination title={'Usuários:'}  currentPage={filters.page} pageSize={filters.page_size} totalItems={usersResult.Total} onPageChange={(page) => dispatch(onFilterChange({ ...filters, page }))} />
     </main>
   );
 };
