@@ -1,5 +1,6 @@
 import React from 'react';
-import Dialog from './dialog';
+import Dialog from './Dialog';
+
 
 interface Props {
   title: string;
