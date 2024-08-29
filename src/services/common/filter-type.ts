@@ -6,7 +6,7 @@ export interface Filter {
 export interface Field {
   type: string;
   name: string;
-  value?: string;
+  value?: any;
   min_value?: string;
   max_value?: string;
 }

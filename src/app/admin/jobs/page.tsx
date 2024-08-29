@@ -28,7 +28,7 @@ const JobsAdminPage: React.FC = () => {
     { key: 'url', title: 'Url', type: 'url', columnSize: '20' },
     { key: 'job_details_url', title: 'Detalhes', type: 'url', columnSize: '20' },
     { key: 'qty_clicks', title: 'Clicks', type: 'number', columnSize: '20' },
-    { key: 'created_at', title: 'Desde', type: 'date', columnSize: '20', is_filter_enabled: false },
+    { key: 'created_at', title: 'Desde', type: 'date', columnSize: '20', is_filter_enabled: true },
   ] as Column[];
 
   const onContextMenuFilter = (e: React.MouseEvent, column: Column) => {
@@ -67,13 +67,13 @@ const JobsAdminPage: React.FC = () => {
   const onFilter = (column: Column | null, value: any) => {
     if (!column) return;
 
-    const { key } = column;
+    const { key, type } = column;
 
     const current_filter = {
       operator: 'and',
       fields: [
         {
-          type: 'string',
+          type: type,
           name: key,
           value: value,
         },

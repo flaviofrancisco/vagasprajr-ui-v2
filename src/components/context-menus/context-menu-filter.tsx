@@ -3,10 +3,33 @@ import styles from './context-menu-filter.module.scss';
 import { Column } from '../tables/table';
 
 const ContextMenuFilter: React.FC<ContextMenuProps> = ({ column, clientX, clientY, visible, close, onFilter }) => {
+  const windowsInnerWidth = window.innerWidth;
+
+  if (windowsInnerWidth - clientX < 200) {
+    clientX = clientX - 200;
+  }
+
   const [value, setValue] = React.useState<string>('');
 
   const onChangeValue = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setValue(e.target.value);
+    if (column?.type === 'checkbox' || column?.type === 'boolean') {
+      setValue(e.target.checked ? 'true' : 'false');
+    } else {
+      setValue(e.target.value);
+    }
+  };
+
+  const renderInput = () => {
+    switch (column?.type) {
+      case 'number':
+        return <input className="border border-gray-300 rounded-md p-2 dark:bg-gray-700" inputMode="numeric" pattern="[0-9]*" type={column?.type} value={+value} onChange={onChangeValue} />;
+      case 'checkbox':
+        return <input className="border border-gray-300 rounded-md p-2 dark:bg-gray-700" type={column?.type} value={value} onChange={onChangeValue} />;
+      case 'date':
+        return <input className="border border-gray-300 rounded-md p-2 dark:bg-gray-700" type={column?.type} value={value} onChange={onChangeValue} />;
+      default:
+        return <input className="border border-gray-300 rounded-md p-2 dark:bg-gray-700" type={column?.type} value={value} onChange={onChangeValue} />;
+    }
   };
 
   return (
@@ -17,7 +40,7 @@ const ContextMenuFilter: React.FC<ContextMenuProps> = ({ column, clientX, client
       <div className="flex flex-col">
         <span className="text-sm font-bold">Filtrar</span>
         <span className="text-sm">{column?.title}</span>
-        <input className="border border-gray-300 rounded-md p-2 dark:bg-gray-700" type="text" value={value} onChange={onChangeValue} />
+        {renderInput()}
         <div className="flex justify-end">
           <button className="bg-blue-500 text-white rounded-md p-1 mt-4 mr-4 w-1/2" onClick={() => onFilter && onFilter(column, value)}>
             Filtrar
