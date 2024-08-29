@@ -3,7 +3,11 @@ import styles from './context-menu-filter.module.scss';
 import { Column } from '../tables/table';
 
 const ContextMenuFilter: React.FC<ContextMenuProps> = ({ column, clientX, clientY, visible, close, onFilter }) => {
-  const windowsInnerWidth = window.innerWidth;
+  let windowsInnerWidth = 2000;
+
+  if (typeof window !== 'undefined') {
+    windowsInnerWidth = window.innerWidth;
+  }
 
   if (windowsInnerWidth - clientX < 200) {
     clientX = clientX - 200;
