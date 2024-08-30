@@ -11,6 +11,7 @@ import { useSelector } from 'react-redux';
 import { toast, Toaster } from 'sonner';
 import { useRouter } from 'next/navigation';
 import Confirm from '@/components/modals/dialog/confirm-dialog';
+import withAuth from '@/components/common/with-auth.component';
 
 const ShoppingAdminPage: React.FC = () => {
   const router = useRouter();
@@ -116,7 +117,7 @@ const ShoppingAdminPage: React.FC = () => {
   }, [axiosPrivate, dispatch, filter]);
 
   return (
-    <main className="grid mt-10 mb-10 w-full flex-grow">
+    <main className="grid mt-10 mb-10 w-full flex-grow" style={{ display: 'inline-block' }}>
       <Confirm title="Deletar referência?" open={confirmOpen} onClose={() => setConfirmOpen(false)} onConfirm={onDeleteReference}>
         Você tem certeza que deseja excluir esta referência?
       </Confirm>
@@ -153,4 +154,4 @@ const ShoppingAdminPage: React.FC = () => {
   );
 };
 
-export default ShoppingAdminPage;
+export default withAuth(ShoppingAdminPage);

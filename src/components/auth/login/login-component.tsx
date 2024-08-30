@@ -1,18 +1,20 @@
 'use client';
-
 import { AuthenticationState, doAuthentication } from '@/services/auth/authentication.service';
 import { useAppDispatch } from '@/services/store';
 import Link from 'next/link';
-import { use, useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { signIn, useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import Loading from '@/components/common/loading';
+import { AdminRole, doAuthorization } from '@/services/auth/authorization.service';
+import useAxiosPrivate from '@/hooks/private-axios';
 
 const LoginComponent: React.FC = () => {
   const router = useRouter();
   const session = useSession();
   const dispatch = useAppDispatch();
+  const axiosPrivate = useAxiosPrivate();
   const [user, setUser] = useState('');
   const [pwd, setPwd] = useState('');
 
@@ -37,7 +39,18 @@ const LoginComponent: React.FC = () => {
       if (typeof errRef?.current === 'undefined' || errRef?.current === null) {
         return;
       }
-      dispatch(doAuthentication({ email: user, password: pwd }));
+      const result = await dispatch(doAuthentication({ email: user, password: pwd }));
+      if (result.type === doAuthentication.fulfilled.type) {
+        const authResult = await dispatch(doAuthorization({ access_token: authSession.access_token, request: { roles: [AdminRole] }, axiosPrivate: axiosPrivate }));
+        if (authResult.type === doAuthorization.fulfilled.type) {
+          router.push('/admin');
+        } else {
+          router.push('/');
+        }
+      } else {
+        errRef.current.innerHTML = 'Usuário ou senha inválidos';
+      }
+      console.log(result);
       errRef.current.innerHTML = '';
       setUser('');
       setPwd('');

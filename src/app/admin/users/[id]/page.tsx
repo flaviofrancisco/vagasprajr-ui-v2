@@ -1,4 +1,5 @@
 'use client';
+import withAuth from '@/components/common/with-auth.component';
 import UserProfileForm from '@/components/forms/users/profile/user-profile-form.component';
 import { useParams } from 'next/navigation';
 const UserProfilePage: React.FC = () => {
@@ -7,4 +8,4 @@ const UserProfilePage: React.FC = () => {
   return <main className="grid w-full mt-10 mb-10 place-items-center">{userId && <UserProfileForm userId={userId} />}</main>;
 };
 
-export default UserProfilePage;
+export default withAuth(UserProfilePage);

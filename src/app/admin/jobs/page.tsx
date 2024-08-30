@@ -1,4 +1,5 @@
 'use client';
+import withAuth from '@/components/common/with-auth.component';
 import ContextMenu from '@/components/context-menus/context-menu';
 import ContextMenuFilter from '@/components/context-menus/context-menu-filter';
 import Confirm from '@/components/modals/dialog/confirm-dialog';
@@ -161,4 +162,4 @@ const JobsAdminPage: React.FC = () => {
   );
 };
 
-export default JobsAdminPage;
+export default withAuth(JobsAdminPage);

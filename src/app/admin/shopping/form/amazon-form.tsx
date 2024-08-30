@@ -1,4 +1,5 @@
 'use client';
+import withAuth from '@/components/common/with-auth.component';
 import EntryForm, { Field } from '@/components/forms/common/entry-form.component';
 import useAxiosPrivate from '@/hooks/private-axios';
 import amazonAssociateSlice, { createAdReference, getAdReference, updateAdReference } from '@/services/amazon/amazon-associate.service';
@@ -95,4 +96,4 @@ const AmazonAdReferenceForm: React.FC<AmazonAdReferenceFormProps> = ({ id }) => 
   );
 };
 
-export default AmazonAdReferenceForm;
+export default withAuth(AmazonAdReferenceForm);

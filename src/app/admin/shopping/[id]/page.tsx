@@ -1,6 +1,7 @@
 'use client';
 import { useParams } from 'next/navigation';
 import AmazonAdReferenceForm from '../form/amazon-form';
+import withAuth from '@/components/common/with-auth.component';
 
 const AdReferencePage: React.FC = () => {
   const params = useParams();
@@ -12,4 +13,4 @@ const AdReferencePage: React.FC = () => {
   );
 };
 
-export default AdReferencePage;
+export default withAuth(AdReferencePage);

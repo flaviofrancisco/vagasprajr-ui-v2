@@ -55,7 +55,7 @@ export async function middleware(request: NextRequest) {
   );
 
   if (!result?.data?.isAuthorized) {
-    url.pathname = '/auth/login';
+    url.pathname = '/admin/';
     return NextResponse.redirect(url, {
       status: 302,
       headers: {
