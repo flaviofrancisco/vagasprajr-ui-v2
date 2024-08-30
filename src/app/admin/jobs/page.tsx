@@ -69,6 +69,11 @@ const JobsAdminPage: React.FC = () => {
     setContextMenuState({ clientX, clientY, visible: true, data: data });
   };
 
+  const onClear = (column: Column | null, value: any) => {
+    if (!column) return;
+    dispatch(onFilterChange({ ...filter, page: 0, filters: [] }));
+  };
+
   const onEdit = (data: any) => {
     router.push(`/admin/jobs/${data.code}`);
   };
@@ -138,6 +143,7 @@ const JobsAdminPage: React.FC = () => {
         column={contextMenuFilterState.column}
         close={onCloseContextMenuFilter}
         onFilter={onFilter}
+        onClear={onClear}
       />
       <ContextMenu
         onEdit={() => onEdit(contextMenuState.data)}

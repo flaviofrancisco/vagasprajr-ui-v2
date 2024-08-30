@@ -2,7 +2,17 @@ import React from 'react';
 import styles from './context-menu-filter.module.scss';
 import { Column } from '../tables/table';
 
-const ContextMenuFilter: React.FC<ContextMenuProps> = ({ column, clientX, clientY, visible, close, onFilter }) => {
+export interface ContextMenuProps {
+  clientX: number;
+  clientY: number;
+  visible: boolean;
+  close?: () => void;
+  onFilter?: (column: Column | null, value: any) => void;
+  column: Column | null;
+  onClear?: (column: Column | null, value: any) => void;
+}
+
+const ContextMenuFilter: React.FC<ContextMenuProps> = ({ column, clientX, clientY, visible, close, onFilter, onClear }) => {
   let windowsInnerWidth = 2000;
 
   if (typeof window !== 'undefined') {
@@ -13,7 +23,7 @@ const ContextMenuFilter: React.FC<ContextMenuProps> = ({ column, clientX, client
     clientX = clientX - 200;
   }
 
-  const [value, setValue] = React.useState<string>('');
+  const [value, setValue] = React.useState<any>('');
 
   const onChangeValue = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (column?.type === 'checkbox' || column?.type === 'boolean') {
@@ -21,6 +31,11 @@ const ContextMenuFilter: React.FC<ContextMenuProps> = ({ column, clientX, client
     } else {
       setValue(e.target.value);
     }
+  };
+
+  const Clear = () => {
+    setValue('');
+    onClear && onClear(column, null);
   };
 
   const renderInput = () => {
@@ -49,7 +64,10 @@ const ContextMenuFilter: React.FC<ContextMenuProps> = ({ column, clientX, client
           <button className="bg-blue-500 text-white rounded-md p-1 mt-4 mr-4 w-1/2" onClick={() => onFilter && onFilter(column, value)}>
             Filtrar
           </button>
-          <button className="bg-gray-300 rounded-md p-1 mt-4 w-1/2 dark:bg-gray-800" onClick={close}>
+          <button className="bg-gray-400 text-white rounded-md p-1 mt-4 w-1/2 dark:bg-gray-800" onClick={Clear}>
+            Limpar
+          </button>
+          <button className="bg-gray-300 rounded-md p-1 mt-4 ml-4 w-1/2 dark:bg-gray-800" onClick={close}>
             Fechar
           </button>
         </div>
@@ -57,14 +75,5 @@ const ContextMenuFilter: React.FC<ContextMenuProps> = ({ column, clientX, client
     </div>
   );
 };
-
-export interface ContextMenuProps {
-  clientX: number;
-  clientY: number;
-  visible: boolean;
-  close?: () => void;
-  onFilter?: (column: Column | null, value: any) => void;
-  column: Column | null;
-}
 
 export default ContextMenuFilter;
