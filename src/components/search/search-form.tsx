@@ -8,12 +8,17 @@ import SearchBar from './search-bar';
 const SearchForm: React.FC = () => {
   const dispatch = useAppDispatch();
   const { searchResult, status, searchFilter, searchExecuted, jobList, job_filter_options } = useSelector((state: any) => state.searchReducer);
-  const { onResetState } = searchSlice.actions;
+  const { onResetState, onSortChange } = searchSlice.actions;
 
   const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     dispatch(doSearch({ filter: { ...searchFilter } }));
     dispatch(doGetJobOptions({ filter: { ...searchFilter } }));
+  };
+
+  const onSort = (value: any) => {
+    dispatch(onSortChange(value));
+    dispatch(doSearch({ filter: { ...searchFilter, sort: value } }));
   };
 
   return (
@@ -42,6 +47,18 @@ const SearchForm: React.FC = () => {
         >
           Buscar
         </button>
+      </div>
+      <div className="flex justify-center align-center">
+        <div className="relative">
+          <select
+            id="sort-options"
+            className="block mt-5 w-1/10 p-2 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+            onChange={(e) => onSort(e.target.value)}
+          >
+            <option value="qty_clicks">Mais vizualizadas</option>
+            <option value="created_at">Mais recentes</option>
+          </select>
+        </div>
       </div>
       <div className="m-4">
         {status === 'loading' && <div className="text-center mt-2 text-sm text-gray-500 dark:text-gray-400">Buscando ...</div>}

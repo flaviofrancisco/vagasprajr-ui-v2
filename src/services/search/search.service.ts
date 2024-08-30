@@ -193,6 +193,10 @@ const searchSlice = createSlice({
         providers: [],
       } as JobFilterOptions;
     },
+    onSortChange: (state: SearchState, action: PayloadAction<string>) => {
+      state.searchFilter.sort = action.payload;
+      state.jobList = [];
+    },
     onUpdateFilter: (state: SearchState, action: PayloadAction<SearchFilter>) => {
       state.searchFilter = action.payload;
       state.jobList = [];
@@ -224,6 +228,7 @@ const searchSlice = createSlice({
       }
       state.loadedItems = state.jobList.length;
       state.searchFilter.page = action.payload.Page;
+      state.searchFilter.sort = state.searchFilter.sort;
       state.status = 'succeeded';
     });
     builder.addCase(doSearch.rejected, (state) => {
@@ -236,7 +241,7 @@ const searchSlice = createSlice({
     });
     builder.addCase(doGetJobOptions.fulfilled, (state, action: PayloadAction<JobFilterOptions>) => {
       state.job_filter_options = action.payload;
-    });   
+    });
   },
 });
 
