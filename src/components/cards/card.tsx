@@ -46,7 +46,7 @@ export default function Card({ job, onFavorite, favoriteListIds }: CardProps) {
     <div className="bg-white dark:bg-gray-800 shadow-lg rounded-lg p-4 mb-4">
       <div className="flex items-center justify-between">
         <div className="flex items-center">
-          <button onClick={handleOnFavorite} className={`${IsFavorited(job?.id) ? 'bg-red-500' : 'bg-blue-500'} p-1 rounded-full dark:bg-blue-400 text-white dark:text-white`}>
+          <button onClick={handleOnFavorite} className={`${IsFavorited(job?.id) ? 'bg-red-500 dark:bg-red-400' : 'bg-blue-500 dark:bg-blue-400'} p-1 rounded-full text-white dark:text-white`}>
             <HeartSVG className="h-4 w-4" />
           </button>
           <div className="ms-2">
