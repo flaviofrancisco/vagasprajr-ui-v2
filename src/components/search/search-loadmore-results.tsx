@@ -36,6 +36,10 @@ export default function SearchLoadMoreResults() {
   }, [dispatch, jobList.length, searchFilter, searchResult.Total]);
 
   const onFavorite = (job: any) => {
+    if (!authSession?.user_info || !authSession?.user_info?.id || authSession?.user_info?.id === '') {
+      toast.error('Você precisa estar logado para favoritar uma vaga');
+      return;
+    }
     let bookmarked_jobs: string[] = [];
     if (profile?.bookmarked_jobs) {
       bookmarked_jobs = [...profile.bookmarked_jobs];
