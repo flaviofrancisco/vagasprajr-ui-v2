@@ -6,6 +6,7 @@ import SearchLoadMoreResults from './search-loadmore-results';
 import SearchBar from './search-bar';
 import { doGetUserProfile } from '@/services/users/users.service';
 import useAxiosPrivate from '@/hooks/private-axios';
+import { toast, Toaster } from 'sonner';
 
 const SPECIAL_ROUTE = 'user_jobs';
 
@@ -24,6 +25,11 @@ const SearchForm: React.FC = () => {
   };
 
   const onSort = (value: any) => {
+    if (SPECIAL_ROUTE == value && (!authSession?.user_info || !authSession?.user_info?.id || authSession?.user_info?.id === '')) {
+      toast.error('Você precisa estar logado para acessar essa funcionalidade');
+      return;
+    }
+
     if (SPECIAL_ROUTE == value && profile?.bookmarked_jobs) {
       dispatch(onResetState(''));
       dispatch(doSearch({ filter: { ...searchFilter, ids: profile.bookmarked_jobs } }));
@@ -44,6 +50,7 @@ const SearchForm: React.FC = () => {
 
   return (
     <form className="w-4/5 mx-auto" onSubmit={onSubmit}>
+      <Toaster richColors />
       <label htmlFor="default-search" className="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white">
         Search
       </label>
