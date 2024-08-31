@@ -1,12 +1,19 @@
-import React from 'react';
+import React, { use, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { useAppDispatch } from '@/services/store';
 import searchSlice, { doGetJobOptions, doSearch } from '@/services/search/search.service';
 import SearchLoadMoreResults from './search-loadmore-results';
 import SearchBar from './search-bar';
+import { doGetUserProfile } from '@/services/users/users.service';
+import useAxiosPrivate from '@/hooks/private-axios';
+
+const SPECIAL_ROUTE = 'user_jobs';
 
 const SearchForm: React.FC = () => {
   const dispatch = useAppDispatch();
+  const axiosPrivate = useAxiosPrivate();
+  const { profile } = useSelector((state: any) => state.usersReducer);
+  const { authSession } = useSelector((state: any) => state.authenticationReducer);
   const { searchResult, status, searchFilter, searchExecuted, jobList, job_filter_options } = useSelector((state: any) => state.searchReducer);
   const { onResetState, onSortChange } = searchSlice.actions;
 
@@ -17,9 +24,22 @@ const SearchForm: React.FC = () => {
   };
 
   const onSort = (value: any) => {
-    dispatch(onSortChange(value));
-    dispatch(doSearch({ filter: { ...searchFilter, sort: value } }));
+    if (SPECIAL_ROUTE == value && profile?.bookmarked_jobs) {
+      dispatch(doSearch({ filter: { ...searchFilter, ids: profile.bookmarked_jobs } }));
+    } else {
+      dispatch(onSortChange(value));
+      dispatch(doSearch({ filter: { ...searchFilter, sort: value } }));
+    }
   };
+
+  useEffect(() => {
+    const execute = async () => {      
+      if (authSession?.user_info && authSession?.user_info?.id && authSession?.user_info?.id !== '') {
+        await dispatch(doGetUserProfile({ axiosPrivate }));
+      }
+    };
+    execute();
+  }, [authSession?.user_info, axiosPrivate, dispatch]);
 
   return (
     <form className="w-4/5 mx-auto" onSubmit={onSubmit}>
@@ -55,8 +75,9 @@ const SearchForm: React.FC = () => {
             className="block mt-5 w-1/10 p-2 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
             onChange={(e) => onSort(e.target.value)}
           >
-            <option value="qty_clicks">Mais vizualizadas</option>
+            <option value="qty_clicks">Mais visualizadas</option>
             <option value="created_at">Mais recentes</option>
+            <option value={`${SPECIAL_ROUTE}`}>Minhas vagas</option>
           </select>
         </div>
       </div>

@@ -6,14 +6,16 @@ import { JobItem } from '@/services/search/search.service';
 
 export interface SearchResultsListProps {
   jobs: JobItem[];
+  onFavorite?: (job: JobItem) => void;
+  favoriteListIds?: string[];
 }
 
-export default function SearchResultsList({ jobs }: SearchResultsListProps) {
+export default function SearchResultsList({ jobs, onFavorite, favoriteListIds }: SearchResultsListProps) {
   return (
     <>
       {jobs &&
         jobs.map((job: any) => {
-          return <Card key={uuidv4()} job={job} />;
+          return <Card key={uuidv4()} job={job} onFavorite={onFavorite} favoriteListIds={favoriteListIds} />;
         })}
     </>
   );

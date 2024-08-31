@@ -19,6 +19,7 @@ export interface SearchFilter {
   job_filter_options: JobFilterOptions;
   sort: string;
   is_ascending: false;
+  ids: string[];
 }
 
 export interface JobFilterOptions {
@@ -120,6 +121,26 @@ export interface SearchState {
   job_filter_options: JobFilterOptions;
 }
 
+const searchFilterInitialState: SearchFilter = {
+  title: '',
+  company_name: '',
+  location: '',
+  salary: '',
+  provider: '',
+  page: 1,
+  pageSize: DEFAULT_PAGE_SIZE,
+  isBookmarkedOnly: false,
+  job_filter_options: {
+    companies: [],
+    locations: [],
+    salaries: [],
+    providers: [],
+  } as JobFilterOptions,
+  is_ascending: false,
+  sort: '',
+  ids: [],
+} as SearchFilter;
+
 const initialState: SearchState = {
   status: 'idle',
   loadedItems: -1,
@@ -131,22 +152,7 @@ const initialState: SearchState = {
     Total: 0,
   } as PagedResult<JobItem>,
   jobList: [] as JobItem[],
-  searchFilter: {
-    title: '',
-    company_name: '',
-    location: '',
-    salary: '',
-    provider: '',
-    page: 1,
-    pageSize: DEFAULT_PAGE_SIZE,
-    isBookmarkedOnly: false,
-    job_filter_options: {
-      companies: [],
-      locations: [],
-      salaries: [],
-      providers: [],
-    } as JobFilterOptions,
-  } as SearchFilter,
+  searchFilter: searchFilterInitialState,
   job_filter_options: {
     companies: [],
     locations: [],
@@ -170,22 +176,7 @@ const searchSlice = createSlice({
         Total: 0,
       } as PagedResult<JobItem>;
       state.jobList = [] as JobItem[];
-      state.searchFilter = {
-        title: action.payload,
-        company_name: '',
-        location: '',
-        salary: '',
-        provider: '',
-        page: 1,
-        pageSize: DEFAULT_PAGE_SIZE,
-        isBookmarkedOnly: false,
-        job_filter_options: {
-          companies: [],
-          locations: [],
-          salaries: [],
-          providers: [],
-        } as JobFilterOptions,
-      } as SearchFilter;
+      state.searchFilter = searchFilterInitialState;
       state.job_filter_options = {
         companies: [],
         locations: [],

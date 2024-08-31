@@ -16,6 +16,7 @@ export interface UserProfile {
   certifications?: UserCertification[];
   idioms_info?: UserIdiomInfo[];
   tech_experiences?: UserTechExperience[];
+  bookmarked_jobs?: string[];
 }
 
 export interface UserIdiomInfo {
@@ -65,6 +66,15 @@ export interface UserEducation {
 export interface UserLink {
   url: string;
 }
+
+export const doUpdateUserBookmarks = createAsyncThunk('users/updateBookmarks', async ({ axiosPrivate, bookmarks }: { axiosPrivate: AxiosInstance; bookmarks: string[] }) => {
+  try {
+    const response = await axiosPrivate.patch('/users/bookmarks', { bookmarked_jobs: bookmarks });
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+});
 
 export const doGetUserPublicProfile = createAsyncThunk('users/publicProfile', async ({ userName }: { userName: string }) => {
   try {
@@ -127,6 +137,7 @@ const initialState: UsersState = {
     email: '',
     links: [],
     about_me: '',
+    bookmarked_jobs: [],
   },
 };
 
@@ -190,6 +201,16 @@ const usersSlice = createSlice({
       state.profile = action.payload;
     });
     builder.addCase(doGetUserPublicProfile.rejected, (state: UsersState) => {
+      state.status = 'failed';
+    });
+    builder.addCase(doUpdateUserBookmarks.pending, (state: UsersState) => {
+      state.status = 'loading';
+    });
+    builder.addCase(doUpdateUserBookmarks.fulfilled, (state: UsersState, action: PayloadAction<string[]>) => {
+      state.status = 'succeeded';
+      state.profile.bookmarked_jobs = action.payload;
+    });
+    builder.addCase(doUpdateUserBookmarks.rejected, (state: UsersState) => {
       state.status = 'failed';
     });
   },

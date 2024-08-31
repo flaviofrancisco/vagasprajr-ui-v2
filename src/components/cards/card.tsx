@@ -3,12 +3,22 @@
 import { JobItem } from '@/services/search/search.service';
 import { FaEye } from 'react-icons/fa';
 import styles from './card.module.css';
+import { HeartSVG } from '../svg/heart.svg';
 
 interface CardProps {
   job: JobItem;
+  onFavorite?: (job: JobItem) => void;
+  favoriteListIds?: string[];
 }
 
-export default function Card({ job }: CardProps) {
+export default function Card({ job, onFavorite, favoriteListIds }: CardProps) {
+  const IsFavorited = (id?: string) => {
+    if (id && favoriteListIds) {
+      return favoriteListIds.includes(id);
+    }
+    return false;
+  };
+
   const hideQtyLinks = (short_url: string) => {
     if (short_url.includes('linkedin')) {
       return true;
@@ -24,11 +34,21 @@ export default function Card({ job }: CardProps) {
       return date;
     }
   };
+
+  const handleOnFavorite = (e: any) => {
+    e.preventDefault();
+    if (onFavorite) {
+      onFavorite(job);
+    }
+  };
+
   return (
     <div className="bg-white dark:bg-gray-800 shadow-lg rounded-lg p-4 mb-4">
       <div className="flex items-center justify-between">
         <div className="flex items-center">
-          {/* <img className="h-10 w-10 rounded-full" src={job.CompanyLogo} alt={job.CompanyName} /> */}
+          <button onClick={handleOnFavorite} className={`${IsFavorited(job?.id) ? 'bg-red-500' : 'bg-blue-500'} p-1 rounded-full dark:bg-blue-400 text-white dark:text-white`}>
+            <HeartSVG className="h-4 w-4" />
+          </button>
           <div className="ms-2">
             <p className="text-sm font-medium text-gray-900 dark:text-white">{job.company_name}</p>
             <p className="text-sm text-gray-500 dark:text-gray-400">{job.title}</p>
