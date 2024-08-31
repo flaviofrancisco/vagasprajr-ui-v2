@@ -25,6 +25,7 @@ const SearchForm: React.FC = () => {
 
   const onSort = (value: any) => {
     if (SPECIAL_ROUTE == value && profile?.bookmarked_jobs) {
+      dispatch(onResetState(''));
       dispatch(doSearch({ filter: { ...searchFilter, ids: profile.bookmarked_jobs } }));
     } else {
       dispatch(onSortChange(value));
@@ -33,7 +34,7 @@ const SearchForm: React.FC = () => {
   };
 
   useEffect(() => {
-    const execute = async () => {      
+    const execute = async () => {
       if (authSession?.user_info && authSession?.user_info?.id && authSession?.user_info?.id !== '') {
         await dispatch(doGetUserProfile({ axiosPrivate }));
       }

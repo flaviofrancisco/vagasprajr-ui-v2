@@ -69,7 +69,7 @@ export default function SearchLoadMoreResults() {
       }
     };
     execute();
-  }, [jobList, dispatch, onRefreshJobList, authSession.user_info.id, axiosPrivate, authSession.user_info]);
+  }, [jobList, dispatch, onRefreshJobList, authSession?.user_info?.id, axiosPrivate, authSession?.user_info]);
 
   return (
     <>

@@ -176,7 +176,25 @@ const searchSlice = createSlice({
         Total: 0,
       } as PagedResult<JobItem>;
       state.jobList = [] as JobItem[];
-      state.searchFilter = searchFilterInitialState;
+      state.searchFilter = {
+        title: action.payload,
+        company_name: '',
+        location: '',
+        salary: '',
+        provider: '',
+        page: 1,
+        pageSize: DEFAULT_PAGE_SIZE,
+        isBookmarkedOnly: false,
+        job_filter_options: {
+          companies: [],
+          locations: [],
+          salaries: [],
+          providers: [],
+        } as JobFilterOptions,
+        is_ascending: false,
+        sort: '',
+        ids: [],
+      };
       state.job_filter_options = {
         companies: [],
         locations: [],
