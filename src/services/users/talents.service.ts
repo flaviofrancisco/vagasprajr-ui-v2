@@ -79,7 +79,15 @@ const talentsSlice = createSlice({
     });
     builder.addCase(doGetTalentsPublic.fulfilled, (state, action: PayloadAction<PagedResult<UserProfile>>) => {
       state.status = 'succeeded';
-      state.talent_result = action.payload;
+      if (action.payload.Page > 1) {
+        state.talent_result = {
+          ...state.talent_result,
+          Data: [...state.talent_result.Data, ...action.payload.Data],
+          Page: action.payload.Page,
+        };
+      } else {
+        state.talent_result = action.payload;
+      }
     });
     builder.addCase(doGetTalentsPublic.rejected, (state, action) => {
       state.status = 'failed';
