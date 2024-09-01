@@ -25,6 +25,21 @@ export default function TalensPage() {
             operator: 'or',
             fields: [
               {
+                name: 'city',
+                value: e.target.value,
+                type: 'string',
+              },
+              {
+                name: 'uf',
+                value: e.target.value,
+                type: 'string',
+              },
+              {
+                name: 'state',
+                value: e.target.value,
+                type: 'string',
+              },
+              {
                 name: 'first_name',
                 value: e.target.value,
                 type: 'string',
