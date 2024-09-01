@@ -22,7 +22,7 @@ export const doGetTalentsPublic = createAsyncThunk('talents/GetTalents', async (
   }
 });
 
-export interface JobsState {
+export interface TalentsState {
   status: 'idle' | 'loading' | 'succeeded' | 'failed';
   error: string;
   talent_result: PagedResult<UserProfile>;
@@ -30,7 +30,7 @@ export interface JobsState {
   talent: UserProfile;
 }
 
-const initialState: JobsState = {
+const initialState: TalentsState = {
   status: 'idle',
   error: '',
   talent_result: {
@@ -52,11 +52,28 @@ const talentsSlice = createSlice({
   name: 'talents',
   initialState,
   reducers: {
-    setFilter(state, action: PayloadAction<GetTalentsRequest>) {
+    onResetState: (state) => {
+      state.status = 'idle';
+      state.error = '';
+      state.talent_result = {
+        Data: [],
+        Page: 1,
+        PerPage: 10,
+        Total: 0,
+      };
+      state.filter = {
+        sort: '',
+        is_ascending: false,
+        page: 1,
+        page_size: 10,
+      };
+      state.talent = {} as UserProfile;
+    },
+    onSetFilter: (state, action: PayloadAction<GetTalentsRequest>) => {
       state.filter = action.payload;
     },
   },
-  extraReducers: (builder: ActionReducerMapBuilder<JobsState>) => {
+  extraReducers: (builder: ActionReducerMapBuilder<TalentsState>) => {
     builder.addCase(doGetTalentsPublic.pending, (state) => {
       state.status = 'loading';
     });
