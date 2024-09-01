@@ -19,6 +19,7 @@ const TalentCard: React.FC<TalentCardProps> = ({ talent }) => {
               <Image src={UserIcon} alt={`${talent.first_name} ${talent.last_name}`} width={48} height={48} className="rounded-full" />
             )}
             <p className="text-sm font-medium text-gray-900 dark:text-white">{`${talent.first_name} ${talent.last_name}`}</p>
+            <p className="text-sm text-gray-500 dark:text-gray-400">{talent.about_me}</p>
             <p className="text-sm text-gray-500 dark:text-gray-400">{talent.city}</p>
             <p className="text-sm text-gray-500 dark:text-gray-400">{talent.state}</p>
             {talent.user_name && (
