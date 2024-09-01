@@ -1,4 +1,8 @@
 'use client';
+import Image from 'next/image';
+import Link from 'next/link';
+import UserIcon from '@/assets/user-icon.png';
+
 import { useAppDispatch } from '@/services/store';
 import { useSelector } from 'react-redux';
 import { useEffect } from 'react';
@@ -27,6 +31,11 @@ const UserProfileForm: React.FC<UserProfileFormProps> = ({ userId }) => {
   return (
     <div className={`grid flex-grow place-items-center h-screenflex items-start block w-4/5 sm:w-9/10 p-6 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700`}>
       <div className="w-full items-start">
+        {profile.profile_image_url ? (
+          <Image src={profile.profile_image_url} alt={`${profile.first_name} ${profile.last_name}`} width={60} height={60} className="rounded-full" />
+        ) : (
+          <Image src={UserIcon} alt={`${profile.first_name} ${profile.last_name}`} width={48} height={48} className="rounded-full" />
+        )}
         <UserProfileSection profile={profile} form_definition={user_forms[USER_PERSONAL_INFO_KEY]} />
         <UserProfileSection profile={profile} form_definition={user_forms[USER_ABOUT_ME_KEY]} />
         <UserTechExperiences tech_experiences={profile.tech_experiences} />
