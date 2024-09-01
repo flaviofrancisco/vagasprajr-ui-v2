@@ -18,6 +18,7 @@ const navigation = [
   { name: 'Criar conta', href: '/auth/signup', current: false, isLogged: false },
   { name: 'Criar vaga', href: '/v/nova', current: false, isLogged: true },
   { name: 'Shopping', href: '/shopping', current: false },
+  { name: 'Talentos', href: '/talentos', current: false },
 ];
 
 function classNames(...classes: string[]): string {
