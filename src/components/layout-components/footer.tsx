@@ -105,7 +105,7 @@ export default function MainFooter() {
               </svg>
               <span className="sr-only">GitHub account</span>
             </a>
-            <a href="https://bsky.app/profile/vagasprajr.bsky.social" className="hover:text-gray-900 dark:hover:text-white ms-5">
+            <a href="https://bsky.app/profile/vagasprajr.com.br" className="hover:text-gray-900 dark:hover:text-white ms-5">
               <svg className="w-4 h-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 568 501">
                 <title>BlueSky Account</title>
                 <path
