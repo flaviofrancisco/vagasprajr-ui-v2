@@ -1,6 +1,5 @@
 'use client';
 import Image from 'next/image';
-import Link from 'next/link';
 import UserIcon from '@/assets/user-icon.png';
 
 import { useAppDispatch } from '@/services/store';

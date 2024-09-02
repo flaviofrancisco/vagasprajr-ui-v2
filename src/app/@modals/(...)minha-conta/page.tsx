@@ -2,12 +2,15 @@
 import { Modal } from '@/components/modals/modal';
 import useAxiosPrivate from '@/hooks/private-axios';
 import { useAppDispatch } from '@/services/store';
-import usersSlice, { doGetUserProfile, doUpdateUserProfile, tryUpdateUserName } from '@/services/users/users.service';
+import usersSlice, { doGetGravatarUrl, doGetUserProfile, doUpdateUserProfile, tryUpdateUserName } from '@/services/users/users.service';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import styles from './page.module.scss';
 import Link from 'next/link';
+import Image from 'next/image';
+import UserIcon from '@/assets/user-icon.png';
+import { toast, Toaster } from 'sonner';
 
 const MyAccountPage = () => {
   const router = useRouter();
@@ -33,7 +36,12 @@ const MyAccountPage = () => {
 
   const onUpdateUserProfile = (current_profile: any) => {
     dispatch(onChangeFieldInput(current_profile));
-    dispatch(doUpdateUserProfile({ axiosPrivate, profile: { ...profile, ...current_profile } }));
+    dispatch(doUpdateUserProfile({ axiosPrivate, profile: { ...profile, ...current_profile } })).then((result_action) => {
+      if (doUpdateUserProfile.fulfilled.match(result_action)) {
+        toast.success('Perfil atualizado com sucesso');
+        dispatch(doGetUserProfile({ axiosPrivate }));
+      }
+    });
   };
 
   const onUpdateUserName = (user_name: string) => {
@@ -49,12 +57,75 @@ const MyAccountPage = () => {
     });
   };
 
+  const onUseGooglePhoto = () => {
+    onUpdateUserProfile({ profile_image_url: profile.oauth_image_url });
+  };
+
+  const onGetGravatar = () => {
+    const execute = async () => {
+      const result = await dispatch(doGetGravatarUrl({ email: profile.email }));
+      if (result.type === doGetGravatarUrl.fulfilled.type) {
+        const isUrlValid = await isUrlReturn200(result.payload.gravatarUrl);
+        if (isUrlValid) {
+          onUpdateUserProfile({ profile_image_url: `${result.payload.gravatarUrl}?size=256`, gravatar_image_url: result.payload.gravatarUrl });
+        } else {
+          toast.error('Não foi possível encontrar uma imagem no Gravatar');
+        }
+      }
+    };
+    execute();
+  };
+
+  const isUrlReturn200 = async (url: string) => {
+    /*try to get the image from the url and check if it returns 200*/
+    try {
+      const response = await fetch(url);
+      if (response.status === 200) {
+        return true;
+      }
+    } catch (error) {
+      return false;
+    }
+  };
+
+  const hasGooglePhoto = profile?.oauth_image_url;
+
   return (
     <Modal title={'Minha conta'} onClose={onClose}>
+      <Toaster richColors />
       <div className="p-4">
         <div className="flex flex-col">
           <h1>Informações da conta</h1>
-          <form className="flex p-4 flex-col w-full">
+          <div className="flex flex-col md:flex-row items-center align-baseline justify-start">
+            <div>
+              {profile.profile_image_url ? (
+                <Image src={profile.profile_image_url} alt={`${profile.first_name} ${profile.last_name}`} width={60} height={60} className="rounded-full m-4" />
+              ) : (
+                <Image src={UserIcon} alt={`${profile.first_name} ${profile.last_name}`} width={48} height={48} className="rounded-full m-4" />
+              )}
+            </div>
+            <div className="flex align-baseline flex-col">
+              <h2>{`${profile.first_name} ${profile.last_name}`}</h2>
+              <p>{profile.email}</p>
+            </div>
+          </div>
+          <p className="mt-4">Escolha uma foto de perfil</p>
+          <div className="flex align-baseline w-[30%] flex-row">
+            <button className="bg-blue-500 m-2 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" onClick={() => onGetGravatar()}>
+              Gravatar
+            </button>
+            {hasGooglePhoto && (
+              <button className="bg-blue-500 m-2 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" onClick={() => onUseGooglePhoto()}>
+                Google
+              </button>
+            )}
+          </div>
+          <p className="text-gray-500">
+            <Link href={'https://br.gravatar.com/'} passHref target="_blank" rel="noopener noreferrer">
+              Crie sua conta no Gravatar
+            </Link>
+          </p>
+          <form className="flex p-4 flex-col align-baseline h-auto w-full">
             <div className="w-full">
               <label className="text-sm text-gray-600" htmlFor="name">
                 Nome do usuário

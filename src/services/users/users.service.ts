@@ -17,6 +17,8 @@ export interface UserProfile {
   idioms_info?: UserIdiomInfo[];
   tech_experiences?: UserTechExperience[];
   bookmarked_jobs?: string[];
+  oauth_image_url?: string;
+  gravatar_image_url?: string;
 }
 
 export interface UserIdiomInfo {
@@ -120,6 +122,15 @@ export const tryUpdateUserName = createAsyncThunk('users/updateUserName', async 
   }
 });
 
+export const doGetGravatarUrl = createAsyncThunk('users/gravatar', async ({ email }: { email: string }) => {
+  try {
+    const response = await axios.post(`/user/gravatar`, { email });
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+});
+
 export interface UsersState {
   status: 'idle' | 'loading' | 'succeeded' | 'failed';
   error: string;
@@ -211,6 +222,16 @@ const usersSlice = createSlice({
       state.profile.bookmarked_jobs = action.payload;
     });
     builder.addCase(doUpdateUserBookmarks.rejected, (state: UsersState) => {
+      state.status = 'failed';
+    });
+    builder.addCase(doGetGravatarUrl.pending, (state: UsersState) => {
+      state.status = 'loading';
+    });
+    builder.addCase(doGetGravatarUrl.fulfilled, (state: UsersState, action: PayloadAction<string>) => {
+      state.status = 'succeeded';
+      state.profile.profile_image_url = action.payload;
+    });
+    builder.addCase(doGetGravatarUrl.rejected, (state: UsersState) => {
       state.status = 'failed';
     });
   },
