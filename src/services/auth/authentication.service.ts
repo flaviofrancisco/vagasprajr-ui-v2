@@ -123,6 +123,7 @@ const authenticationSlice = createSlice({
           first_name: '',
           last_name: '',
           profile_image_url: '',
+          roles: [],
         },
       };
     });
@@ -172,4 +173,5 @@ export interface UserInfo {
   first_name: string;
   last_name: string;
   profile_image_url: string;
+  roles: string[];
 }

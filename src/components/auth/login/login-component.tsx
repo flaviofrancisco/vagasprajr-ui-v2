@@ -30,7 +30,6 @@ const LoginComponent: React.FC = () => {
     if (session.status === 'authenticated') {
       router.push('/auth/google/callback');
     }
-    console.log(session.status);
   }, [router, session]);
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
@@ -45,7 +44,6 @@ const LoginComponent: React.FC = () => {
       } else {
         errRef.current.innerHTML = 'Usuário ou senha inválidos';
       }
-      console.log(result);
       errRef.current.innerHTML = '';
       setUser('');
       setPwd('');

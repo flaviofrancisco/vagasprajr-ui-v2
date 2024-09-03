@@ -1,10 +1,14 @@
 import { decodedToken } from './utils/jwt';
-import { axiosPrivate } from './services/axios';
 import { NextRequest, NextResponse } from 'next/server';
+import { JwtPayload } from 'jwt-decode';
 
 const ADMIN_ROLE = '650d5e137ece568cd2f11a0a';
 const admin_routes = ['/admin', '/admin/'];
 const auth_routes = ['/perfil', '/perfil/'];
+
+interface CustomJwtPayload extends JwtPayload {
+  roles?: string[];
+}
 
 export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
@@ -18,7 +22,7 @@ export async function middleware(request: NextRequest) {
   }
 
   let cookie = request.cookies.get(process.env.TOKEN_NAME || 'vagasprajr_token');
-  let token = cookie?.value ? decodedToken(cookie?.value) : null;
+  let token: CustomJwtPayload | null = cookie?.value ? decodedToken(cookie?.value) : null;
 
   if (!token) {
     console.log('No token found, redirecting to login.');
@@ -33,36 +37,18 @@ export async function middleware(request: NextRequest) {
   }
 
   if (!isAdminRoute(pathname)) {
+    console.log('No admin authorization required for this route.');
+    return NextResponse.next();
+  }
+
+  if (token?.roles?.includes(ADMIN_ROLE)) {
     console.log('Token is valid for admin users, proceeding with request.');
     return NextResponse.next();
   }
 
-  try {
-    let result = await axiosPrivate.post(
-      '/auth/authorize',
-      { roles: [ADMIN_ROLE] },
-      {
-        withCredentials: true,
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${cookie?.value}`,
-        },
-      }
-    );
-
-    if (result.status !== 200 || !result?.data?.isAuthorized) {
-      console.log('Token is invalid for admin users, redirecting to login.');
-      url.pathname = '/auth/login';
-      return NextResponse.redirect(url);
-    }
-
-    console.log('Token is valid for admin users, proceeding with request.');
-    return NextResponse.next();
-  } catch (error) {
-    console.log('Error during admin authorization, redirecting to login.');
-    url.pathname = '/auth/login';
-    return NextResponse.redirect(url);
-  }
+  console.log('Token is invalid for admin users, redirecting to login.');
+  url.pathname = '/auth/login';
+  return NextResponse.redirect(url);
 }
 
 function isAdminRoute(pathname: string): boolean {
