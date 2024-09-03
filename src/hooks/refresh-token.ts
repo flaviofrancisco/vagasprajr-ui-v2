@@ -19,9 +19,7 @@ const useRefreshToken = () => {
         withCredentials: true,
       });
 
-      const refresh_token_result = await dispatch(onAuthSetToken(response?.data));
-
-      console.log({ refresh_token_result });
+      await dispatch(onAuthSetToken(response?.data));
 
       return response?.data?.access_token;
     } catch (error: any) {
