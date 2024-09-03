@@ -9,4 +9,4 @@ const AdminDashBoard: React.FC = () => {
   );
 };
 
-export default withAuth(AdminDashBoard);
+export default AdminDashBoard;

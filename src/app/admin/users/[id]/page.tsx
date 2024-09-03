@@ -8,4 +8,4 @@ const UserProfilePage: React.FC = () => {
   return <main className="grid w-full mt-10 mb-10 place-items-center">{userId && <UserProfileForm userId={userId} />}</main>;
 };
 
-export default withAuth(UserProfilePage);
+export default UserProfilePage;

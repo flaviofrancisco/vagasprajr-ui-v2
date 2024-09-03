@@ -13,4 +13,4 @@ const AdReferencePage: React.FC = () => {
   );
 };
 
-export default withAuth(AdReferencePage);
+export default AdReferencePage;

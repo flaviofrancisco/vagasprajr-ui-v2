@@ -154,4 +154,4 @@ const ShoppingAdminPage: React.FC = () => {
   );
 };
 
-export default withAuth(ShoppingAdminPage);
+export default ShoppingAdminPage;

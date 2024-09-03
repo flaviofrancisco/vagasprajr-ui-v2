@@ -9,4 +9,4 @@ const EditJobPage: React.FC = () => {
   return <JobForm code={code} />;
 };
 
-export default withAuth(EditJobPage);
+export default EditJobPage;

@@ -154,4 +154,4 @@ const UserAdminPage: React.FC = () => {
   );
 };
 
-export default withAuth(UserAdminPage);
+export default UserAdminPage;

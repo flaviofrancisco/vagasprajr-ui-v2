@@ -96,4 +96,4 @@ const AmazonAdReferenceForm: React.FC<AmazonAdReferenceFormProps> = ({ id }) => 
   );
 };
 
-export default withAuth(AmazonAdReferenceForm);
+export default AmazonAdReferenceForm;
