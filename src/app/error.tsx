@@ -1,23 +1,24 @@
-// app/error.tsx
-'use client';
+'use client'; // Error boundaries must be Client Components
 
-import React from 'react';
+import { useEffect } from 'react';
 
-interface ErrorProps {
-  error: {
-    message: string;
-  };
-  reset: () => void;
-}
+export default function Error({ error, reset }: { error: Error & { digest?: string }; reset: () => void }) {
+  useEffect(() => {
+    // Log the error to an error reporting service
+    console.error(error);
+  }, [error]);
 
-const Error: React.FC<ErrorProps> = ({ error, reset }) => {
   return (
     <div>
-      <h1>Something went wrong!</h1>
-      <p>{error.message}</p>
-      <button onClick={() => reset()}>Try again</button>
+      <h2>Something went wrong!</h2>
+      <button
+        onClick={
+          // Attempt to recover by trying to re-render the segment
+          () => reset()
+        }
+      >
+        Try again
+      </button>
     </div>
   );
-};
-
-export default Error;
+}
