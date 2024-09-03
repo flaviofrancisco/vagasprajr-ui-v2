@@ -10,4 +10,4 @@ const ProfilePage: React.FC = () => {
   );
 };
 
-export default withAuth(ProfilePage);
+export default ProfilePage;

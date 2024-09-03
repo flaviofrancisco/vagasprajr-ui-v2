@@ -162,4 +162,4 @@ const JobsAdminPage: React.FC = () => {
   );
 };
 
-export default withAuth(JobsAdminPage);
+export default JobsAdminPage;

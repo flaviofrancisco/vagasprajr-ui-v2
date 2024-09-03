@@ -143,4 +143,4 @@ const NewJobPage: React.FC = () => {
   );
 };
 
-export default withAuth(NewJobPage);
+export default NewJobPage;
