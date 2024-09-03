@@ -41,12 +41,7 @@ const LoginComponent: React.FC = () => {
       }
       const result = await dispatch(doAuthentication({ email: user, password: pwd }));
       if (result.type === doAuthentication.fulfilled.type) {
-        const authResult = await dispatch(doAuthorization({ access_token: authSession.access_token, request: { roles: [AdminRole] }, axiosPrivate: axiosPrivate }));
-        if (authResult.type === doAuthorization.fulfilled.type) {
-          router.push('/admin');
-        } else {
-          router.push('/');
-        }
+        router.push('/');
       } else {
         errRef.current.innerHTML = 'Usuário ou senha inválidos';
       }
