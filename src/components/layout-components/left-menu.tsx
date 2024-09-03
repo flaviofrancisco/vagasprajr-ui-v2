@@ -3,7 +3,7 @@ import { Disclosure, DisclosureButton } from '@headlessui/react';
 import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { ReactNode, use, useState } from 'react';
+import { ReactNode } from 'react';
 
 interface LeftMenuComponentProps {
   children: ReactNode;
@@ -21,11 +21,7 @@ function classNames(...classes: string[]): string {
 }
 
 const LeftMenuComponent: React.FC<LeftMenuComponentProps> = ({ children }) => {
-  const [isMenuVisible, setIsMenuVisible] = useState(true);
   const router = useRouter();
-  const toggleMenuVisibility = () => {
-    setIsMenuVisible(!isMenuVisible);
-  };
   return (
     <>
       <div className="flex h-screen">
@@ -42,7 +38,7 @@ const LeftMenuComponent: React.FC<LeftMenuComponentProps> = ({ children }) => {
                       <XMarkIcon aria-hidden="true" className={`${open ? 'block' : 'hidden'} h-6 w-6`} />
                     </DisclosureButton>
                   </div>
-                  
+
                   <div className="flex justify-start sm:items-stretch sm:justify-start">
                     <div className="hidden sm:ml-6 sm:block">
                       <div className="flex flex-col space-y-4 h-full">
