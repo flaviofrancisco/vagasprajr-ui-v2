@@ -35,6 +35,10 @@ export const getAdReference = createAsyncThunk('amazon/getAdReference', async ({
 
 export const getAdReferences = createAsyncThunk('amazon/getAdReferences', async () => {
   const response = await axios.get('/shopping/ad-references');
+  const data = response?.data;
+  if (!data) {
+    return [];
+  }
   return response.data;
 });
 
