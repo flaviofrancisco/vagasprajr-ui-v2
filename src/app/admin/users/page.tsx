@@ -81,13 +81,13 @@ const UserAdminPage: React.FC = () => {
   const onFilter = (column: Column | null, value: any) => {
     if (!column) return;
 
-    const { key } = column;
+    const { key, type } = column;
 
     const filter = {
       operator: 'and',
       fields: [
         {
-          type: 'string',
+          type: type,
           name: key,
           value: value,
         },
@@ -124,7 +124,7 @@ const UserAdminPage: React.FC = () => {
         close={onCloseContextMenu}
       />
       <Table filters={filters} onSort={onSortColumn} value={usersResult} columns={columns} onContextMenu={onContextMenu} onContextMenuFilter={onContextMenuFilter} />
-      <Pagination title={'Usuários:'}  currentPage={filters.page} pageSize={filters.page_size} totalItems={usersResult.Total} onPageChange={(page) => dispatch(onFilterChange({ ...filters, page }))} />
+      <Pagination title={'Usuários:'} currentPage={filters.page} pageSize={filters.page_size} totalItems={usersResult.Total} onPageChange={(page) => dispatch(onFilterChange({ ...filters, page }))} />
     </main>
   );
 };

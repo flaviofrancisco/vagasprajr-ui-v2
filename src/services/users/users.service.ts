@@ -131,6 +131,15 @@ export const doGetGravatarUrl = createAsyncThunk('users/gravatar', async ({ emai
   }
 });
 
+export const doDeleteUserProfile = createAsyncThunk('users/delete', async ({ axiosPrivate }: { axiosPrivate: AxiosInstance }) => {
+  try {
+    const response = await axiosPrivate.delete('/users/profile');
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+});
+
 export interface UsersState {
   status: 'idle' | 'loading' | 'succeeded' | 'failed';
   error: string;
@@ -232,6 +241,16 @@ const usersSlice = createSlice({
       state.profile.profile_image_url = action.payload;
     });
     builder.addCase(doGetGravatarUrl.rejected, (state: UsersState) => {
+      state.status = 'failed';
+    });
+    builder.addCase(doDeleteUserProfile.pending, (state: UsersState) => {
+      state.status = 'loading';
+    });
+    builder.addCase(doDeleteUserProfile.fulfilled, (state: UsersState) => {
+      state.status = 'succeeded';
+      state.profile = initialState.profile;
+    });
+    builder.addCase(doDeleteUserProfile.rejected, (state: UsersState) => {
       state.status = 'failed';
     });
   },

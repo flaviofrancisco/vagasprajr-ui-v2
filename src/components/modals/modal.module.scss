@@ -1,9 +1,15 @@
 .modal-body {
   @media (max-width: 600px) {
-    width: 95%;
+    max-width: 90%;
+    max-height: 90%;
+    overflow-y: auto;
+    overflow-x: hidden;
   }
   @media (min-width: 601px) {
-    width: 80%;
+    max-width: 90%;
+    max-height: 90%;
+    overflow-y: auto;
+    overflow-x: hidden;
   }
 }
 

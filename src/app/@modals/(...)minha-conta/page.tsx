@@ -2,7 +2,7 @@
 import { Modal } from '@/components/modals/modal';
 import useAxiosPrivate from '@/hooks/private-axios';
 import { useAppDispatch } from '@/services/store';
-import usersSlice, { doGetGravatarUrl, doGetUserProfile, doUpdateUserProfile, tryUpdateUserName } from '@/services/users/users.service';
+import usersSlice, { doDeleteUserProfile, doGetGravatarUrl, doGetUserProfile, doUpdateUserProfile, tryUpdateUserName } from '@/services/users/users.service';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
@@ -11,6 +11,9 @@ import Link from 'next/link';
 import Image from 'next/image';
 import UserIcon from '@/assets/user-icon.png';
 import { toast, Toaster } from 'sonner';
+import Confirm from '@/components/modals/dialog/confirm-dialog';
+import { logoutUser } from '@/services/auth/authentication.service';
+import { signOut } from 'next-auth/react';
 
 const MyAccountPage = () => {
   const router = useRouter();
@@ -21,6 +24,7 @@ const MyAccountPage = () => {
 
   const dispatch = useAppDispatch();
   const axiosPrivate = useAxiosPrivate();
+  const [confirmOpen, setConfirmOpen] = useState(false);
   const { profile, error, status, success_message } = useSelector((state: any) => state.usersReducer);
   const { onChangeFieldInput, onResetMessages } = usersSlice.actions;
 
@@ -87,16 +91,31 @@ const MyAccountPage = () => {
       return false;
     }
   };
+  const onDeleteAccount = () => {
+    const execute = async () => {
+      const result = await dispatch(doDeleteUserProfile({ axiosPrivate }));
+      if (result.type === doUpdateUserProfile.fulfilled.type) {
+        toast.success('Conta excluída com sucesso');
+        await dispatch(logoutUser());
+        close();
+        signOut({ callbackUrl: '/', redirect: true });
+      }
+    };
+    execute();
+  };
 
   const hasGooglePhoto = profile?.oauth_image_url;
 
   return (
-    <Modal title={'Minha conta'} onClose={onClose}>
+    <Modal title={'Minha conta'} onClose={onClose} className={`${confirmOpen ? '' : ''}`}>
+      <Confirm title="Deletar conta?" open={confirmOpen} onClose={() => setConfirmOpen(false)} onConfirm={onDeleteAccount}>
+        Você tem certeza que deseja excluir sua conta? Esse processo é irreversível.
+      </Confirm>
       <Toaster richColors />
       <div className="p-4">
-        <div className="flex flex-col">
-          <h1>Informações da conta</h1>
-          <div className="flex flex-col md:flex-row items-center align-baseline justify-start">
+        <div className="flex flex-col  dark:text-gray-500">
+          <h1 className="font-bold">Informações da conta</h1>
+          <div className="flex flex-col md:flex-row items-center align-baseline justify-start dark:text-black">
             <div>
               {profile.profile_image_url ? (
                 <Image src={profile.profile_image_url} alt={`${profile.first_name} ${profile.last_name}`} width={60} height={60} className="rounded-full m-4" />
@@ -109,7 +128,7 @@ const MyAccountPage = () => {
               <p>{profile.email}</p>
             </div>
           </div>
-          <p className="mt-4">Escolha uma foto de perfil</p>
+          <p className="mt-10 dark:text-gray-500 font-bold">Escolha uma foto de perfil</p>
           <div className="flex align-baseline w-[30%] flex-row">
             <button className="bg-blue-500 m-2 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" onClick={() => onGetGravatar()}>
               Gravatar
@@ -148,7 +167,7 @@ const MyAccountPage = () => {
                 {error && <span className="text-red-500">{error}</span>}
               </label>
             </div>
-            <h1 className="mt-4">Configurações de perfil</h1>
+            <h1 className="mt-10 dark:text-gray-500 font-bold">Configurações de perfil</h1>
             <div className="w-full mt-4">
               <div className="flex flex-col md:flex-row">
                 <label className="text-sm text-gray-600" htmlFor="email">
@@ -167,6 +186,21 @@ const MyAccountPage = () => {
                   />
                   <label htmlFor="is_public" className={`${styles['toggle-label']} block overflow-hidden h-6 rounded-full bg-gray-300 cursor-pointer`}></label>
                 </div>
+              </div>
+            </div>
+            <h1 className="mt-10 dark:text-gray-500 font-bold">Área sensível</h1>
+            <div className="w-full mt-4">
+              <div className="flex flex-col md:flex-row">
+                <button
+                  className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    setConfirmOpen(true);
+                    dispatch(doUpdateUserProfile({ axiosPrivate, profile: { ...profile, is_deleted: true } }));
+                  }}
+                >
+                  Excluir conta
+                </button>
               </div>
             </div>
           </form>
