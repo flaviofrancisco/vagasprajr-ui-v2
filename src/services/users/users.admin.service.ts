@@ -25,6 +25,14 @@ export const doGetUsers = createAsyncThunk('users/get', async ({ axiosPrivate, f
   }
 });
 
+export const doDeleteUser = createAsyncThunk('users/delete', async ({ axiosPrivate, userId }: { axiosPrivate: AxiosInstance; userId: string }) => {
+  try {
+    await axiosPrivate.delete(`/admin/users/${userId}`);
+  } catch (error) {
+    throw error;
+  }
+});
+
 export interface GetUsersRequest {
   sort: string;
   is_ascending: boolean;
@@ -84,6 +92,16 @@ const usersAdminSlice = createSlice({
       state.usersResult = action.payload as PagedResult<UserView>;
     });
     builder.addCase(doGetUsers.rejected, (state, action) => {
+      state.status = 'failed';
+      state.error = action.error.message || '';
+    });
+    builder.addCase(doDeleteUser.pending, (state) => {
+      state.status = 'loading';
+    });
+    builder.addCase(doDeleteUser.fulfilled, (state) => {
+      state.status = 'succeeded';
+    });
+    builder.addCase(doDeleteUser.rejected, (state, action) => {
       state.status = 'failed';
       state.error = action.error.message || '';
     });

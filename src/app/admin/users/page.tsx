@@ -2,14 +2,16 @@
 import withAuth from '@/components/common/with-auth.component';
 import ContextMenu from '@/components/context-menus/context-menu';
 import ContextMenuFilter from '@/components/context-menus/context-menu-filter';
+import Confirm from '@/components/modals/dialog/confirm-dialog';
 import Pagination from '@/components/tables/pagination';
 import Table, { Column, Sort } from '@/components/tables/table';
 import useAxiosPrivate from '@/hooks/private-axios';
 import { useAppDispatch } from '@/services/store';
-import usersAdminSlice, { doGetUsers } from '@/services/users/users.admin.service';
+import usersAdminSlice, { doDeleteUser, doGetUsers } from '@/services/users/users.admin.service';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
+import { toast, Toaster } from 'sonner';
 
 type ContextMenuFilterState = {
   clientX: number;
@@ -22,7 +24,8 @@ const UserAdminPage: React.FC = () => {
   const router = useRouter();
   const dispatch = useAppDispatch();
   const axiosPrivate = useAxiosPrivate();
-
+  const [confirmOpen, setConfirmOpen] = useState(false);
+  const [selectedData, setSelectedData] = useState<any>(null);
   const [contextMenuState, setContextMenuState] = useState({ clientX: 0, clientY: 0, visible: false, data: null });
   const [contextMenuFilterState, setContextMenuFilterState] = useState<ContextMenuFilterState>({ clientX: 0, clientY: 0, visible: false, column: null });
 
@@ -102,10 +105,29 @@ const UserAdminPage: React.FC = () => {
     router.push(`/admin/users/${data.id}`);
   };
 
-  const onDelete = (data: any) => {};
+  const onDelete = (data: any) => {
+    setSelectedData(data);
+    setConfirmOpen(true);
+  };
+
+  const handleDeletion = () => {
+    const execute = async function deleteUser() {
+      try {
+        const result = await dispatch(doDeleteUser({ axiosPrivate, userId: selectedData.id }));
+        if (doDeleteUser.fulfilled.match(result)) {
+          await dispatch(doGetUsers({ axiosPrivate, filters: { ...filters } }));
+          toast.success('Usuário excluído com sucesso!');
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    };
+    execute();
+  };
 
   return (
     <main className="grid mt-10 mb-10 w-full flex-grow">
+      <Toaster richColors />
       <ContextMenuFilter
         clientX={contextMenuFilterState.clientX}
         clientY={contextMenuFilterState.clientY}
@@ -116,13 +138,16 @@ const UserAdminPage: React.FC = () => {
       />
       <ContextMenu
         onEdit={() => onEdit(contextMenuState.data)}
-        onDelete={() => console.log('Delete')}
+        onDelete={() => onDelete(contextMenuState.data)}
         data={contextMenuState.data}
         clientX={contextMenuState.clientX}
         clientY={contextMenuState.clientY}
         visible={contextMenuState.visible}
         close={onCloseContextMenu}
       />
+      <Confirm title="Deletar usuário?" open={confirmOpen} onClose={() => setConfirmOpen(false)} onConfirm={handleDeletion}>
+        Você tem certeza que deseja excluir o usuário?
+      </Confirm>
       <Table filters={filters} onSort={onSortColumn} value={usersResult} columns={columns} onContextMenu={onContextMenu} onContextMenuFilter={onContextMenuFilter} />
       <Pagination title={'Usuários:'} currentPage={filters.page} pageSize={filters.page_size} totalItems={usersResult.Total} onPageChange={(page) => dispatch(onFilterChange({ ...filters, page }))} />
     </main>
