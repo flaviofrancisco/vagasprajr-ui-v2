@@ -37,29 +37,29 @@ export async function middleware(request: NextRequest) {
     return NextResponse.next();
   }
 
-  let result = await axiosPrivate.post(
-    '/auth/authorize',
-    { roles: [ADMIN_ROLE] },
-    {
-      withCredentials: true,
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${cookie?.value}`,
-      },
-    }
-  );
+  // let result = await axiosPrivate.post(
+  //   '/auth/authorize',
+  //   { roles: [ADMIN_ROLE] },
+  //   {
+  //     withCredentials: true,
+  //     headers: {
+  //       'Content-Type': 'application/json',
+  //       Authorization: `Bearer ${cookie?.value}`,
+  //     },
+  //   }
+  // );
 
-  if (result.status !== 200) {
-    console.log('Token is invalid for admin users, redirecting to login.');
-    url.pathname = '/auth/login';
-    return NextResponse.redirect(url);
-  }
+  // if (result.status !== 200) {
+  //   console.log('Token is invalid for admin users, redirecting to login.');
+  //   url.pathname = '/auth/login';
+  //   return NextResponse.redirect(url);
+  // }
 
-  if (!result?.data?.isAuthorized) {
-    console.log('Token is valid for admin users, proceeding with request.');
-    url.pathname = '/auth/login';
-    return NextResponse.redirect(url);
-  }
+  // if (!result?.data?.isAuthorized) {
+  //   console.log('Token is valid for admin users, proceeding with request.');
+  //   url.pathname = '/auth/login';
+  //   return NextResponse.redirect(url);
+  // }
 
   console.log('Token is valid for authenticated users, proceeding with request.');
   return NextResponse.next();
