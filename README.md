@@ -28,7 +28,7 @@ Running the following containers:
 - vagasprajr-ui and
 - vagasprajr-db
 
-Click on the container `vagasprajr-ui` and access the URL: [http://localhost:3000](http://localhost:3000) to see the project running.
+Click on the container `vagasprajr-ui` and access the URL: [http://localhost:3002](http://localhost:3002) to see the project running.
 
 To contribute, you need to Fork this repository and create a Pull Request.
 
@@ -72,7 +72,7 @@ npm run dev
 
 ### 4. Access the project
 
-Open your browser and access the following URL: [http://localhost:3000](http://localhost:3000)
+Open your browser and access the following URL: [http://localhost:3002](http://localhost:3002)
 
 ### For any question:
 
