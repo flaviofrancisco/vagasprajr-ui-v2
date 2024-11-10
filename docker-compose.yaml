@@ -11,7 +11,7 @@ services:
         - NEXT_PUBLIC_GOOGLE_CLIENT_ID=${NEXT_PUBLIC_GOOGLE_CLIENT_ID}
         - NEXT_PUBLIC_GOOGLE_OAUTH_REDIRECT_URI=${NEXT_PUBLIC_GOOGLE_OAUTH_REDIRECT_URI}
     ports:
-      - 3000:3000
+      - 3002:3000
     deploy:
       replicas: 1
       restart_policy:

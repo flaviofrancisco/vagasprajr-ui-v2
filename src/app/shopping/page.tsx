@@ -69,7 +69,7 @@ const ShoppingPage: React.FC = () => {
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 mt-8">
           {adReferences.map((adReference: any) => (
             <div key={adReference.id} className="bg-white rounded-lg shadow-lg overflow-hidden">
-              <Link href={`${adReference.id}`} target="_blank" rel="noopener noreferrer">
+              <Link href={`${adReference.url}`} target="_blank" rel="noopener noreferrer">
                 <div className="flex justify-center items-center h-48">
                   <Image
                     src={adReference.image_url}
